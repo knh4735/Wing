@@ -19,6 +19,7 @@ import java.io.IOException;
  */
 public class HttpTask {
 
+    private OkHttpClient client = new OkHttpClient();
     private JSONObject returnObj;
     private String url = "10.10.49.217";
 
@@ -52,7 +53,7 @@ public class HttpTask {
 
     public void getWing(String id) {
 
-        OkHttpClient client = new OkHttpClient();
+
 
         JSONObject jsonInput = new JSONObject();
 
