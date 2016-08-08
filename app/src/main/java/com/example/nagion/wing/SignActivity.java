@@ -33,14 +33,14 @@ public class SignActivity extends AppCompatActivity {
             }
         });
 
-        Button toWingList = (Button) findViewById(R.id.toWingList);
+        Button toWingList = (Button) findViewById(R.id.finish);
         Log.w("Button",""+ toWingList);
         toWingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                Intent intent = new Intent(getApplicationContext(), WingActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 Log.w("intent","-------------------------------"+intent);
                 startActivity(intent);
 
