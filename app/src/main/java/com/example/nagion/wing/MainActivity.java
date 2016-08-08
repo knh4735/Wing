@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
         DBUtil db = new DBUtil(MainActivity.this, "Wing", null, 1);
         final boolean isLogined = true;// db.isLogined();
-
+//aa
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
