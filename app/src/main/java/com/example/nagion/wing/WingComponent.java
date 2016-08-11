@@ -16,6 +16,7 @@ import android.widget.TextView;
 public class WingComponent extends LinearLayout {
 
     String name;
+    int cnt;
 
     public WingComponent(Context context) {
         super(context);
@@ -29,19 +30,23 @@ public class WingComponent extends LinearLayout {
         super(context, attrs, defStyle);
     }
 
-    public WingComponent(Context context, String name){
+    public WingComponent(Context context, String name, int cnt){
         super(context);
         this.name = name;
-        init(name);
+        this.cnt = cnt;
+        init(name, cnt);
     }
 
-    private void init(String name) {
+    private void init(String name, int cnt) {
         String infService = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
         View v = li.inflate(R.layout.wing_component, this, false);
         addView(v);
 
-        TextView nameTv = (TextView) findViewById(R.id.name);
+        TextView nameTv = (TextView) findViewById(R.id.nameTv);
+        TextView cntTv = (TextView) findViewById(R.id.cntTv);
+
         nameTv.setText(name);
+        cntTv.setText(String.valueOf(cnt));
     }
 }
