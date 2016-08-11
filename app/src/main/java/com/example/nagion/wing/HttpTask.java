@@ -21,7 +21,7 @@ public class HttpTask {
 
     private OkHttpClient client = new OkHttpClient();
     private JSONObject returnObj;
-    private String url = "10.10.49.217";
+    private String url = "10.16.27.40";
 
     public JSONObject getReturnObj(){
         return returnObj;
@@ -36,13 +36,14 @@ public class HttpTask {
         @Override
         public void onFailure(Request request, IOException e) {
             e.printStackTrace();
-            Log.w("json","---------------------------------------"+request);
+            Log.w("fail","---------------------------------------"+request);
         }
 
         @Override
         public void onResponse(Response response) throws IOException {
             try {
                 final String strJsonOutput = response.body().string();
+                Log.w("json","---------------------------------------"+strJsonOutput);
                 final JSONObject jsonOutput = new JSONObject(strJsonOutput);
                 setReturnObj(jsonOutput);
                 Log.w("json","---------------------------------------"+jsonOutput);
@@ -67,7 +68,7 @@ public class HttpTask {
                 .scheme("http")
                 .host(url)
                 .port(8888)
-                .addPathSegment("wingtest.php")
+                .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "getWing")// - get방식
                 .addQueryParameter("from", id)
                 .build();
@@ -79,9 +80,9 @@ public class HttpTask {
 
         Request request = new Request.Builder()
                 .url(httpUrl)
-               // .post(reqBody)
+                //.post(reqBody)
                 .build();
-
+        Log.w("request","-----------------------------------"+request);
 
         client.newCall(request).enqueue(callbackAfterGettingMessage);
     }

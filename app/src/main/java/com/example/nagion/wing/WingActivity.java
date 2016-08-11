@@ -77,7 +77,7 @@ public class WingActivity extends AppCompatActivity {
 
     }
 
-    public class WingTask extends AsyncTask<String, Void, JSONObject> {
+    public class WingTask extends AsyncTask<String, Void, Void> {
 
         private final String noAcnt;
         private final HttpTask httpTask;
@@ -88,21 +88,21 @@ public class WingActivity extends AppCompatActivity {
         }
 
         @Override
-        protected JSONObject doInBackground(String... params) {
+        protected Void doInBackground(String... params) {
 
             if(params[0].equals("getWing")){
                 httpTask.getWing(noAcnt);
-                JSONObject rtn = httpTask.getReturnObj();
-                Log.w("RETURN", "-------------------------------"+rtn);
 
-                return rtn;
             }
 
             return null;
         }
 
         @Override
-        protected void onPostExecute(final JSONObject success) {
+        protected void onPostExecute(Void v) {
+
+            JSONObject rtn = httpTask.getReturnObj();
+            Log.w("RETURN", "-------------------------------"+rtn);
         }
 
         @Override
