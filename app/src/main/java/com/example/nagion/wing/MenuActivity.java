@@ -1,5 +1,6 @@
 package com.example.nagion.wing;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.Activity;
@@ -12,7 +13,7 @@ import android.widget.Button;
 
 public class MenuActivity extends AppCompatActivity {
 
-    private Button mConfirm, mCancel;
+    private Button msearch_friend, mrq_confirm, mranking, mmy_info, mlogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +25,40 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void setContent() {
-        mConfirm = (Button) findViewById(R.id.btnConfirm);
-        mCancel = (Button) findViewById(R.id.btnCancel);
-        mConfirm.setOnClickListener(new OnClickListener() {
+        msearch_friend = (Button) findViewById(R.id.search_friend);
+        mrq_confirm = (Button) findViewById(R.id.rq_confirm);
+        mranking = (Button) findViewById(R.id.ranking);
+        mmy_info = (Button) findViewById(R.id.my_info);
+        mlogout = (Button) findViewById(R.id.logout);
+        msearch_friend.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Search.class);
+                startActivity(intent);
+                MenuActivity.this.finish();
+            }
+        });
+        mrq_confirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 MenuActivity.this.finish();
             }
         });
-        mCancel.setOnClickListener(new OnClickListener() {
+        mranking.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MenuActivity.this.finish();
+            }
+        });
+        mmy_info.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MyInfo.class);
+                startActivity(intent);
+                MenuActivity.this.finish();
+            }
+        });
+        mlogout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 MenuActivity.this.finish();
@@ -40,16 +66,4 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.btnConfirm:
-                    this.finish();
-                    break;
-                case R.id.btnCancel:
-                    this.finish();
-                    break;
-                default:
-                    break;
-            }
-        }
 }

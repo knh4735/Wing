@@ -12,21 +12,55 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/btnConfirm"
-        android:layout_alignParentBottom="true"
+        android:text="친구검색"
+        android:id="@+id/search_friend"
+        android:layout_marginTop="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="100dp" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/btnCancel"
-        android:layout_alignTop="@+id/btnConfirm"
-        android:layout_toRightOf="@+id/btnConfirm"
-        android:layout_toEndOf="@+id/btnConfirm"
-        android:layout_marginLeft="63dp"
-        android:layout_marginStart="63dp" />
+        android:text="요청확인"
+        android:id="@+id/rq_confirm"
+        android:layout_below="@+id/search_friend"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="랭킹"
+        android:id="@+id/ranking"
+        android:layout_below="@+id/rq_confirm"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="내 정보"
+        android:id="@+id/my_info"
+        android:layout_below="@+id/ranking"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그아웃"
+        android:id="@+id/logout"
+        android:layout_below="@+id/my_info"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

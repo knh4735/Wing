@@ -19,7 +19,9 @@
         <activity
             android:name=".WingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".VibeActivity" android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".VibeActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +32,11 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".MenuActivity" android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+        <activity
+            android:name=".MenuActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity android:name=".Search" />
+        <activity android:name=".MyInfo"></activity>
     </application>
 
 </manifest>
