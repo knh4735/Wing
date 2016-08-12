@@ -1,0 +1,69 @@
+package com.example.nagion.wing;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.Button;
+
+
+public class MenuActivity extends AppCompatActivity {
+
+    private Button msearch_friend, mrq_confirm, mranking, mmy_info, mlogout;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_menu);
+
+        setContent();
+    }
+
+    private void setContent() {
+        msearch_friend = (Button) findViewById(R.id.search_friend);
+        mrq_confirm = (Button) findViewById(R.id.rq_confirm);
+        mranking = (Button) findViewById(R.id.ranking);
+        mmy_info = (Button) findViewById(R.id.my_info);
+        mlogout = (Button) findViewById(R.id.logout);
+        msearch_friend.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Search.class);
+                startActivity(intent);
+                MenuActivity.this.finish();
+            }
+        });
+        mrq_confirm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MenuActivity.this.finish();
+            }
+        });
+        mranking.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MenuActivity.this.finish();
+            }
+        });
+        mmy_info.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MyInfo.class);
+                startActivity(intent);
+                MenuActivity.this.finish();
+            }
+        });
+        mlogout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MenuActivity.this.finish();
+            }
+        });
+    }
+
+}
