@@ -51,7 +51,7 @@ public class VibeActivity extends AppCompatActivity {
 
                             long interval = gcUp.getTime().getTime() - gcDown.getTime().getTime();
 
-                            Log.w("TimeInterval", "=----------------------------------" + String.valueOf(interval));
+                            Log.w("TimeInterval", "=----------------------------------" + interval);
 
                             ptrn.add(interval);
                             ptrn.add(Long.parseLong("1000"));

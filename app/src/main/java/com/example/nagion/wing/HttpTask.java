@@ -21,7 +21,7 @@ public class HttpTask {
 
     private OkHttpClient client = new OkHttpClient();
     private JSONObject returnObj;
-    private String url = "192.168.0.30";
+    private String url = "192.168.200.172";
 
     public JSONObject getReturnObj(){
         return returnObj;
@@ -168,6 +168,73 @@ public class HttpTask {
                 MediaType.parse("application/json; charset=utf-8"),
                 jsonInput.toString()
         );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+
+    public void login(String acnt, String id) {
+        JSONObject jsonInput = new JSONObject();
+
+        try {
+            jsonInput.put("id", id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(url)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "setDevice")// - get방식
+                .addQueryParameter("acnt", acnt)
+                .addQueryParameter("id", id)
+                .build();
+
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+
+    public void wing(String id) {
+        JSONObject jsonInput = new JSONObject();
+
+        try {
+            jsonInput.put("id", id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(url)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "wing")// - get방식
+                .addQueryParameter("to", id)
+                .build();
+
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );
 
         Request request = new Request.Builder()
                 .url(httpUrl)

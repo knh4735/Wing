@@ -3,6 +3,7 @@ package com.example.nagion.wing;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -49,8 +51,9 @@ public class RegistrationIntentService extends IntentService {
             Log.i(TAG, "GCM Registration Token: " + token);
 
             // TODO: Implement this method to send any registration to your app's servers.
-            sendRegistrationToServer(token);
-
+           // LoginTask lt = new LoginTask();
+           // lt.execute("login", "1", token);
+            sendRegistrationToServer("1", token);
             // Subscribe to topic channels
             subscribeTopics(token);
 
@@ -78,7 +81,7 @@ public class RegistrationIntentService extends IntentService {
      *
      * @param token The new token.
      */
-    private void sendRegistrationToServer(String token) {
+    private void sendRegistrationToServer(String acnt, String token) {
 
         OkHttpClient client = new OkHttpClient();
 
@@ -92,9 +95,12 @@ public class RegistrationIntentService extends IntentService {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme("http")
-                .host("10.16.13.130:8888")
-                .addPathSegment("wingtest.php")
-                //.addQueryParameter("name", name) - get방식
+                .host("192.168.200.172")
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "login")// - get방식
+                .addQueryParameter("acnt", acnt)
+                .addQueryParameter("id", token)
                 .build();
 
         RequestBody reqBody = RequestBody.create(
@@ -104,8 +110,10 @@ public class RegistrationIntentService extends IntentService {
 
         Request request = new Request.Builder()
                 .url(httpUrl)
-                .post(reqBody)
+                //.post(reqBody)
                 .build();
+
+        Log.w("request", "---------------------------------------------"+request);
 
 
         client.newCall(request).enqueue(callbackAfterGettingMessage);
@@ -114,19 +122,21 @@ public class RegistrationIntentService extends IntentService {
     private Callback callbackAfterGettingMessage = new Callback() {
         @Override
         public void onFailure(Request request, IOException e) {
+            e.printStackTrace();
+            Log.w("fail","---------------------------------------"+request);
         }
 
         @Override
         public void onResponse(Response response) throws IOException {
             try {
                 final String strJsonOutput = response.body().string();
-                final JSONObject jsonOutput = new JSONObject(strJsonOutput);
-                Log.w("json","---------------------------------------"+jsonOutput);
+                Log.w("json","---------------------------------------"+strJsonOutput);
+               // final JSONObject jsonOutput = new JSONObject(strJsonOutput);
+               // Log.w("json","---------------------------------------"+jsonOutput);
             }
             catch (Exception e){e.printStackTrace();}
         }
     };
-
     /**
      * Subscribe to any GCM topics of interest, as defined by the TOPICS constant.
      *
@@ -142,4 +152,41 @@ public class RegistrationIntentService extends IntentService {
     }
     // [END subscribe_topics]
 
+    public class LoginTask extends AsyncTask<String, Void, Void> {
+
+        private final HttpTask httpTask;
+
+        LoginTask() {
+            httpTask = new HttpTask();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            if(params[0].equals("login")){
+                httpTask.login(params[1],params[2]);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+
+            try {
+                JSONObject list = httpTask.getReturnObj();
+                JSONArray jsonArray = list.getJSONArray("result");
+                Log.w("RETURN", "-------------------------------" + jsonArray);
+
+
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
+    }
 }
