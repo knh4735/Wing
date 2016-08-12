@@ -3,8 +3,6 @@ package com.example.nagion.wing;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.app.Activity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -34,7 +32,7 @@ public class MenuActivity extends AppCompatActivity {
         mnotice.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Notice.class);
+                Intent intent = new Intent(getApplicationContext(), NoticeActivity.class);
                 startActivity(intent);
                 MenuActivity.this.finish();
             }
@@ -42,7 +40,7 @@ public class MenuActivity extends AppCompatActivity {
         msearch_friend.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Search.class);
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 startActivity(intent);
                 MenuActivity.this.finish();
             }
@@ -56,7 +54,7 @@ public class MenuActivity extends AppCompatActivity {
         mranking.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Ranking.class);
+                Intent intent = new Intent(getApplicationContext(), RankingActivity.class);
                 startActivity(intent);
                 MenuActivity.this.finish();
             }
@@ -64,7 +62,7 @@ public class MenuActivity extends AppCompatActivity {
         mmy_info.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MyInfo.class);
+                Intent intent = new Intent(getApplicationContext(), MyInfoActivity.class);
                 startActivity(intent);
                 MenuActivity.this.finish();
             }

@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.nagion.wing.Search">
+    tools:context=".SearchActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:orientation="vertical"
-            tools:context="com.example.nagion.wing.Search"
+            tools:context=".SearchActivity"
             android:weightSum="1">
 
             <LinearLayout

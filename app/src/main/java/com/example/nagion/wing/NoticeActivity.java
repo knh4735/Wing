@@ -11,7 +11,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Notice extends AppCompatActivity {
+public class NoticeActivity extends AppCompatActivity {
     LinearLayout rl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

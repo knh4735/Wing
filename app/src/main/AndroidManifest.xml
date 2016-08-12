@@ -35,8 +35,8 @@
         <activity
             android:name=".MenuActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <activity android:name=".Search" />
-        <activity android:name=".MyInfo" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".MyInfoActivity" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -67,8 +67,8 @@
             android:name=".RegistrationIntentService"
             android:exported="false" />
 
-        <activity android:name=".Notice" />
-        <activity android:name=".Ranking"></activity>
+        <activity android:name=".NoticeActivity" />
+        <activity android:name=".RankingActivity"></activity>
     </application>
 
 </manifest>

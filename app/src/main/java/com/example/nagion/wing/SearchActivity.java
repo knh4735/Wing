@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 import org.json.JSONArray;
 
-public class Search extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
     EditText nameEt;
     Button makeBtn;
     LinearLayout rl;

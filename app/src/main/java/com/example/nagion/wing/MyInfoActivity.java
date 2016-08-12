@@ -3,7 +3,7 @@ package com.example.nagion.wing;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MyInfo extends AppCompatActivity {
+public class MyInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
