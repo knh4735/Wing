@@ -12,7 +12,6 @@ import org.json.JSONArray;
 
 public class Search extends AppCompatActivity {
     EditText nameEt;
-    JSONArray wingComponentList;
     Button makeBtn;
     LinearLayout rl;
     @Override

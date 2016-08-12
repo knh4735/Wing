@@ -13,7 +13,7 @@ import android.widget.Button;
 
 public class MenuActivity extends AppCompatActivity {
 
-    private Button msearch_friend, mrq_confirm, mranking, mmy_info, mlogout;
+    private Button mnotice, msearch_friend, mrq_confirm, mranking, mmy_info, mlogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +25,20 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void setContent() {
+        mnotice = (Button) findViewById(R.id.notice);
         msearch_friend = (Button) findViewById(R.id.search_friend);
         mrq_confirm = (Button) findViewById(R.id.rq_confirm);
         mranking = (Button) findViewById(R.id.ranking);
         mmy_info = (Button) findViewById(R.id.my_info);
         mlogout = (Button) findViewById(R.id.logout);
+        mnotice.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Notice.class);
+                startActivity(intent);
+                MenuActivity.this.finish();
+            }
+        });
         msearch_friend.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,6 +56,8 @@ public class MenuActivity extends AppCompatActivity {
         mranking.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Ranking.class);
+                startActivity(intent);
                 MenuActivity.this.finish();
             }
         });
@@ -61,7 +72,10 @@ public class MenuActivity extends AppCompatActivity {
         mlogout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
                 MenuActivity.this.finish();
+                //로그아웃 후에 wingactivity가 백그라운드에 남아있는 문제를 해결해야함.
             }
         });
     }
