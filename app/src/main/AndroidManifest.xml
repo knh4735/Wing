@@ -68,7 +68,8 @@
             android:exported="false" />
 
         <activity android:name=".NoticeActivity" />
-        <activity android:name=".RankingActivity"></activity>
+        <activity android:name=".RankingActivity" />
+        <activity android:name=".ChangeActivity"></activity>
     </application>
 
 </manifest>

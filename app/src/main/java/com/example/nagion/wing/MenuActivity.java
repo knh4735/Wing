@@ -74,7 +74,7 @@ public class MenuActivity extends AppCompatActivity {
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 startActivity(i);
-                //로그아웃 후에 wingactivity가 백그라운드에 남아있는 문제를 해결해야함.
+
             }
         });
     }
