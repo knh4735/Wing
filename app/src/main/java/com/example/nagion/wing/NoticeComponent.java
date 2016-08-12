@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 public class NoticeComponent extends LinearLayout {
 
-    String name;
+    String title, content;
 
     public NoticeComponent(Context context) {
         super(context);
@@ -23,20 +23,20 @@ public class NoticeComponent extends LinearLayout {
         super(context, attrs, defStyle);
     }
 
-    public NoticeComponent(Context context, String name, int cnt){
+    public NoticeComponent(Context context, String title, String content){
         super(context);
-        this.name = name;
-        init(name);
+        this.title = content;
+        init(title, content);
     }
 
-    private void init(String name) {
+    private void init(String title, String content) {
         String infService = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
         View v = li.inflate(R.layout.notice_component, this, false);
         addView(v);
 
-        TextView nameTv = (TextView) findViewById(R.id.title_textView);
+        TextView titleTv = (TextView) findViewById(R.id.title_textView);
 
-        nameTv.setText(name);
+        titleTv.setText(title);
     }
 }

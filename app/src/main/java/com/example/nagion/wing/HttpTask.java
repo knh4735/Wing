@@ -21,7 +21,7 @@ public class HttpTask {
 
     private OkHttpClient client = new OkHttpClient();
     private JSONObject returnObj;
-    private String url = "10.16.27.40";
+    private String url = "192.168.0.30";
 
     public JSONObject getReturnObj(){
         return returnObj;
@@ -77,6 +77,97 @@ public class HttpTask {
                 MediaType.parse("application/json; charset=utf-8"),
                 jsonInput.toString()
         );
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+
+    public void searchFriend(String idFriend) {
+        JSONObject jsonInput = new JSONObject();
+
+        try {
+            jsonInput.put("target", idFriend);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(url)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "searchFriend")// - get방식
+                .addQueryParameter("target", idFriend)
+                .build();
+
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+    public void getRank(String id) {
+        JSONObject jsonInput = new JSONObject();
+
+        try {
+            jsonInput.put("id", id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(url)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "getRank")// - get방식
+                .addQueryParameter("id", id)
+                .build();
+
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+
+    public void getNotice() {
+        JSONObject jsonInput = new JSONObject();
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(url)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "getNotice")// - get방식
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
 
         Request request = new Request.Builder()
                 .url(httpUrl)

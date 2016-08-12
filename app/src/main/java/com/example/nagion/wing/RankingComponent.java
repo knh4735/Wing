@@ -10,6 +10,7 @@ import android.widget.TextView;
 public class RankingComponent extends LinearLayout {
 
     String name;
+    int rank, cnt;
 
     public RankingComponent(Context context) {
         super(context);
@@ -23,20 +24,27 @@ public class RankingComponent extends LinearLayout {
         super(context, attrs, defStyle);
     }
 
-    public RankingComponent(Context context, String name, int cnt){
+    public RankingComponent(Context context, int rank,  String name, int cnt){
         super(context);
+        this.rank = rank;
         this.name = name;
-        init(name);
+        this.cnt = cnt;
+
+        init(rank ,name, cnt);
     }
 
-    private void init(String name) {
+    private void init(int rank, String name, int cnt) {
         String infService = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
         View v = li.inflate(R.layout.ranking_component, this, false);
         addView(v);
 
-        TextView nameTv = (TextView) findViewById(R.id.id_View);
+        TextView rankTv = (TextView) findViewById(R.id.rank);
+        TextView nameTv = (TextView) findViewById(R.id.name);
+        TextView cntTv = (TextView) findViewById(R.id.cnt);
 
+        rankTv.setText(String.valueOf(rank));
         nameTv.setText(name);
+        cntTv.setText(String.valueOf(cnt));
     }
 }

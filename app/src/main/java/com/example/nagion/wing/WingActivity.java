@@ -67,14 +67,17 @@ public class WingActivity extends AppCompatActivity {
         makeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tmp = nameEt.getText().toString();
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(i);
+               /* String tmp = nameEt.getText().toString();
                 if(tmp != null && tmp != ""){
 
                     WingComponent wc = new WingComponent(getApplicationContext(), tmp, 0);
                     rl.addView(wc);
 
                     nameEt.setText("");
-                }
+                }*/
             }
         });
 

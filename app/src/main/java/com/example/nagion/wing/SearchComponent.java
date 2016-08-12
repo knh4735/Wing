@@ -12,7 +12,6 @@ import android.widget.TextView;
 public class SearchComponent extends LinearLayout {
 
     String name;
-    int cnt;
 
     public SearchComponent(Context context) {
         super(context);
@@ -26,23 +25,20 @@ public class SearchComponent extends LinearLayout {
         super(context, attrs, defStyle);
     }
 
-    public SearchComponent(Context context, String name, int cnt){
+    public SearchComponent(Context context, String name){
         super(context);
         this.name = name;
-        this.cnt = cnt;
-        init(name, cnt);
+        init(name);
     }
 
-    private void init(String name, int cnt) {
+    private void init(String name) {
         String infService = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
         View v = li.inflate(R.layout.search_component, this, false);
         addView(v);
 
         TextView nameTv = (TextView) findViewById(R.id.nameTv);
-        TextView cntTv = (TextView) findViewById(R.id.cntTv);
 
         nameTv.setText(name);
-        cntTv.setText(String.valueOf(cnt));
     }
 }
