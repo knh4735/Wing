@@ -1,12 +1,17 @@
 package com.example.nagion.wing;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public class MenuActivity extends AppCompatActivity {
@@ -70,6 +75,10 @@ public class MenuActivity extends AppCompatActivity {
         mlogout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                MenuTask mt = new MenuTask();
+                mt.execute("logout");
+
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -77,6 +86,34 @@ public class MenuActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public class MenuTask extends AsyncTask<String, Void, Void> {
+
+        private final HttpTask httpTask;
+
+        MenuTask() {
+            httpTask = new HttpTask();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            if(params[0].equals("logout")){
+                httpTask.logout(Session.getInstance("noAcnt"), Session.getInstance("token"));
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            Session.destroySession();
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
     }
 
 }

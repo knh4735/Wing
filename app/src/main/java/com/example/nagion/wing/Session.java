@@ -17,6 +17,8 @@ public class Session {
     private static String nameSi = "";
     private static String emailSi = "";
     private static String phoneSi = "";
+    private static String token = "";
+
 
     public static void setSession(JSONObject data){
         isSetSession = true;
@@ -27,6 +29,7 @@ public class Session {
             noAcnt = sessionData.getString("no_acnt");
             idAcnt = sessionData.getString("id_acnt");
             nickAcnt = sessionData.getString("nick_acnt");
+            token = sessionData.getString("token");
 
             JSONObject userInfo = sessionData.getJSONObject("info");
 
@@ -41,6 +44,7 @@ public class Session {
 
     public static String getInstance(String target){
         switch(target){
+            case "token" : return token;
             case "noAcnt" : return noAcnt;
             case "idAcnt" : return idAcnt;
             case "nickAcnt" : return nickAcnt;
