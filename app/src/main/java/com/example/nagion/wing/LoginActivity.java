@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     return;
                 }
-//TODO 세션처리 / 로그아웃시 디바이스정보삭제 / 친구요청-수락 / 회원가입 /
+//TODO 세션처리시 로컬디비 접근  / 친구요청-수락 gcm / 회원가입 /
                 mRegistrationBroadcastReceiver = new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {

@@ -71,8 +71,9 @@ public class SearchActivity extends AppCompatActivity {
                 for(int i=0;i<searchComponentList.length();i++){
                     JSONObject searchComponentObj = searchComponentList.getJSONObject(i);
                     String name = searchComponentObj.getString("nick_acnt");
+                    String no = searchComponentObj.getString("no_acnt");
 
-                    SearchComponent wc = new SearchComponent(getApplicationContext(), name);
+                    SearchComponent wc = new SearchComponent(getApplicationContext(), name, no);
                     Log.w("RETURN", "-------------------------------" + wc);
                     rl.addView(wc);
                 }

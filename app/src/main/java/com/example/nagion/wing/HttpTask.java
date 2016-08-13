@@ -237,4 +237,31 @@ public class HttpTask {
 
         client.newCall(request).enqueue(callbackAfterGettingMessage);
     }
+
+    public void requestFriend(String to, String msg){
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "requestFriend")// - get방식
+                .addQueryParameter("from", Session.getInstance("noAcnt"))
+                .addQueryParameter("to", to)
+                .addQueryParameter("msg", msg)
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
 }

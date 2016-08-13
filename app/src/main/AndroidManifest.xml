@@ -70,7 +70,8 @@
         <activity android:name=".NoticeActivity" />
         <activity android:name=".RankingActivity" />
         <activity android:name=".ChangeActivity" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RequestActivity" android:theme="@style/Theme.AppCompat.Light.Dialog" />
     </application>
 
 </manifest>
