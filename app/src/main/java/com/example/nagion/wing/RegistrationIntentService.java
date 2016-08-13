@@ -37,6 +37,9 @@ public class RegistrationIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        String id = intent.getStringExtra("id");
+        String pw = intent.getStringExtra("pw");
+
         try {
             // [START register_for_gcm]
             // Initially this call goes out to the network to retrieve the token, subsequent calls
@@ -53,7 +56,7 @@ public class RegistrationIntentService extends IntentService {
             // TODO: Implement this method to send any registration to your app's servers.
            // LoginTask lt = new LoginTask();
            // lt.execute("login", "1", token);
-            sendRegistrationToServer("1", token);
+            sendRegistrationToServer(id, pw, token);
             // Subscribe to topic channels
             subscribeTopics(token);
 
@@ -69,8 +72,7 @@ public class RegistrationIntentService extends IntentService {
             sharedPreferences.edit().putBoolean("sentTokenToServer", false).apply();
         }
         // Notify UI that registration has completed, so the progress indicator can be hidden.
-        Intent registrationComplete = new Intent("registrationComplete");
-        LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+
     }
 
     /**
@@ -81,7 +83,7 @@ public class RegistrationIntentService extends IntentService {
      *
      * @param token The new token.
      */
-    private void sendRegistrationToServer(String acnt, String token) {
+    private void sendRegistrationToServer(String id, String pw, String token) {
 
         OkHttpClient client = new OkHttpClient();
 
@@ -95,12 +97,13 @@ public class RegistrationIntentService extends IntentService {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme("http")
-                .host("192.168.200.172")
+                .host(HttpTask.hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "login")// - get방식
-                .addQueryParameter("acnt", acnt)
-                .addQueryParameter("id", token)
+                .addQueryParameter("id", id)
+                .addQueryParameter("pw", pw)
+                .addQueryParameter("token", token)
                 .build();
 
         RequestBody reqBody = RequestBody.create(
@@ -131,6 +134,8 @@ public class RegistrationIntentService extends IntentService {
             try {
                 final String strJsonOutput = response.body().string();
                 Log.w("json","---------------------------------------"+strJsonOutput);
+                Intent registrationComplete = new Intent("registrationComplete");
+                LocalBroadcastManager.getInstance(RegistrationIntentService.this).sendBroadcast(registrationComplete);
                // final JSONObject jsonOutput = new JSONObject(strJsonOutput);
                // Log.w("json","---------------------------------------"+jsonOutput);
             }
@@ -164,7 +169,7 @@ public class RegistrationIntentService extends IntentService {
         protected Void doInBackground(String... params) {
 
             if(params[0].equals("login")){
-                httpTask.login(params[1],params[2]);
+               // httpTask.login(params[1],params[2]);
             }
 
             return null;

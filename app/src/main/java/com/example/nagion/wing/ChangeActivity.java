@@ -39,7 +39,7 @@ public class ChangeActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity_1.class);
                 Log.w("intent","-------------------------------"+intent);
                 startActivity(intent);
 

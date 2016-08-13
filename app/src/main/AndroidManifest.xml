@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".LoginActivity_1"
             android:label="@string/title_activity_login" />
         <activity
             android:name=".MenuActivity"
@@ -69,7 +69,8 @@
 
         <activity android:name=".NoticeActivity" />
         <activity android:name=".RankingActivity" />
-        <activity android:name=".ChangeActivity"></activity>
+        <activity android:name=".ChangeActivity" />
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>

@@ -21,7 +21,8 @@ public class HttpTask {
 
     private OkHttpClient client = new OkHttpClient();
     private JSONObject returnObj;
-    private String url = "192.168.200.172";
+
+    public static String hostUrl = "192.168.200.172";
 
     public JSONObject getReturnObj(){
         return returnObj;
@@ -66,7 +67,7 @@ public class HttpTask {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme("http")
-                .host(url)
+                .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "getWing")// - get방식
@@ -99,7 +100,7 @@ public class HttpTask {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme("http")
-                .host(url)
+                .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "searchFriend")// - get방식
@@ -131,7 +132,7 @@ public class HttpTask {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme("http")
-                .host(url)
+                .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "getRank")// - get방식
@@ -158,7 +159,7 @@ public class HttpTask {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme("http")
-                .host(url)
+                .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "getNotice")// - get방식
@@ -178,41 +179,6 @@ public class HttpTask {
         client.newCall(request).enqueue(callbackAfterGettingMessage);
     }
 
-
-    public void login(String acnt, String id) {
-        JSONObject jsonInput = new JSONObject();
-
-        try {
-            jsonInput.put("id", id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
-                .host(url)
-                .port(8888)
-                .addPathSegment("wing.php")
-                .addQueryParameter("cmd", "setDevice")// - get방식
-                .addQueryParameter("acnt", acnt)
-                .addQueryParameter("id", id)
-                .build();
-
-        RequestBody reqBody = RequestBody.create(
-                MediaType.parse("application/json; charset=utf-8"),
-                jsonInput.toString()
-        );
-
-        Request request = new Request.Builder()
-                .url(httpUrl)
-                //.post(reqBody)
-                .build();
-        Log.w("request","-----------------------------------"+request);
-
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
-    }
-
-
     public void wing(String id) {
         JSONObject jsonInput = new JSONObject();
 
@@ -224,11 +190,11 @@ public class HttpTask {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme("http")
-                .host(url)
+                .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "wing")// - get방식
-                .addQueryParameter("to", id)
+                .addQueryParameter("acnt", id)
                 .build();
 
         RequestBody reqBody = RequestBody.create(

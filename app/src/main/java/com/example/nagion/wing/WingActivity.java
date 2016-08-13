@@ -53,7 +53,7 @@ public class WingActivity extends AppCompatActivity {
         });
 
 
-        WingTask wt = new WingTask("1");
+        WingTask wt = new WingTask("3");
         wt.execute("getWing");
 
         Button vibe = (Button) findViewById(R.id.vibe);
@@ -68,7 +68,7 @@ public class WingActivity extends AppCompatActivity {
         makeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                WingTask wt = new WingTask("1");
+                WingTask wt = new WingTask("3");
                 wt.execute("wing");
                /*String tmp = nameEt.getText().toString();
                 if(tmp != null && tmp != ""){
