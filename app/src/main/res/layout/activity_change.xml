@@ -32,6 +32,7 @@
             android:layout_width="0dp"
             android:layout_weight="6"
             android:textSize="20sp"
+            android:maxLines="1"
             android:layout_height="40dp" />
 
     </LinearLayout>
@@ -52,6 +53,7 @@
             android:id="@+id/confirmPwEt"
             android:layout_width="0dp"
             android:layout_weight="6"
+            android:maxLines="1"
             android:textSize="20sp"
             android:layout_height="40dp" />
 
@@ -76,6 +78,9 @@
             />
         <EditText
             android:id="@+id/nameEt"
+            android:hint="홍길동"
+            android:ems="10"
+            android:maxLines="1"
             android:layout_width="0dp"
             android:layout_weight="6"
             android:textSize="20sp"
@@ -98,12 +103,42 @@
         <EditText
             android:id="@+id/nicknameEt"
             android:layout_width="0dp"
+            android:ems="10"
+            android:maxLines="1"
             android:layout_weight="6"
             android:textSize="20sp"
             android:layout_height="40dp" />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:text="이메일"
+            />
+        <EditText
+            android:id="@+id/emailEt"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:maxLines="1"
+            android:hint="abcd@efgh.kij"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:textSize="20sp"
+            android:layout_height="40dp" />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/noticeemailStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -117,11 +152,13 @@
             android:text="자기소개"
             />
         <EditText
-            android:id="@+id/etcEt"
+            android:id="@+id/selfEt"
             android:layout_width="0dp"
+            android:ems="120"
+            android:maxLines="8"
             android:layout_weight="6"
-            android:textSize="20sp"
-            android:layout_height="136dp" />
+            android:textSize="15sp"
+            android:layout_height="100dp" />
 
     </LinearLayout>
     <LinearLayout
