@@ -71,6 +71,7 @@
         <activity android:name=".RankingActivity" />
         <activity android:name=".ChangeActivity" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".EditConfirmActivity" />
         <activity android:name=".RequestActivity" android:theme="@style/Theme.AppCompat.Light.Dialog" />
     </application>
 
