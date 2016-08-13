@@ -136,8 +136,12 @@ public class RegistrationIntentService extends IntentService {
                 Log.w("json","---------------------------------------"+strJsonOutput);
                 Intent registrationComplete = new Intent("registrationComplete");
                 LocalBroadcastManager.getInstance(RegistrationIntentService.this).sendBroadcast(registrationComplete);
-               // final JSONObject jsonOutput = new JSONObject(strJsonOutput);
-               // Log.w("json","---------------------------------------"+jsonOutput);
+
+
+                final JSONObject jsonOutput = new JSONObject(strJsonOutput);
+                Log.w("json","---------------------------------------"+jsonOutput);
+
+                Session.setSession(jsonOutput);
             }
             catch (Exception e){e.printStackTrace();}
         }

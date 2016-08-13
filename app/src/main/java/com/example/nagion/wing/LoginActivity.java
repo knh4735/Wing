@@ -46,8 +46,11 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), WingActivity.class);
+                startActivity(i);
+                LoginActivity.this.finish();
 
-                String id = idEt.getText().toString();
+              /*  String id = idEt.getText().toString();
                 String pw = pwEt.getText().toString();
 
                 if(id.equals("")){
@@ -70,6 +73,8 @@ public class LoginActivity extends AppCompatActivity {
                         boolean sentToken = sharedPreferences
                                 .getBoolean("sentTokenToServer", false);
                         if (sentToken) {
+
+
                             Intent i = new Intent(getApplicationContext(), WingActivity.class);
                             startActivity(i);
                             LoginActivity.this.finish();
@@ -87,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                     intent.putExtra("id", id);
                     intent.putExtra("pw", pw);
                     startService(intent);
-                }
+                }*/
             }
         });
 
