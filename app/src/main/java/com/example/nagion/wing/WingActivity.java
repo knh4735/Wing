@@ -52,7 +52,8 @@ public class WingActivity extends AppCompatActivity {
             }
         });
 
-        WingTask wt = new WingTask("1");
+
+        WingTask wt = new WingTask("3");
         wt.execute("getWing");
 
         Button vibe = (Button) findViewById(R.id.vibe);
@@ -67,14 +68,17 @@ public class WingActivity extends AppCompatActivity {
         makeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tmp = nameEt.getText().toString();
+                WingTask wt = new WingTask("3");
+                wt.execute("wing");
+               /*String tmp = nameEt.getText().toString();
                 if(tmp != null && tmp != ""){
 
                     WingComponent wc = new WingComponent(getApplicationContext(), tmp, 0);
                     rl.addView(wc);
 
                     nameEt.setText("");
-                }
+                }*/
+
             }
         });
 
@@ -96,7 +100,9 @@ public class WingActivity extends AppCompatActivity {
 
             if(params[0].equals("getWing")){
                 httpTask.getWing(noAcnt);
-
+            }
+            else if(params[0].equals("wing")){
+                httpTask.wing(noAcnt);
             }
 
             return null;

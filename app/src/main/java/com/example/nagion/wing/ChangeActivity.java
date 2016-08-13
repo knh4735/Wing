@@ -10,31 +10,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.fitness.request.SessionStartRequest;
-
-import java.util.regex.Pattern;
-
-public class SignActivity extends AppCompatActivity {
+public class ChangeActivity extends AppCompatActivity {
     boolean checkok = false;
-    EditText idEt, pwEt, confirmPwEt, emailEt, selfEt;
-
+    EditText pwEt, confirmPwEt, emailEt, selfEt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign);
-        idEt = (EditText) findViewById(R.id.idEt);
+        setContentView(R.layout.activity_change);
+        final String id = Session.getInstance("idAcnt");
         pwEt = (EditText) findViewById(R.id.pwEt);
         confirmPwEt = (EditText) findViewById(R.id.confirmPwEt);
         emailEt = (EditText) findViewById(R.id.emailEt);
         selfEt = (EditText) findViewById(R.id.selfEt);
-
-
         pwEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 TextView notice = (TextView) findViewById(R.id.noticePwStatus);
                 notice.setTextColor(0xFFFF0000);
-                String check = checkPw(idEt, pwEt, confirmPwEt);
+                String check = checkPw(id, pwEt, confirmPwEt);
                 notice.setText(check);
             }
         });
@@ -44,31 +37,30 @@ public class SignActivity extends AppCompatActivity {
             public void onFocusChange(View view, boolean b) {
                 TextView notice = (TextView) findViewById(R.id.noticePwStatus);
                 notice.setTextColor(0xFFFF0000);
-                String check = checkPw(idEt, pwEt, confirmPwEt);
+                String check = checkPw(id, pwEt, confirmPwEt);
                 notice.setText(check);
             }
         });
-
+        //TODO 이메일, 이름 유효성 확인하기.(sign에서도)
         Button toWingList = (Button) findViewById(R.id.finish);
         Log.w("Button",""+ toWingList);
         toWingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(checkok) {//형식이 모두 맞을때.
+                if(checkok) {
                     Intent intent = new Intent(getApplicationContext(), LoginActivity_1.class);
                     Log.w("intent", "-------------------------------" + intent);
                     startActivity(intent);
                 }
                 else{//하나라도 틀린게 있을때.
-                    Toast.makeText(SignActivity.this, "형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangeActivity.this, "형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+    private String checkPw(String id, EditText pwEt, EditText confirmPwEt){
 
-    private String checkPw(EditText idEt, EditText pwEt, EditText confirmPwEt){
-        String id = idEt.getText().toString();
         String pw = pwEt.getText().toString(),
                 confirmPw = confirmPwEt.getText().toString();
 
