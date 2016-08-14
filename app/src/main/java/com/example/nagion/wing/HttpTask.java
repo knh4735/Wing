@@ -268,6 +268,14 @@ public class HttpTask {
 
     public void signUp(String... params) {
 
+        String id = params[1],
+                pw = params[2],
+                nick = params[3],
+                name = params[4],
+                //phone = phoneEt.getText().toString(),
+                email = params[5],
+                intro = params[6];
+
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme("http")
@@ -275,6 +283,13 @@ public class HttpTask {
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "signUp")// - get방식
+                .addQueryParameter("id", id)
+                .addQueryParameter("pw", pw)
+                .addQueryParameter("nick", nick)
+                .addQueryParameter("name", name)
+               // .addQueryParameter("phone", phone)
+                .addQueryParameter("email", email)
+                .addQueryParameter("intro", intro)
                 .build();
 /*
         RequestBody reqBody = RequestBody.create(
@@ -291,4 +306,28 @@ public class HttpTask {
         client.newCall(request).enqueue(callbackAfterGettingMessage);
     }
 
+    public void duplicatedId(String id) {
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "duplicatedId")// - get방식
+                .addQueryParameter("id", id)
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
 }

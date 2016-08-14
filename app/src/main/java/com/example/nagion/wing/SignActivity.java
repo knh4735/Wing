@@ -37,6 +37,7 @@ public class SignActivity extends AppCompatActivity {
                 emailEt = (EditText) findViewById(R.id.emailEt),
                 selfEt = (EditText) findViewById(R.id.selfEt),
                 nicknameEt = (EditText) findViewById(R.id.nicknameEt);
+        Button checkDupBtn = (Button) findViewById(R.id.checkDupBtn);
 
         final TextView notice1 = (TextView) findViewById(R.id.noticePwStatus);
         notice1.setTextColor(0xFFFF0000);
@@ -132,19 +133,29 @@ public class SignActivity extends AppCompatActivity {
                             //phone = phoneEt.getText().toString(),
                             intro = selfEt.getText().toString();
 
-                    SignUpTask sut = new SignUpTask();
-                    sut.execute("signUp", id, pw, nick, name, email, intro);
+                    SignTask st = new SignTask();
+                    st.execute("signUp", id, pw, nick, name, email, intro);
 
 
 
                     //idEt, pwEt, nameEt, nicknameEt, selfEt, emailEt 모두 edittext이므로 스트링 화 필요할듯?
                     //패스워드 암호화?
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    Log.w("intent", "-------------------------------" + intent);
-                    startActivity(intent);
                 }
                 else{//하나라도 틀린게 있을때.
                     Toast.makeText(SignActivity.this, "형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        checkDupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = idEt.getText().toString();
+
+                //TODO id는 checkId없는부분? 알파벳,숫자만가능할텐데
+                if(!id.equals("")) {
+                    SignTask st = new SignTask();
+                    st.execute("duplicatedId", id);
                 }
             }
         });
@@ -210,11 +221,13 @@ public class SignActivity extends AppCompatActivity {
         return 5;
     }
 
-    public class SignUpTask extends AsyncTask<String, Void, Void> {
+    public class SignTask extends AsyncTask<String, Void, Void> {
+
+        String flag;
 
         private final HttpTask httpTask;
 
-        SignUpTask() {
+        SignTask() {
             httpTask = new HttpTask();
         }
 
@@ -223,6 +236,11 @@ public class SignActivity extends AppCompatActivity {
 
             if(params[0].equals("signUp")){
                 httpTask.signUp(params);
+                flag = "signUp";
+            }
+            else if(params[1].equals("duplicatedId")){
+                httpTask.duplicatedId(params[1]);
+                flag = "duplicatedId";
             }
 
             return null;
@@ -230,6 +248,41 @@ public class SignActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void v) {
+            try {
+                if(flag.equals("signUp")) {
+                    JSONObject list = httpTask.getReturnObj();
+                    String result = list.getString("result");
+
+                    if (result.equals("Success")) {
+                        Toast.makeText(SignActivity.this, "정상적으로 가입되었습니다.", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    } else
+                        Toast.makeText(SignActivity.this, "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else if(flag.equals("duplicatedId")){
+                    JSONObject list = httpTask.getReturnObj();
+                    String result = list.getString("result");
+
+                    if (result.equals("SAFE")) {
+                        Toast.makeText(SignActivity.this, "사용 가능한 아이디입니다.", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    }
+                    //TODO 얘네도 checkok에 영향을 주어야할듯
+                    else if(result.equals("DUPLICATED")) {
+                        Toast.makeText(SignActivity.this, "같은 아이디가 존재합니다.", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(result.equals("FAIL")){
+                        Toast.makeText(SignActivity.this, "알 수 없는 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         @Override
