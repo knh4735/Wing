@@ -22,7 +22,7 @@ public class HttpTask {
     private OkHttpClient client = new OkHttpClient();
     private JSONObject returnObj;
 
-    public static String hostUrl = "192.168.0.107";
+    public static String hostUrl = "192.168.0.26";
 
     public JSONObject getReturnObj(){
         return returnObj;
@@ -315,6 +315,64 @@ public class HttpTask {
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "duplicatedId")// - get방식
                 .addQueryParameter("id", id)
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+
+    public void reqConfirm(String... params) {
+
+        String flag = params[1],
+                from = params[2],
+                to = params[3];
+
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "reqConfirm")// - get방식
+                .addQueryParameter("flag", flag)
+                .addQueryParameter("from", from)
+                .addQueryParameter("to", to)
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+    public void getRequest(String noAcnt) {
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "getRequest")// - get방식
+                .addQueryParameter("acnt", noAcnt)
                 .build();
 /*
         RequestBody reqBody = RequestBody.create(
