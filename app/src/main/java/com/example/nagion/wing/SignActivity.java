@@ -27,10 +27,12 @@ public class SignActivity extends AppCompatActivity {
 
     private void setContent() {
         final EditText idEt = (EditText) findViewById(R.id.idEt),
-        pwEt = (EditText) findViewById(R.id.pwEt),
-        confirmPwEt = (EditText) findViewById(R.id.confirmPwEt),
-        emailEt = (EditText) findViewById(R.id.emailEt),
-        selfEt = (EditText) findViewById(R.id.selfEt);
+                pwEt = (EditText) findViewById(R.id.pwEt),
+                nameEt = (EditText) findViewById(R.id.nameEt),
+                confirmPwEt = (EditText) findViewById(R.id.confirmPwEt),
+                emailEt = (EditText) findViewById(R.id.emailEt),
+                selfEt = (EditText) findViewById(R.id.selfEt),
+                nicknameEt = (EditText) findViewById(R.id.nicknameEt);
 
         final TextView notice1 = (TextView) findViewById(R.id.noticePwStatus);
         notice1.setTextColor(0xFFFF0000);
@@ -38,6 +40,12 @@ public class SignActivity extends AppCompatActivity {
         final TextView notice2 = (TextView) findViewById(R.id.noticeemailStatus);
         notice2.setTextColor(0xFFFF0000);
         notice2.setText("이메일 형식이 올바르지 않습니다.");
+        final TextView notice3 = (TextView) findViewById(R.id.noticeNameStatus);
+        notice3.setTextColor(0xFFFF0000);
+        notice3.setText("이름이 올바르지 않습니다.");
+        final TextView notice4 = (TextView) findViewById(R.id.noticeNickStatus);
+        notice4.setTextColor(0xFFFF0000);
+        notice4.setText("닉네임을 입력해 주세요.");
         pwEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -75,17 +83,36 @@ public class SignActivity extends AppCompatActivity {
                 if(!checkEmail(emailEt))
                     notice2.setText("이메일 형식이 올바르지 않습니다.");
                 else
-                    notice2.setText("올바른 이메일 형식입니다.");
+                    notice2.setText("");
             }
         });
-        //Todo 이름 체크.
+        nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!checkName(nameEt))
+                    notice3.setText("이름에 특수문자가 들어가 있습니다.");
+                else{
+                    notice3.setText("");
+                }
+            }
+        });
+        nicknameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!checkNick(nicknameEt))
+                    notice4.setText("닉네임을 입력해 주세요.");
+                else{
+                    notice4.setText("");
+                }
+            }
+        });
         Button toWingList = (Button) findViewById(R.id.finish);
         Log.w("Button",""+ toWingList);
         toWingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean checkok = false;
-                if((checkPw(idEt, pwEt, confirmPwEt)==0)&&(checkEmail(emailEt)))
+                if((checkPw(idEt, pwEt, confirmPwEt)==0)&&(checkEmail(emailEt))&&(checkName(nameEt))&&checkNick(nicknameEt))
                     checkok = true;
                 if(checkok) {//형식이 모두 맞을때.
                     Intent intent = new Intent(getApplicationContext(), LoginActivity_1.class);
@@ -98,12 +125,25 @@ public class SignActivity extends AppCompatActivity {
             }
         });
     }
-    public boolean checkEmail(EditText emailEt){
+    private boolean checkEmail(EditText emailEt){
         String email = emailEt.getText().toString();
-        if(email==null)
+        if(email.equals(""))
             return false;
         boolean b = Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+",email.trim());
         return b;
+    }
+    private boolean checkName(EditText nameEt){
+        String name = nameEt.getText().toString();
+        if(name.equals(""))
+            return false;
+        boolean b = Pattern.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*",name.trim());
+        return b;
+    }
+    private boolean checkNick(EditText nickNameEt){
+        String nick = nickNameEt.getText().toString();
+        if(nick.equals(""))
+            return false;
+        return true;
     }
     private int checkPw(EditText idEt, EditText pwEt, EditText confirmPwEt){
         String id = idEt.getText().toString();
