@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -37,9 +38,23 @@ public class MyGcmListenerService extends GcmListenerService {
             // message received from some topic.
         } else {
 
-            msgToken = message.split("||");
-            Log.w("FROM","-----------------------------------------"+msgToken[0]);
-            Log.w("TIME","-----------------------------------------"+msgToken[1]);
+            try {
+                msgToken = message.split("||");
+                String cmd = msgToken[0];
+                if (cmd.equals("WING")) {
+                    //윙
+                    Log.w("FROM", "-----------------------------------------" + msgToken[1]);
+                    Log.w("TIME", "-----------------------------------------" + msgToken[2]);
+                } else if (cmd.equals("FR")) {
+                    //친구요청
+                    Log.w("FROM", "-----------------------------------------" + msgToken[1]);
+                    Log.w("MESSAGE", "-----------------------------------------" + msgToken[2]);
+                    Log.w("TIME", "-----------------------------------------" + msgToken[3]);
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
 
         }
 

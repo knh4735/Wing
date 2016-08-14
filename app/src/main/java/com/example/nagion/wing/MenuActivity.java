@@ -52,6 +52,8 @@ public class MenuActivity extends AppCompatActivity {
         mrq_confirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ConfirmActivity.class);
+                startActivity(intent);
                 MenuActivity.this.finish();
             }
         });
