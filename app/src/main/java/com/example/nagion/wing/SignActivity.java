@@ -208,24 +208,33 @@ public class SignActivity extends AppCompatActivity {
         if(email.equals("")) {
             return false;
         }
+        /* before code
         boolean b = Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+",email.trim());
         return b;
+        */
+        return Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+",email.trim());
     }
     private boolean checkId(EditText idEt){
         String id = idEt.getText().toString();
         if((id.equals(""))||(id.length()<6)) {
             return false;
         }
+        /*before code
         boolean b = Pattern.matches("[0-9|a-z]*",id.trim());
         return b;
+        */
+        return Pattern.matches("[0-9|a-z]*",id.trim());
     }
     private boolean checkName(EditText nameEt){
         String name = nameEt.getText().toString();
         if(name.equals("")) {
             return false;
         }
+        /*
         boolean b = Pattern.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*",name.trim());
         return b;
+        */
+        return Pattern.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*",name.trim());
     }
     private boolean checkNick(EditText nickNameEt){
         String nick = nickNameEt.getText().toString();

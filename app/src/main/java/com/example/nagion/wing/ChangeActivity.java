@@ -122,16 +122,22 @@ public class ChangeActivity extends AppCompatActivity {
         if(email.equals("")) {
             return true;
         }
+        /* before code
         boolean b = Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+",email.trim());
         return b;
+        */
+        return Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+",email.trim());
     }
     private boolean checkName(EditText nameEt){
         String name = nameEt.getText().toString();
         if(name.equals("")) {
             return true;
         }
+        /* before code
         boolean b = Pattern.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*",name.trim());
         return b;
+        */
+        return Pattern.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*",name.trim());
     }
     private boolean checkphone(EditText phonenumEt){
         String phonenum = phonenumEt.getText().toString();
