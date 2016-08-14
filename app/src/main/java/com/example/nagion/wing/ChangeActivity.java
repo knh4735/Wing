@@ -88,6 +88,11 @@ public class ChangeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean checkok = false;
+
+                if( (emailEt.equals("")||checkEmail(emailEt))&&(emailEt.equals("")||checkEmail(emailEt)) && (phonenumEt.equals("")||checkphone(phonenumEt))) {
+                    checkok = true;
+                }
+                /* before code
                 if(emailEt.equals("")||checkEmail(emailEt)){
                     if(nameEt.equals("")||checkName(nameEt)){
                         if(phonenumEt.equals("")||checkphone(phonenumEt)) {
@@ -95,6 +100,7 @@ public class ChangeActivity extends AppCompatActivity {
                         }
                     }
                 }
+                */
                 if(checkok) {
                     //TODO 변경시 정보 받아서 서버로 전송하기.
                     //전달 정보 : emailEt, nameEt, selfEt,nicknameEt.

@@ -40,11 +40,16 @@ public class DBUtil extends SQLiteOpenHelper {
         try {
             Cursor cursor = db.rawQuery(sb.toString(), null);
 
+            if (cursor.moveToNext() && (cursor.getInt(0) == 1)){
+                return true;
+            }
+            /* before code
             if (cursor.moveToNext()) {
                 if (cursor.getInt(0) == 1) {
                     return true;
                 }
             }
+            */
         }
         catch(Exception e){
             return false;

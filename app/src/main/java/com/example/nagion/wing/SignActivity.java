@@ -155,11 +155,16 @@ public class SignActivity extends AppCompatActivity {
                 if((checkPw(idEt, pwEt, confirmPwEt)==0)&&(checkEmail(emailEt))&&(checkName(nameEt))&&checkNick(nicknameEt)) {
                     checkok = true;
                 }
+                if(checkok&&!phonenumEt.equals("") && (!checkphone(phonenumEt))){
+                    checkok = false;
+                }
+                /*  before code
                 if(checkok&&!phonenumEt.equals("")){
                     if(!checkphone(phonenumEt)) {
                         checkok = false;
                     }
                 }
+                */
                 if(!duplechecked) {
                     Toast.makeText(SignActivity.this, "중복체크를 해주세요", Toast.LENGTH_SHORT).show();
                 }
