@@ -107,11 +107,15 @@ public class ChangeActivity extends AppCompatActivity {
     }
     private boolean checkEmail(EditText emailEt){
         String email = emailEt.getText().toString();
+        if(email.equals(""))
+            return true;
         boolean b = Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+",email.trim());
         return b;
     }
     private boolean checkName(EditText nameEt){
         String name = nameEt.getText().toString();
+        if(name.equals(""))
+            return true;
         boolean b = Pattern.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*",name.trim());
         return b;
     }

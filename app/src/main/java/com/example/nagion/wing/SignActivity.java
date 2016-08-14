@@ -42,10 +42,13 @@ public class SignActivity extends AppCompatActivity {
         notice2.setText("이메일 형식이 올바르지 않습니다.");
         final TextView notice3 = (TextView) findViewById(R.id.noticeNameStatus);
         notice3.setTextColor(0xFFFF0000);
-        notice3.setText("이름이 올바르지 않습니다.");
+        notice3.setText("이름을 입력해 주세요.");
         final TextView notice4 = (TextView) findViewById(R.id.noticeNickStatus);
         notice4.setTextColor(0xFFFF0000);
         notice4.setText("닉네임을 입력해 주세요.");
+        final TextView notice5 = (TextView) findViewById(R.id.noticephoneStatus);
+        notice5.setTextColor(0xFFFF0000);
+        notice5.setText("전화번호를 입력해 주세요.");
         pwEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -115,6 +118,9 @@ public class SignActivity extends AppCompatActivity {
                 if((checkPw(idEt, pwEt, confirmPwEt)==0)&&(checkEmail(emailEt))&&(checkName(nameEt))&&checkNick(nicknameEt))
                     checkok = true;
                 if(checkok) {//형식이 모두 맞을때.
+                    //TOdo 회원가입때의 모든 정보를 서버에 전달.
+                    //idEt, pwEt, nameEt, nicknameEt, selfEt, emailEt 모두 edittext이므로 스트링 화 필요할듯?
+                    //패스워드 암호화?
                     Intent intent = new Intent(getApplicationContext(), LoginActivity_1.class);
                     Log.w("intent", "-------------------------------" + intent);
                     startActivity(intent);

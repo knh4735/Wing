@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:orientation="vertical"
-    tools:context=".SignActivity">
+    tools:context="com.example.nagion.wing.WingActivity"
+    android:weightSum="1">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:orientation="vertical"
+            tools:context="com.example.nagion.wing.SignActivity"
+            android:weightSum="1">
 
-    <TextView
+        <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="회원가입"
-        android:textSize="40sp"
+        android:textSize="20sp"
         android:textColor="#000000"/>
 
     <LinearLayout
@@ -25,7 +39,7 @@
             android:layout_weight="3"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:text="아이디"
             />
         <EditText
@@ -34,14 +48,14 @@
             android:layout_weight="4"
             android:maxLines="1"
             android:ems="10"
-            android:textSize="20sp"
-            android:layout_height="40dp" />
+            android:textSize="15sp"
+            android:layout_height="wrap_content" />
         <Button
             android:id="@+id/checkDupBtn"
             android:layout_width="0dp"
             android:layout_weight="3"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textColor="#000000"
             android:text="중복확인"
             />
@@ -57,8 +71,7 @@
             android:layout_weight="3"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="20sp"
-
+            android:textSize="15sp"
             android:text="비밀번호"
             />
         <EditText
@@ -66,9 +79,9 @@
             android:layout_width="0dp"
             android:maxLines="1"
             android:layout_weight="6"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:inputType="textPassword"
-            android:layout_height="40dp" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -81,17 +94,17 @@
             android:layout_weight="3"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:text="비밀번호 확인"
             />
         <EditText
             android:id="@+id/confirmPwEt"
             android:layout_width="0dp"
             android:layout_weight="6"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:maxLines="1"
             android:inputType="textPassword"
-            android:layout_height="40dp" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -115,13 +128,13 @@
             />
         <EditText
             android:id="@+id/nameEt"
-            android:hint="홍길동*필수입력"
+            android:hint="홍길동"
             android:ems="10"
             android:maxLines="1"
             android:layout_width="0dp"
             android:layout_weight="6"
-            android:textSize="20sp"
-            android:layout_height="40dp" />
+            android:textSize="15sp"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -140,7 +153,7 @@
             android:layout_weight="3"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:text="닉네임"
             />
         <EditText
@@ -148,10 +161,10 @@
             android:layout_width="0dp"
             android:layout_weight="6"
             android:ems="10"
-            android:hint="*필수입력"
+            android:hint="활빈당"
             android:maxLines="1"
             android:textSize="20sp"
-            android:layout_height="40dp" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
     <TextView
@@ -168,19 +181,19 @@
             android:layout_weight="3"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:text="이메일"
             />
         <EditText
             android:id="@+id/emailEt"
             android:inputType="textEmailAddress"
             android:ems="10"
-            android:hint="abcd@efgh.kij*필수입력"
+            android:hint="abcd@efgh.kij"
             android:maxLines="1"
             android:layout_width="0dp"
             android:layout_weight="6"
-            android:textSize="20sp"
-            android:layout_height="40dp" />
+            android:textSize="15sp"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
     <TextView
@@ -188,7 +201,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -198,7 +210,37 @@
             android:layout_weight="3"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="15sp"
+            android:text="전화번호"
+            />
+
+        <EditText
+            android:id="@+id/phonenumEt"
+            android:inputType="phone"
+            android:ems="12"
+            android:hint="010-1111-1111"
+            android:maxLines="1"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:textSize="15sp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+            <TextView
+                android:id="@+id/noticephoneStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="15sp"
             android:text="자기소개"
             />
         <EditText
@@ -208,14 +250,15 @@
             android:ems="120"
             android:maxLines="8"
             android:textSize="15sp"
-            android:layout_height="118dp" />
-
+            android:layout_height="200dp" />
     </LinearLayout>
 
     <Button
         android:id="@+id/finish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:text="가입"/>
 </LinearLayout>
+    </ScrollView>
+</android.support.design.widget.CoordinatorLayout>

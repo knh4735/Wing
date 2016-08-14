@@ -30,7 +30,7 @@ public class MyInfoActivity extends AppCompatActivity {
                 nickAcnt = Session.getInstance("nickAcnt"),
                 emailSi = Session.getInstance("emailSi"),
                 phoneSi = Session.getInstance("phoneSi"),
-                introSi = Session.getInstance("introSi");//Todo to 낙현 세션에 자기소개 넣어주세요 introSi로..
+                introSi = Session.getInstance("introSi");
         nameId.setText(nameSi);
         nickname.setText(nickAcnt);
         memail.setText(emailSi);
