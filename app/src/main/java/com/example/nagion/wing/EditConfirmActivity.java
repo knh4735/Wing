@@ -14,6 +14,8 @@ public class EditConfirmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_confirm);
+
+        setContent();
     }
     private void setContent(){
         mcfbtn = (Button) findViewById(R.id.cfbtn);

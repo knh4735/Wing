@@ -16,16 +16,20 @@ import java.util.regex.Pattern;
 
 public class SignActivity extends AppCompatActivity {
     boolean checkok = false;
-    EditText idEt, pwEt, confirmPwEt, emailEt, selfEt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
-        idEt = (EditText) findViewById(R.id.idEt);
-        pwEt = (EditText) findViewById(R.id.pwEt);
-        confirmPwEt = (EditText) findViewById(R.id.confirmPwEt);
-        emailEt = (EditText) findViewById(R.id.emailEt);
+
+        setContent();
+    }
+
+    private void setContent() {
+        final EditText idEt = (EditText) findViewById(R.id.idEt),
+        pwEt = (EditText) findViewById(R.id.pwEt),
+        confirmPwEt = (EditText) findViewById(R.id.confirmPwEt),
+        emailEt = (EditText) findViewById(R.id.emailEt),
         selfEt = (EditText) findViewById(R.id.selfEt);
 
 
@@ -48,7 +52,17 @@ public class SignActivity extends AppCompatActivity {
                 notice.setText(check);
             }
         });
-
+        emailEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                TextView notice = (TextView) findViewById(R.id.noticeemailStatus);
+                notice.setTextColor(0xFFFF0000);
+                if(!checkEmail(emailEt))
+                    notice.setText("이메일 형식이 올바르지 않습니다.");
+                else
+                    notice.setText("올바른 이메일 형식입니다.");
+            }
+        });
         Button toWingList = (Button) findViewById(R.id.finish);
         Log.w("Button",""+ toWingList);
         toWingList.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +80,12 @@ public class SignActivity extends AppCompatActivity {
             }
         });
     }
+    public boolean checkEmail(EditText emailEt){
+        String email = emailEt.getText().toString();
+        boolean isNormal = email.matches("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\\\w+\\\\.)+\\\\w+$");
 
+        return isNormal;
+    }
     private String checkPw(EditText idEt, EditText pwEt, EditText confirmPwEt){
         String id = idEt.getText().toString();
         String pw = pwEt.getText().toString(),
