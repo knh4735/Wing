@@ -91,7 +91,10 @@ public class RegistrationIntentService extends IntentService {
         try {
             jsonInput.put("id", token);
         } catch (Exception e) {
-            e.printStackTrace();
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
         }
 
         HttpUrl httpUrl = new HttpUrl.Builder()
@@ -124,7 +127,10 @@ public class RegistrationIntentService extends IntentService {
     private Callback callbackAfterGettingMessage = new Callback() {
         @Override
         public void onFailure(Request request, IOException e) {
-            e.printStackTrace();
+            /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
             Log.w("fail","---------------------------------------"+request);
         }
 
@@ -150,7 +156,12 @@ public class RegistrationIntentService extends IntentService {
                 sharedPreferences.edit().putBoolean("sentTokenToServer", true).apply();
 
             }
-            catch (Exception e){e.printStackTrace();}
+            catch (Exception e){
+                 /* before code
+                e.printStackTrace();
+                */
+                Log.e("e","error occured");
+            }
         }
     };
     /**
@@ -197,7 +208,10 @@ public class RegistrationIntentService extends IntentService {
 
 
             }catch (Exception e){
+                 /* before code
                 e.printStackTrace();
+                */
+                Log.e("e","error occured");
             }
         }
 

@@ -1,11 +1,10 @@
 package com.example.nagion.wing;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -69,7 +68,10 @@ public class ConfirmActivity extends AppCompatActivity {
                 }
 
             }catch (Exception e){
+                /* before code
                 e.printStackTrace();
+                 */
+                Log.e("e","error occured");
             }
         }
 

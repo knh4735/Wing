@@ -9,9 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -111,7 +109,10 @@ public class ConfirmComponent  extends LinearLayout {
                 }
             }
             catch (Exception e){
+                /* before code
                 e.printStackTrace();
+                */
+                Log.e("e","error occured");
             }
         }
 

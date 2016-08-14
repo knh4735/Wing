@@ -53,7 +53,10 @@ public class MyGcmListenerService extends GcmListenerService {
                 }
             }
             catch (Exception e){
+                 /* before code
                 e.printStackTrace();
+                */
+                Log.e("e","error occured");
             }
 
         }
