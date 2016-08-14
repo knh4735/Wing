@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignActivity extends AppCompatActivity {
-    boolean checkok = false;
+    boolean checkok = false, duplechecked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,9 @@ public class SignActivity extends AppCompatActivity {
                 nicknameEt = (EditText) findViewById(R.id.nicknameEt),
                 phonenumEt = (EditText) findViewById(R.id.phonenumEt);
         Button checkDupBtn = (Button) findViewById(R.id.checkDupBtn);
-
+        final TextView notice0 = (TextView) findViewById(R.id.noticeIdStatus);
+        notice0.setTextColor(0xFFFF0000);
+        notice0.setText("아이디를 입력해주세요(소문자 및 숫자로 구성된 6-15자)");
         final TextView notice1 = (TextView) findViewById(R.id.noticePwStatus);
         notice1.setTextColor(0xFFFF0000);
         notice1.setText("비밀번호를 입력해주세요");
@@ -130,6 +132,16 @@ public class SignActivity extends AppCompatActivity {
                 }
             }
         });
+        idEt.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(idEt.equals("")||!checkId(idEt))
+                    notice0.setText("아이디를 입력해주세요(소문자 및 숫자로 구성된 6-15자)");
+                else{
+                    notice0.setText("");
+                }
+            }
+        });
         Button toWingList = (Button) findViewById(R.id.finish);
         Log.w("Button",""+ toWingList);
         toWingList.setOnClickListener(new View.OnClickListener() {
@@ -142,9 +154,9 @@ public class SignActivity extends AppCompatActivity {
                     if(!checkphone(phonenumEt))
                         checkok = false;
                 }
-                if(checkok) {//형식이 모두 맞을때.
-                    //TOdo 회원가입때의 모든 정보를 서버에 전달.
-
+                if(!duplechecked)
+                    Toast.makeText(SignActivity.this, "중복체크를 해주세요", Toast.LENGTH_SHORT).show();
+                else if(checkok) {//형식이 모두 맞을때.
                     String id = idEt.getText().toString(),
                             pw = pwEt.getText().toString(),
                             nick = nicknameEt.getText().toString(),
@@ -156,13 +168,9 @@ public class SignActivity extends AppCompatActivity {
                     SignTask st = new SignTask();
                     st.execute("signUp", id, pw, nick, name, email, intro);
 
-
-
-                    //idEt, pwEt, nameEt, nicknameEt, selfEt, emailEt 모두 edittext이므로 스트링 화 필요할듯?
-                    //패스워드 암호화?
                 }
                 else{//하나라도 틀린게 있을때.
-                    Toast.makeText(SignActivity.this, "형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignActivity.this, "형식이 맞지 않거나, 중복확인에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -170,34 +178,48 @@ public class SignActivity extends AppCompatActivity {
         checkDupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = idEt.getText().toString();
-
-                //TODO id는 checkId없는부분? 알파벳,숫자만가능할텐데
-                if(!id.equals("")) {
-                    SignTask st = new SignTask();
-                    st.execute("duplicatedId", id);
+                boolean ok = false;
+                if(!checkId(idEt)) {
+                    Toast.makeText(SignActivity.this, "아이디를 입력해주세요(소문자 및 숫자로 구성된 6-15자)", Toast.LENGTH_SHORT).show();
                 }
-            }
+                else {
+                    String id = idEt.getText().toString();
+                        duplechecked = true;
+                        SignTask st = new SignTask();
+                        st.execute("duplicatedId", id);
+                    }
+                }
         });
     }
     private boolean checkEmail(EditText emailEt){
         String email = emailEt.getText().toString();
-        if(email.equals(""))
+        if(email.equals("")) {
             return false;
+        }
         boolean b = Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+",email.trim());
+        return b;
+    }
+    private boolean checkId(EditText idEt){
+        String id = idEt.getText().toString();
+        if((id.equals(""))||(id.length()<6)) {
+            return false;
+        }
+        boolean b = Pattern.matches("[0-9|a-z]*",id.trim());
         return b;
     }
     private boolean checkName(EditText nameEt){
         String name = nameEt.getText().toString();
-        if(name.equals(""))
+        if(name.equals("")) {
             return false;
+        }
         boolean b = Pattern.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*",name.trim());
         return b;
     }
     private boolean checkNick(EditText nickNameEt){
         String nick = nickNameEt.getText().toString();
-        if(nick.equals(""))
+        if(nick.equals("")) {
             return false;
+        }
         return true;
     }
     private boolean checkphone(EditText phonenumEt){
@@ -309,12 +331,9 @@ public class SignActivity extends AppCompatActivity {
                     String result = list.getString("result");
 
                     if (result.equals("SAFE")) {
+                        duplechecked = true;
                         Toast.makeText(SignActivity.this, "사용 가능한 아이디입니다.", Toast.LENGTH_SHORT).show();
-
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(intent);
                     }
-                    //TODO 얘네도 checkok에 영향을 주어야할듯
                     else if(result.equals("DUPLICATED")) {
                         Toast.makeText(SignActivity.this, "같은 아이디가 존재합니다.", Toast.LENGTH_SHORT).show();
                     }
