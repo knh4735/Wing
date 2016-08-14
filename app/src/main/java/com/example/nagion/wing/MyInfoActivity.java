@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 public class MyInfoActivity extends AppCompatActivity {
 
+    /*
     private Button mchange, mdisjoin;
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +21,7 @@ public class MyInfoActivity extends AppCompatActivity {
     }
 
     private void setContent(){
+        Button mchange, mdisjoin;
         mchange = (Button)findViewById(R.id.change);
         mdisjoin = (Button)findViewById(R.id.disjoin);
         final TextView nameId = (TextView) findViewById(R.id.nameId),
