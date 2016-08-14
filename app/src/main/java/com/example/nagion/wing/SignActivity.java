@@ -123,10 +123,12 @@ public class SignActivity extends AppCompatActivity {
         phonenumEt.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(phonenumEt.equals(""))
+                if(phonenumEt.equals("")) {
                     notice5.setText("전화번호를 입력해 주세요.(선택)");
-                else if(!checkphone(phonenumEt))
-                    notice5.setText("전화번호가 올바르지 않습니다.");
+                }
+                else if(!checkphone(phonenumEt)) {
+                    notice5.setText("틀린 전화번호이거나, 입력하지 않으셨습니다.(입력은 선택입니다)");
+                }
                 else{
                     notice5.setText("");
                 }
@@ -224,6 +226,9 @@ public class SignActivity extends AppCompatActivity {
     }
     private boolean checkphone(EditText phonenumEt){
         String phonenum = phonenumEt.getText().toString();
+        if(phonenum.equals("")){
+            return false;
+        }
         boolean returnval = false;
         try{
             String regex = "^\\s*(010|011|016|017|018|019)(-|\\)|\\s)*(\\d{3,4})(-|\\s)*(\\d{4})\\s*$";
