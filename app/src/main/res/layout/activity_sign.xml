@@ -218,7 +218,7 @@
             android:id="@+id/phonenumEt"
             android:inputType="phone"
             android:ems="12"
-            android:hint="010-1111-1111"
+            android:hint="01011111111"
             android:maxLines="1"
             android:layout_width="0dp"
             android:layout_weight="6"

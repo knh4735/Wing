@@ -27,7 +27,8 @@ public class ChangeActivity extends AppCompatActivity {
         final EditText emailEt = (EditText) findViewById(R.id.emailEt),
                 selfEt = (EditText) findViewById(R.id.selfEt),
                 nameEt = (EditText) findViewById(R.id.nameEt),
-                nicknameEt = (EditText) findViewById(R.id.nicknameEt);
+                nicknameEt = (EditText) findViewById(R.id.nicknameEt),
+                phonenumEt = (EditText) findViewById(R.id.phonenumEt);
         final CheckBox nameck = (CheckBox) findViewById(R.id.checkname),
                 emailck = (CheckBox) findViewById(R.id.checkemail),
                 numberck = (CheckBox) findViewById(R.id.checknum),
@@ -35,16 +36,20 @@ public class ChangeActivity extends AppCompatActivity {
 
         final Button pwchange = (Button) findViewById(R.id.pwchange);
 
-        final TextView notice = (TextView) findViewById(R.id.noticeemailStatus);
-        notice.setTextColor(0xFFFF0000);
+        final TextView notice1 = (TextView) findViewById(R.id.noticeemailStatus);
+        notice1.setTextColor(0xFFFF0000);
+        final TextView notice2 = (TextView) findViewById(R.id.noticeNameStatus);
+        notice2.setTextColor(0xFFFF0000);
+        final TextView notice3 = (TextView) findViewById(R.id.noticephoneStatus);
+        notice3.setTextColor(0xFFFF0000);
         emailEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
 
                 if(!checkEmail(emailEt))
-                    notice.setText("이메일 형식이 올바르지 않습니다.");
+                    notice1.setText("이메일 형식이 올바르지 않습니다.");
                 else {
-                    notice.setText("");
+                    notice1.setText("");
                 }
             }
         });
@@ -52,9 +57,19 @@ public class ChangeActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if(!checkName(nameEt))
-                    notice.setText("이름에 특수문자가 들어가 있습니다.");
+                    notice2.setText("이름에 특수문자가 들어가 있습니다.");
                 else{
-                    notice.setText("");
+                    notice2.setText("");
+                }
+            }
+        });
+        phonenumEt.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(phonenumEt.equals("")||checkphone(phonenumEt))
+                    notice3.setText("");
+                else{
+                    notice3.setText("전화번호가 올바르지 않습니다.");
                 }
             }
         });
@@ -70,23 +85,10 @@ public class ChangeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean checkok = false;
-                if(emailEt==null){
-                    if(nameEt==null){
-                        checkok = true;
-                    }
-                    else{
-                        if((checkName(nameEt)))
+                if(emailEt.equals("")||checkEmail(emailEt)){
+                    if(nameEt.equals("")||checkName(nameEt)){
+                        if(phonenumEt.equals("")||checkphone(phonenumEt)) {
                             checkok = true;
-                    }
-                }
-                else{
-                    if(checkEmail(emailEt)){
-                        if(nameEt==null){
-                            checkok = true;
-                        }
-                        else{
-                            if((checkName(nameEt)))
-                                checkok = true;
                         }
                     }
                 }
@@ -119,5 +121,30 @@ public class ChangeActivity extends AppCompatActivity {
             return true;
         boolean b = Pattern.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*",name.trim());
         return b;
+    }
+    private boolean checkphone(EditText phonenumEt){
+        String phonenum = phonenumEt.getText().toString();
+        boolean returnval = false;
+        if(phonenum.equals(""))
+            return true;
+        try{
+            String regex = "^\\s*(010|011|016|017|018|019)(-|\\)|\\s)*(\\d{3,4})(-|\\s)*(\\d{4})\\s*$";
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(phonenum);
+            if(m.matches()){
+                returnval = true;
+            }
+            if(returnval&&phonenum.equals("")
+                    &&phonenum.length()>0
+                    &&phonenum.startsWith("010")){
+                phonenum = phonenum.replaceAll("-","");
+                if(phonenum.length()!=11){
+                    returnval = false;
+                }
+            }
+            return returnval;
+        }catch (Exception e){
+            return false;
+        }
     }
 }

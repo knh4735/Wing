@@ -11,11 +11,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.drive.query.internal.MatchAllFilter;
 import com.google.android.gms.fitness.request.SessionStartRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignActivity extends AppCompatActivity {
@@ -36,7 +38,8 @@ public class SignActivity extends AppCompatActivity {
                 confirmPwEt = (EditText) findViewById(R.id.confirmPwEt),
                 emailEt = (EditText) findViewById(R.id.emailEt),
                 selfEt = (EditText) findViewById(R.id.selfEt),
-                nicknameEt = (EditText) findViewById(R.id.nicknameEt);
+                nicknameEt = (EditText) findViewById(R.id.nicknameEt),
+                phonenumEt = (EditText) findViewById(R.id.phonenumEt);
         Button checkDupBtn = (Button) findViewById(R.id.checkDupBtn);
 
         final TextView notice1 = (TextView) findViewById(R.id.noticePwStatus);
@@ -44,7 +47,7 @@ public class SignActivity extends AppCompatActivity {
         notice1.setText("비밀번호를 입력해주세요");
         final TextView notice2 = (TextView) findViewById(R.id.noticeemailStatus);
         notice2.setTextColor(0xFFFF0000);
-        notice2.setText("이메일 형식이 올바르지 않습니다.");
+        notice2.setText("이메일을 입력해주세요.");
         final TextView notice3 = (TextView) findViewById(R.id.noticeNameStatus);
         notice3.setTextColor(0xFFFF0000);
         notice3.setText("이름을 입력해 주세요.");
@@ -53,7 +56,7 @@ public class SignActivity extends AppCompatActivity {
         notice4.setText("닉네임을 입력해 주세요.");
         final TextView notice5 = (TextView) findViewById(R.id.noticephoneStatus);
         notice5.setTextColor(0xFFFF0000);
-        notice5.setText("전화번호를 입력해 주세요.");
+        notice5.setText("전화번호를 입력해 주세요.(선택)");
         pwEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -69,7 +72,6 @@ public class SignActivity extends AppCompatActivity {
                 }
             }
         });
-
         confirmPwEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -88,7 +90,9 @@ public class SignActivity extends AppCompatActivity {
         emailEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(!checkEmail(emailEt))
+                if(emailEt.equals(""))
+                    notice2.setText("이메일을 입력해주세요.");
+                else if(!checkEmail(emailEt))
                     notice2.setText("이메일 형식이 올바르지 않습니다.");
                 else
                     notice2.setText("");
@@ -97,10 +101,10 @@ public class SignActivity extends AppCompatActivity {
         nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(!checkName(nameEt))
-                    notice3.setText("이름에 특수문자가 들어가 있습니다.");
-                else{
+                if(nameEt.equals("")||checkName(nameEt))
                     notice3.setText("");
+                else{
+                    notice3.setText("특수문자가 들어가 있거나, 입력하지 않으셨습니다.");
                 }
             }
         });
@@ -114,6 +118,18 @@ public class SignActivity extends AppCompatActivity {
                 }
             }
         });
+        phonenumEt.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(phonenumEt.equals(""))
+                    notice5.setText("전화번호를 입력해 주세요.(선택)");
+                else if(!checkphone(phonenumEt))
+                    notice5.setText("전화번호가 올바르지 않습니다.");
+                else{
+                    notice5.setText("");
+                }
+            }
+        });
         Button toWingList = (Button) findViewById(R.id.finish);
         Log.w("Button",""+ toWingList);
         toWingList.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +138,10 @@ public class SignActivity extends AppCompatActivity {
                 boolean checkok = false;
                 if((checkPw(idEt, pwEt, confirmPwEt)==0)&&(checkEmail(emailEt))&&(checkName(nameEt))&&checkNick(nicknameEt))
                     checkok = true;
+                if(checkok&&!phonenumEt.equals("")){
+                    if(!checkphone(phonenumEt))
+                        checkok = false;
+                }
                 if(checkok) {//형식이 모두 맞을때.
                     //TOdo 회원가입때의 모든 정보를 서버에 전달.
 
@@ -179,6 +199,29 @@ public class SignActivity extends AppCompatActivity {
         if(nick.equals(""))
             return false;
         return true;
+    }
+    private boolean checkphone(EditText phonenumEt){
+        String phonenum = phonenumEt.getText().toString();
+        boolean returnval = false;
+        try{
+            String regex = "^\\s*(010|011|016|017|018|019)(-|\\)|\\s)*(\\d{3,4})(-|\\s)*(\\d{4})\\s*$";
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(phonenum);
+            if(m.matches()){
+                returnval = true;
+            }
+            if(returnval&&phonenum.equals("")
+                    &&phonenum.length()>0
+                    &&phonenum.startsWith("010")){
+                phonenum = phonenum.replaceAll("-","");
+                if(phonenum.length()!=11){
+                    returnval = false;
+                }
+            }
+            return returnval;
+        }catch (Exception e){
+            return false;
+        }
     }
     private int checkPw(EditText idEt, EditText pwEt, EditText confirmPwEt){
         String id = idEt.getText().toString();
