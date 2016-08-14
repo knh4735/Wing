@@ -95,8 +95,9 @@ public class ChangeActivity extends AppCompatActivity {
                     //전달 정보 : emailEt, nameEt, selfEt,nicknameEt.
                     //null값이 전달될 경우 변경사항 없는걸로.
                     //체크 사항은 nameck,emailck,numberck,selfck + .ischecked()로 하시면 됨.
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity_1.class);
+                    Intent intent = new Intent(getApplicationContext(), WingActivity.class);
                     Log.w("intent", "-------------------------------" + intent);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
                 else{//하나라도 틀린게 있을때.
