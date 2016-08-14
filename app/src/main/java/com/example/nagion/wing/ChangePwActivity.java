@@ -73,8 +73,10 @@ public class ChangePwActivity extends AppCompatActivity {
                 if(checkPw(id, pwEt, confirmPwEt)==0)
                     checkok = true;
                 if(checkok) {
+                    //todo 비밀번호 서버로 전송하기.
                     Intent intent = new Intent(getApplicationContext(), LoginActivity_1.class);
                     Log.w("intent", "-------------------------------" + intent);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
                 else{//하나라도 틀린게 있을때.
