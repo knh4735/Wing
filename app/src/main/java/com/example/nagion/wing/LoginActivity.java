@@ -50,8 +50,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
                 LoginActivity.this.finish();
 
-              /*  String id = idEt.getText().toString();
-                String pw = pwEt.getText().toString();
+                String id = "a";//idEt.getText().toString();
+                String pw = "a";//pwEt.getText().toString();
 
                 if(id.equals("")){
                     Toast.makeText(LoginActivity.this, "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
@@ -74,9 +74,6 @@ public class LoginActivity extends AppCompatActivity {
                                 .getBoolean("sentTokenToServer", false);
                         if (sentToken) {
 
-
-                            Intent i = new Intent(getApplicationContext(), WingActivity.class);
-                            startActivity(i);
                             LoginActivity.this.finish();
                         } else {
                             Log.w("error","---------------------------------"+R.string.token_error_message);
@@ -92,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                     intent.putExtra("id", id);
                     intent.putExtra("pw", pw);
                     startService(intent);
-                }*/
+                }
             }
         });
 

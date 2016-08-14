@@ -22,7 +22,7 @@ public class HttpTask {
     private OkHttpClient client = new OkHttpClient();
     private JSONObject returnObj;
 
-    public static String hostUrl = "192.168.200.172";
+    public static String hostUrl = "192.168.0.107";
 
     public JSONObject getReturnObj(){
         return returnObj;
@@ -44,10 +44,10 @@ public class HttpTask {
         public void onResponse(Response response) throws IOException {
             try {
                 final String strJsonOutput = response.body().string();
-                Log.w("json","---------------------------------------"+strJsonOutput);
+                Log.w("String","---------------------------------------"+strJsonOutput);
                 final JSONObject jsonOutput = new JSONObject(strJsonOutput);
                 setReturnObj(jsonOutput);
-                Log.w("json","---------------------------------------"+jsonOutput);
+                Log.w("JSON","---------------------------------------"+jsonOutput);
             }
             catch (Exception e){e.printStackTrace();}
         }
@@ -194,7 +194,8 @@ public class HttpTask {
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "wing")// - get방식
-                .addQueryParameter("acnt", id)
+                .addQueryParameter("from", Session.getInstance("noAcnt"))
+                .addQueryParameter("to", id)
                 .build();
 
         RequestBody reqBody = RequestBody.create(
@@ -264,4 +265,30 @@ public class HttpTask {
 
         client.newCall(request).enqueue(callbackAfterGettingMessage);
     }
+
+    public void signUp(String... params) {
+
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "signUp")// - get방식
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
 }

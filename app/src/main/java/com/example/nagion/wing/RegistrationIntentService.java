@@ -84,7 +84,6 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String id, String pw, String token) {
-
         OkHttpClient client = new OkHttpClient();
 
         JSONObject jsonInput = new JSONObject();
@@ -137,11 +136,19 @@ public class RegistrationIntentService extends IntentService {
                 Intent registrationComplete = new Intent("registrationComplete");
                 LocalBroadcastManager.getInstance(RegistrationIntentService.this).sendBroadcast(registrationComplete);
 
-
                 final JSONObject jsonOutput = new JSONObject(strJsonOutput);
                 Log.w("json","---------------------------------------"+jsonOutput);
 
                 Session.setSession(jsonOutput);
+
+
+                Intent i = new Intent(getApplicationContext(), WingActivity.class);
+                startActivity(i);
+
+
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                sharedPreferences.edit().putBoolean("sentTokenToServer", true).apply();
+
             }
             catch (Exception e){e.printStackTrace();}
         }

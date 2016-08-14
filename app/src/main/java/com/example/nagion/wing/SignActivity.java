@@ -1,6 +1,7 @@
 package com.example.nagion.wing;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.fitness.request.SessionStartRequest;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.regex.Pattern;
 
@@ -119,9 +123,23 @@ public class SignActivity extends AppCompatActivity {
                     checkok = true;
                 if(checkok) {//형식이 모두 맞을때.
                     //TOdo 회원가입때의 모든 정보를 서버에 전달.
+
+                    String id = idEt.getText().toString(),
+                            pw = pwEt.getText().toString(),
+                            nick = nicknameEt.getText().toString(),
+                            name = nameEt.getText().toString(),
+                            email = emailEt.getText().toString(),
+                            //phone = phoneEt.getText().toString(),
+                            intro = selfEt.getText().toString();
+
+                    SignUpTask sut = new SignUpTask();
+                    sut.execute("signUp", id, pw, nick, name, email, intro);
+
+
+
                     //idEt, pwEt, nameEt, nicknameEt, selfEt, emailEt 모두 edittext이므로 스트링 화 필요할듯?
                     //패스워드 암호화?
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity_1.class);
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     Log.w("intent", "-------------------------------" + intent);
                     startActivity(intent);
                 }
@@ -190,6 +208,33 @@ public class SignActivity extends AppCompatActivity {
             }
         }
         return 5;
+    }
+
+    public class SignUpTask extends AsyncTask<String, Void, Void> {
+
+        private final HttpTask httpTask;
+
+        SignUpTask() {
+            httpTask = new HttpTask();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            if(params[0].equals("signUp")){
+                httpTask.signUp(params);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
     }
 
 }

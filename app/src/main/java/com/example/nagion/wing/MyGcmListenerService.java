@@ -27,13 +27,20 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
+        String delimiter = "||";
+        String msgToken[];
+
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 
         if (from.startsWith("/topics/")) {
             // message received from some topic.
         } else {
-            // normal downstream message.
+
+            msgToken = message.split("||");
+            Log.w("FROM","-----------------------------------------"+msgToken[0]);
+            Log.w("TIME","-----------------------------------------"+msgToken[1]);
+
         }
 
         // [START_EXCLUDE]
