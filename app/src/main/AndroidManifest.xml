@@ -75,7 +75,8 @@
         <activity
             android:name=".RequestActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <activity android:name=".ChangePwActivity"></activity>
+        <activity android:name=".ChangePwActivity" />
+        <activity android:name=".ConfirmActivity"></activity>
     </application>
 
 </manifest>
