@@ -2,8 +2,8 @@ package com.example.nagion.wing;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,10 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.drive.query.internal.MatchAllFilter;
-import com.google.android.gms.fitness.request.SessionStartRequest;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.regex.Matcher;
@@ -92,19 +88,23 @@ public class SignActivity extends AppCompatActivity {
         emailEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(emailEt.equals(""))
+                if(emailEt.equals("")) {
                     notice2.setText("이메일을 입력해주세요.");
-                else if(!checkEmail(emailEt))
+                }
+                else if(!checkEmail(emailEt)) {
                     notice2.setText("이메일 형식이 올바르지 않습니다.");
-                else
+                }
+                else {
                     notice2.setText("");
+                }
             }
         });
         nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(nameEt.equals("")||checkName(nameEt))
+                if(nameEt.equals("")||checkName(nameEt)) {
                     notice3.setText("");
+                }
                 else{
                     notice3.setText("특수문자가 들어가 있거나, 입력하지 않으셨습니다.");
                 }
@@ -113,8 +113,9 @@ public class SignActivity extends AppCompatActivity {
         nicknameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(!checkNick(nicknameEt))
+                if(!checkNick(nicknameEt)) {
                     notice4.setText("닉네임을 입력해 주세요.");
+                }
                 else{
                     notice4.setText("");
                 }
@@ -137,8 +138,9 @@ public class SignActivity extends AppCompatActivity {
         idEt.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(idEt.equals("")||!checkId(idEt))
+                if(idEt.equals("")||!checkId(idEt)) {
                     notice0.setText("아이디를 입력해주세요(소문자 및 숫자로 구성된 6-15자)");
+                }
                 else{
                     notice0.setText("");
                 }
@@ -150,14 +152,17 @@ public class SignActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean checkok = false;
-                if((checkPw(idEt, pwEt, confirmPwEt)==0)&&(checkEmail(emailEt))&&(checkName(nameEt))&&checkNick(nicknameEt))
+                if((checkPw(idEt, pwEt, confirmPwEt)==0)&&(checkEmail(emailEt))&&(checkName(nameEt))&&checkNick(nicknameEt)) {
                     checkok = true;
-                if(checkok&&!phonenumEt.equals("")){
-                    if(!checkphone(phonenumEt))
-                        checkok = false;
                 }
-                if(!duplechecked)
+                if(checkok&&!phonenumEt.equals("")){
+                    if(!checkphone(phonenumEt)) {
+                        checkok = false;
+                    }
+                }
+                if(!duplechecked) {
                     Toast.makeText(SignActivity.this, "중복체크를 해주세요", Toast.LENGTH_SHORT).show();
+                }
                 else if(checkok) {//형식이 모두 맞을때.
                     String id = idEt.getText().toString(),
                             pw = pwEt.getText().toString(),
@@ -328,8 +333,9 @@ public class SignActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
-                    } else
+                    } else {
                         Toast.makeText(SignActivity.this, "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else if(flag.equals("duplicatedId")){
                     JSONObject list = httpTask.getReturnObj();

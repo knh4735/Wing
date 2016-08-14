@@ -1,17 +1,14 @@
 package com.example.nagion.wing;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ChangePwActivity extends AppCompatActivity {
 
@@ -70,8 +67,9 @@ public class ChangePwActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean checkok = false;
-                if(checkPw(id, pwEt, confirmPwEt)==0)
+                if(checkPw(id, pwEt, confirmPwEt)==0) {
                     checkok = true;
+                }
                 if(checkok) {
                     //todo 비밀번호 서버로 전송하기.
                     Intent intent = new Intent(getApplicationContext(), LoginActivity_1.class);

@@ -46,8 +46,9 @@ public class ChangeActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean b) {
 
-                if(!checkEmail(emailEt))
+                if(!checkEmail(emailEt)) {
                     notice1.setText("이메일 형식이 올바르지 않습니다.");
+                }
                 else {
                     notice1.setText("");
                 }
@@ -56,8 +57,9 @@ public class ChangeActivity extends AppCompatActivity {
         nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(!checkName(nameEt))
+                if(!checkName(nameEt)) {
                     notice2.setText("이름에 특수문자가 들어가 있습니다.");
+                }
                 else{
                     notice2.setText("");
                 }
@@ -66,8 +68,9 @@ public class ChangeActivity extends AppCompatActivity {
         phonenumEt.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(phonenumEt.equals("")||checkphone(phonenumEt))
+                if(phonenumEt.equals("")||checkphone(phonenumEt)) {
                     notice3.setText("");
+                }
                 else{
                     notice3.setText("전화번호가 올바르지 않습니다.");
                 }
@@ -110,23 +113,26 @@ public class ChangeActivity extends AppCompatActivity {
     }
     private boolean checkEmail(EditText emailEt){
         String email = emailEt.getText().toString();
-        if(email.equals(""))
+        if(email.equals("")) {
             return true;
+        }
         boolean b = Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+",email.trim());
         return b;
     }
     private boolean checkName(EditText nameEt){
         String name = nameEt.getText().toString();
-        if(name.equals(""))
+        if(name.equals("")) {
             return true;
+        }
         boolean b = Pattern.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*",name.trim());
         return b;
     }
     private boolean checkphone(EditText phonenumEt){
         String phonenum = phonenumEt.getText().toString();
         boolean returnval = false;
-        if(phonenum.equals(""))
+        if(phonenum.equals("")) {
             return true;
+        }
         try{
             String regex = "^\\s*(010|011|016|017|018|019)(-|\\)|\\s)*(\\d{3,4})(-|\\s)*(\\d{4})\\s*$";
             Pattern p = Pattern.compile(regex);
