@@ -40,7 +40,10 @@ public class Session {
             introSi = userInfo.getString("intro_si");
         }
         catch(Exception e){
-            e.printStackTrace();
+            /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
         }
     }
 

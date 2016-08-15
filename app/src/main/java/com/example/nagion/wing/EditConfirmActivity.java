@@ -14,8 +14,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class EditConfirmActivity extends AppCompatActivity {
+    /*
     private Button mcfbtn;
     private EditText mpwEt;
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +26,8 @@ public class EditConfirmActivity extends AppCompatActivity {
         setContent();
     }
     private void setContent(){
+        Button mcfbtn;
+        EditText mpwEt;
         mcfbtn = (Button) findViewById(R.id.cfbtn);
         mpwEt = (EditText)findViewById(R.id.pwcf);
         mcfbtn.setOnClickListener(new View.OnClickListener() {

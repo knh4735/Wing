@@ -18,8 +18,6 @@ import java.util.regex.Pattern;
 
 public class ChangePwActivity extends AppCompatActivity {
 
-    String bfPw;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,8 +76,9 @@ public class ChangePwActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean checkok = false;
-                if(checkPw(id, pwEt, confirmPwEt)==0)
+                if(checkPw(id, pwEt, confirmPwEt)==0) {
                     checkok = true;
+                }
                 if(checkok) {
                     String pw = pwEt.getText().toString();
 

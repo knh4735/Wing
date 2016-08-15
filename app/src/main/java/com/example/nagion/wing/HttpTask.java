@@ -19,6 +19,10 @@ import java.io.IOException;
  */
 public class HttpTask {
 
+
+    private String http = "http";
+
+
     private OkHttpClient client = new OkHttpClient();
     private JSONObject returnObj;
 
@@ -36,7 +40,10 @@ public class HttpTask {
     private Callback callbackAfterGettingMessage = new Callback() {
         @Override
         public void onFailure(Request request, IOException e) {
-            e.printStackTrace();
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
             Log.w("fail","---------------------------------------"+request);
         }
 
@@ -51,7 +58,10 @@ public class HttpTask {
                 Log.w("JSON","---------------------------------------"+jsonOutput);
             }
             catch (Exception e){
+                 /* before code
                 e.printStackTrace();
+                */
+                Log.e("e","error occured");
             }
         }
     };
@@ -65,11 +75,15 @@ public class HttpTask {
         try {
             jsonInput.put("id", id);
         } catch (Exception e) {
-            e.printStackTrace();
+            /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
+
         }
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -98,11 +112,14 @@ public class HttpTask {
         try {
             jsonInput.put("target", idFriend);
         } catch (Exception e) {
-            e.printStackTrace();
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
         }
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -130,11 +147,14 @@ public class HttpTask {
         try {
             jsonInput.put("id", id);
         } catch (Exception e) {
-            e.printStackTrace();
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
         }
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -161,7 +181,7 @@ public class HttpTask {
         JSONObject jsonInput = new JSONObject();
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -188,11 +208,14 @@ public class HttpTask {
         try {
             jsonInput.put("id", id);
         } catch (Exception e) {
-            e.printStackTrace();
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
         }
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -219,7 +242,7 @@ public class HttpTask {
 
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -245,7 +268,7 @@ public class HttpTask {
     public void requestFriend(String to, String msg){
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -281,7 +304,7 @@ public class HttpTask {
 
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -312,7 +335,7 @@ public class HttpTask {
     public void duplicatedId(String id) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -343,7 +366,7 @@ public class HttpTask {
 
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -370,7 +393,7 @@ public class HttpTask {
     public void getRequest(String noAcnt) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
