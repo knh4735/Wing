@@ -95,7 +95,7 @@ public class WingComponent extends LinearLayout {
                 Log.w("RETURN", "-------------------------------" + result);
 
                 if(result.equals("Success")){
-                    //TODO 이 뷰 삭제, wing gcm 수신시 뷰 생성
+                    //TODO 이 뷰 삭제, wing gcm 수신시 뷰 생성 ㅠㅠ
                 }
 
 
