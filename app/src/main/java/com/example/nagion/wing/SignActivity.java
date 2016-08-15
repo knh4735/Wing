@@ -174,11 +174,11 @@ public class SignActivity extends AppCompatActivity {
                             nick = nicknameEt.getText().toString(),
                             name = nameEt.getText().toString(),
                             email = emailEt.getText().toString(),
-                            //phone = phoneEt.getText().toString(),
+                            phone = phonenumEt.getText().toString(),
                             intro = selfEt.getText().toString();
 
                     SignTask st = new SignTask();
-                    st.execute("signUp", id, pw, nick, name, email, intro);
+                    st.execute("signUp", id, pw, nick, name, email, phone, intro);
 
                 }
                 else{//하나라도 틀린게 있을때.

@@ -298,9 +298,9 @@ public class HttpTask {
                 pw = params[2],
                 nick = params[3],
                 name = params[4],
-                //phone = phoneEt.getText().toString(),
-                email = params[5],
-                intro = params[6];
+                phone = params[5],
+                email = params[6],
+                intro = params[7];
 
 
         HttpUrl httpUrl = new HttpUrl.Builder()
@@ -313,7 +313,7 @@ public class HttpTask {
                 .addQueryParameter("pw", pw)
                 .addQueryParameter("nick", nick)
                 .addQueryParameter("name", name)
-               // .addQueryParameter("phone", phone)
+                .addQueryParameter("phone", phone)
                 .addQueryParameter("email", email)
                 .addQueryParameter("intro", intro)
                 .build();

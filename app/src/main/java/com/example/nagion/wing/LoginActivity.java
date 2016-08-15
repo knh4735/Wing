@@ -47,8 +47,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String id = "a";//idEt.getText().toString();
-                String pw = "a";//pwEt.getText().toString();
+                String id = idEt.getText().toString();
+                String pw = pwEt.getText().toString();
 
                 if(id.equals("")){
                     Toast.makeText(LoginActivity.this, "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
