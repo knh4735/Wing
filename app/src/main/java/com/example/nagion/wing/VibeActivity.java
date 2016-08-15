@@ -11,12 +11,13 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class VibeActivity extends AppCompatActivity {
 
     Button vibeBtn, finishBtn;
 
-    ArrayList<Long> ptrn = new ArrayList<Long>();
+    List<Long> ptrn = new ArrayList<Long>();
 
     long pattern[];
 
