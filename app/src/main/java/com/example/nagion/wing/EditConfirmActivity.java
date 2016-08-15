@@ -27,9 +27,11 @@ public class EditConfirmActivity extends AppCompatActivity {
     }
     private void setContent(){
         Button mcfbtn;
-        EditText mpwEt;
+        final EditText mpwEt;
+
         mcfbtn = (Button) findViewById(R.id.cfbtn);
         mpwEt = (EditText)findViewById(R.id.pwcf);
+
         mcfbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

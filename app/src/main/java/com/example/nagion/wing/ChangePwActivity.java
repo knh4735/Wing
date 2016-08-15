@@ -18,6 +18,8 @@ import java.util.regex.Pattern;
 
 public class ChangePwActivity extends AppCompatActivity {
 
+    String bfPw;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

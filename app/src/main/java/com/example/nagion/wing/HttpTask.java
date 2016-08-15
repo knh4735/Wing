@@ -26,7 +26,7 @@ public class HttpTask {
     private OkHttpClient client = new OkHttpClient();
     private JSONObject returnObj;
 
-    public static String hostUrl = "192.168.25.7";
+    public static String hostUrl = "192.168.0.104";
 
     public JSONObject getReturnObj(){
         return returnObj;
@@ -418,7 +418,7 @@ public class HttpTask {
     public void checkPw(String noAcnt, String pw) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -445,7 +445,7 @@ public class HttpTask {
     public void unregister(String noAcnt) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -471,7 +471,7 @@ public class HttpTask {
     public void changePw(String noAcnt, String bfPw, String pw) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -501,7 +501,7 @@ public class HttpTask {
         //param : "changeInfo", pw, nick, name, phone, email, intro, nameCk, phoneCk, emailCk, introCk
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")

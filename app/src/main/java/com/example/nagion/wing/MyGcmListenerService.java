@@ -42,27 +42,25 @@ public class MyGcmListenerService extends GcmListenerService {
          *     - Update UI.
          */
 
-            try {
-                msgToken = message.split("||");
-                String cmd = msgToken[0];
-                if (cmd.equals("WING")) {
-                    //윙
-                    Log.w("FROM", "-----------------------------------------" + msgToken[1]);
-                    Log.w("TIME", "-----------------------------------------" + msgToken[2]);
-                } else if (cmd.equals("FR")) {
-                    //친구요청
-                    Log.w("FROM", "-----------------------------------------" + msgToken[1]);
-                    Log.w("MESSAGE", "-----------------------------------------" + msgToken[2]);
-                    Log.w("TIME", "-----------------------------------------" + msgToken[3]);
-                }
+        try {
+            msgToken = message.split("||");
+            String cmd = msgToken[0];
+            if (cmd.equals("WING")) {
+                //윙
+                Log.w("FROM", "-----------------------------------------" + msgToken[1]);
+                Log.w("TIME", "-----------------------------------------" + msgToken[2]);
+            } else if (cmd.equals("FR")) {
+                //친구요청
+                Log.w("FROM", "-----------------------------------------" + msgToken[1]);
+                Log.w("MESSAGE", "-----------------------------------------" + msgToken[2]);
+                Log.w("TIME", "-----------------------------------------" + msgToken[3]);
             }
-            catch (Exception e){
-                 /* before code
-                e.printStackTrace();
-                */
-                Log.e("e","error occured");
-            }
-
+        }
+        catch (Exception e){
+            /* before code
+            e.printStackTrace();
+            */
+            Log.e("e","error occured");
         }
 
         // [START_EXCLUDE]

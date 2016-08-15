@@ -62,7 +62,6 @@ public class RegistrationIntentService extends IntentService {
             // You should store a boolean that indicates whether the generated token has been
             // sent to your server. If the boolean is false, send the token to your server,
             // otherwise your server should have already received the token.
-            sharedPreferences.edit().putBoolean("sentTokenToServer", true).apply();
             // [END register_for_gcm]
         } catch (Exception e) {
             Log.d(TAG, "Failed to complete token refresh", e);
@@ -173,44 +172,4 @@ public class RegistrationIntentService extends IntentService {
     }
     // [END subscribe_topics]
 
-    public class LoginTask extends AsyncTask<String, Void, Void> {
-
-        private final HttpTask httpTask;
-
-        LoginTask() {
-            httpTask = new HttpTask();
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-
-            if(params[0].equals("login")){
-               // httpTask.login(params[1],params[2]);
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-
-            try {
-                JSONObject list = httpTask.getReturnObj();
-                JSONArray jsonArray = list.getJSONArray("result");
-                Log.w("RETURN", "-------------------------------" + jsonArray);
-
-
-
-            }catch (Exception e){
-                 /* before code
-                e.printStackTrace();
-                */
-                Log.e("e","error occured");
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-        }
-    }
 }
