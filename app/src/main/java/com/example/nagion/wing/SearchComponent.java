@@ -18,28 +18,23 @@ import org.json.JSONObject;
 
 public class SearchComponent extends LinearLayout {
 
-    final Context context;
     String no;
     String name;
 
     public SearchComponent(Context context) {
         super(context);
-        this.context = context;
     }
 
     public SearchComponent(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
     }
 
     public SearchComponent(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        this.context = context;
     }
 
     public SearchComponent(Context context, String name, String no){
         super(context);
-        this.context = context;
         this.name = name;
         this.no = no;
         init(name);
@@ -59,8 +54,11 @@ public class SearchComponent extends LinearLayout {
         requestBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                Context context = getContext();
+
                 Intent intent = new Intent(context, RequestActivity.class);
                 intent.putExtra("to", no);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });

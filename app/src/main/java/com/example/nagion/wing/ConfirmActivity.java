@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class ConfirmActivity extends AppCompatActivity {
 
-    LinearLayout wrapper = (LinearLayout) findViewById(R.id.wrapper);
+    LinearLayout wrapper;
 
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -32,10 +32,11 @@ public class ConfirmActivity extends AppCompatActivity {
 
                 for (int i = 0; i < confirmComponentList.length(); i++) {
                     JSONObject confirmComponentObj = confirmComponentList.getJSONObject(i);
+                    Log.w("OBJECT", "-------------------------------" + confirmComponentObj.getString("nick_acnt"));
 
-                    String noAcnt = confirmComponentObj.getString("from_fr"),
-                            name = confirmComponentObj.getString("nick_acnt"),
-                            msgFr = confirmComponentObj.getString("msg_fr");
+                    String noAcnt = confirmComponentObj.getString("from_fr");
+                    String name = confirmComponentObj.getString("nick_acnt");
+                    String msgFr = confirmComponentObj.getString("msg_fr");
 
                     ConfirmComponent cc = new ConfirmComponent(getApplicationContext(), noAcnt, name, msgFr);
                     Log.w("Component", "-------------------------------" + cc);
@@ -44,6 +45,7 @@ public class ConfirmActivity extends AppCompatActivity {
                 }
             }
             catch(Exception e){
+                e.printStackTrace();
                 Log.e("E", "error");
             }
         }
@@ -54,6 +56,8 @@ public class ConfirmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm);
+
+        wrapper = (LinearLayout) findViewById(R.id.wrapper);
 
         HttpTask httpTask = new HttpTask();
         httpTask.getRequest(Session.getInstance("noAcnt"), callbackGetRequest);
@@ -93,7 +97,7 @@ public class ConfirmActivity extends AppCompatActivity {
             }
             catch (Exception e){
                 // before code
-                e.printStackTrace();
+                //e.printStackTrace();
 
                 Log.e("e","error occured");
             }
