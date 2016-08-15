@@ -139,7 +139,7 @@ public class RegistrationIntentService extends IntentService {
             }
             catch (Exception e){
                 // before code
-                e.printStackTrace();
+                //e.printStackTrace();
 
                 Log.e("e","error occured");
             }

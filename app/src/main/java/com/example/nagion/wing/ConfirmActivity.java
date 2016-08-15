@@ -45,7 +45,7 @@ public class ConfirmActivity extends AppCompatActivity {
                 }
             }
             catch(Exception e){
-                e.printStackTrace();
+                //e.printStackTrace();
                 Log.e("E", "error");
             }
         }
