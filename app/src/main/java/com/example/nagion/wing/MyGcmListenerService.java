@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -27,13 +28,37 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
+        String delimiter = "||";
+        String msgToken[];
+
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 
         if (from.startsWith("/topics/")) {
             // message received from some topic.
         } else {
-            // normal downstream message.
+
+            try {
+                msgToken = message.split("||");
+                String cmd = msgToken[0];
+                if (cmd.equals("WING")) {
+                    //윙
+                    Log.w("FROM", "-----------------------------------------" + msgToken[1]);
+                    Log.w("TIME", "-----------------------------------------" + msgToken[2]);
+                } else if (cmd.equals("FR")) {
+                    //친구요청
+                    Log.w("FROM", "-----------------------------------------" + msgToken[1]);
+                    Log.w("MESSAGE", "-----------------------------------------" + msgToken[2]);
+                    Log.w("TIME", "-----------------------------------------" + msgToken[3]);
+                }
+            }
+            catch (Exception e){
+                 /* before code
+                e.printStackTrace();
+                */
+                Log.e("e","error occured");
+            }
+
         }
 
         // [START_EXCLUDE]

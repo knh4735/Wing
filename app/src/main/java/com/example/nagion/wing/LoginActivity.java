@@ -5,11 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,22 +18,23 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 public class LoginActivity extends AppCompatActivity {
-
+/*
     private EditText idEt;
     private EditText pwEt;
     private Button loginBtn;
     private Button signBtn;
-
+*/
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private boolean isReceiverRegistered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EditText idEt;
+        EditText pwEt;
+        Button loginBtn;
+        Button signBtn;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -50,8 +50,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
                 LoginActivity.this.finish();
 
-              /*  String id = idEt.getText().toString();
-                String pw = pwEt.getText().toString();
+                String id = "a";//idEt.getText().toString();
+                String pw = "a";//pwEt.getText().toString();
 
                 if(id.equals("")){
                     Toast.makeText(LoginActivity.this, "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
@@ -74,9 +74,6 @@ public class LoginActivity extends AppCompatActivity {
                                 .getBoolean("sentTokenToServer", false);
                         if (sentToken) {
 
-
-                            Intent i = new Intent(getApplicationContext(), WingActivity.class);
-                            startActivity(i);
                             LoginActivity.this.finish();
                         } else {
                             Log.w("error","---------------------------------"+R.string.token_error_message);
@@ -92,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                     intent.putExtra("id", id);
                     intent.putExtra("pw", pw);
                     startService(intent);
-                }*/
+                }
             }
         });
 

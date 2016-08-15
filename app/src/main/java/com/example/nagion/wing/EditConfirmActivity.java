@@ -8,14 +8,20 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class EditConfirmActivity extends AppCompatActivity {
+    /*
     private Button mcfbtn;
     private EditText mpwEt;
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_confirm);
+
+        setContent();
     }
     private void setContent(){
+        Button mcfbtn;
+        EditText mpwEt;
         mcfbtn = (Button) findViewById(R.id.cfbtn);
         mpwEt = (EditText)findViewById(R.id.pwcf);
         mcfbtn.setOnClickListener(new View.OnClickListener() {

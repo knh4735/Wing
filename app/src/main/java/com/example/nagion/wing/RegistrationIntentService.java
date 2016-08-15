@@ -84,7 +84,6 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String id, String pw, String token) {
-
         OkHttpClient client = new OkHttpClient();
 
         JSONObject jsonInput = new JSONObject();
@@ -92,7 +91,10 @@ public class RegistrationIntentService extends IntentService {
         try {
             jsonInput.put("id", token);
         } catch (Exception e) {
-            e.printStackTrace();
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
         }
 
         HttpUrl httpUrl = new HttpUrl.Builder()
@@ -125,7 +127,10 @@ public class RegistrationIntentService extends IntentService {
     private Callback callbackAfterGettingMessage = new Callback() {
         @Override
         public void onFailure(Request request, IOException e) {
-            e.printStackTrace();
+            /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
             Log.w("fail","---------------------------------------"+request);
         }
 
@@ -137,13 +142,26 @@ public class RegistrationIntentService extends IntentService {
                 Intent registrationComplete = new Intent("registrationComplete");
                 LocalBroadcastManager.getInstance(RegistrationIntentService.this).sendBroadcast(registrationComplete);
 
-
                 final JSONObject jsonOutput = new JSONObject(strJsonOutput);
                 Log.w("json","---------------------------------------"+jsonOutput);
 
                 Session.setSession(jsonOutput);
+
+
+                Intent i = new Intent(getApplicationContext(), WingActivity.class);
+                startActivity(i);
+
+
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                sharedPreferences.edit().putBoolean("sentTokenToServer", true).apply();
+
             }
-            catch (Exception e){e.printStackTrace();}
+            catch (Exception e){
+                 /* before code
+                e.printStackTrace();
+                */
+                Log.e("e","error occured");
+            }
         }
     };
     /**
@@ -190,7 +208,10 @@ public class RegistrationIntentService extends IntentService {
 
 
             }catch (Exception e){
+                 /* before code
                 e.printStackTrace();
+                */
+                Log.e("e","error occured");
             }
         }
 

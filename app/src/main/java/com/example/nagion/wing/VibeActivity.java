@@ -1,20 +1,15 @@
 package com.example.nagion.wing;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.format.Time;
-import android.text.method.KeyListener;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class VibeActivity extends AppCompatActivity {
@@ -68,7 +63,9 @@ public class VibeActivity extends AppCompatActivity {
                 pattern = new long[ptrn.size()+1];
                 pattern[0] = 0;
                 int i = 1;
-                for (Long l : ptrn) pattern[i++] = l;
+                for (Long l : ptrn) {
+                    pattern[i++] = l;
+                }
 
                 ptrn = new ArrayList<Long>();
 

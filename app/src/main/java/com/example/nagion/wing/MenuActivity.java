@@ -16,8 +16,6 @@ import org.json.JSONObject;
 
 public class MenuActivity extends AppCompatActivity {
 
-    private Button mnotice, msearch_friend, mrq_confirm, mranking, mmy_info, mlogout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +26,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void setContent() {
+        final Button mnotice, msearch_friend, mrq_confirm, mranking, mmy_info, mlogout;
         mnotice = (Button) findViewById(R.id.notice);
         msearch_friend = (Button) findViewById(R.id.search_friend);
         mrq_confirm = (Button) findViewById(R.id.rq_confirm);
@@ -53,6 +52,8 @@ public class MenuActivity extends AppCompatActivity {
         mrq_confirm.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ConfirmActivity.class);
+                startActivity(intent);
                 MenuActivity.this.finish();
             }
         });

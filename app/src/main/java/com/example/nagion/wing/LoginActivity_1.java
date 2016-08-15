@@ -177,11 +177,16 @@ public class LoginActivity_1 extends AppCompatActivity implements LoaderCallback
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_READ_CONTACTS && (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED)){
+            populateAutoComplete();
+        }
+        /* before code
         if (requestCode == REQUEST_READ_CONTACTS) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 populateAutoComplete();
             }
         }
+        */
     }
 
 

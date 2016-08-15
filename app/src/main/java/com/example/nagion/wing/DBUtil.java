@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.StringBuilderPrinter;
 
 /**
  * Created by Nagion on 2016. 8. 6..
@@ -41,9 +40,16 @@ public class DBUtil extends SQLiteOpenHelper {
         try {
             Cursor cursor = db.rawQuery(sb.toString(), null);
 
-            if (cursor.moveToNext()) {
-                if (cursor.getInt(0) == 1) return true;
+            if (cursor.moveToNext() && (cursor.getInt(0) == 1)){
+                return true;
             }
+            /* before code
+            if (cursor.moveToNext()) {
+                if (cursor.getInt(0) == 1) {
+                    return true;
+                }
+            }
+            */
         }
         catch(Exception e){
             return false;

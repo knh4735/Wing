@@ -21,7 +21,6 @@
         <TextView
             android:layout_width="360dp"
             android:layout_height="40dp"
-            android:text="이름"
             android:id="@+id/nameId"
             android:textAlignment="center"
             android:layout_centerHorizontal="true"
@@ -31,7 +30,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:text="향기우정"
         android:id="@+id/nickname"
         android:textSize="20dp"
         android:textAlignment="center"
@@ -44,8 +42,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:text="100세 / 남자"
-        android:id="@+id/agesexuality"
+        android:id="@+id/memail"
         android:textSize="20dp"
         android:textAlignment="center"
         android:layout_alignParentEnd="true"
@@ -57,20 +54,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:text="hwmylove77@naver.com"
-        android:id="@+id/memail"
-        android:textSize="20dp"
-        android:textAlignment="center"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/agesexuality"
-        android:layout_alignParentRight="true"
-        android:layout_alignLeft="@+id/agesexuality"
-        android:layout_alignStart="@+id/agesexuality" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="01038143887"
         android:id="@+id/phonenum"
         android:textSize="20dp"
         android:textAlignment="center"
@@ -83,7 +66,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="240dp"
-        android:text="자기소개칸인데, 불러와서 그냥 나열하거나 스크롤뷰로 보는게 가능하도록 할 수도 있.."
+        android:textSize="15dp"
         android:id="@+id/introduction"
         android:layout_below="@+id/phonenum"
         android:layout_alignParentLeft="true"

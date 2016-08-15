@@ -6,51 +6,109 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ChangeActivity extends AppCompatActivity {
-    boolean checkok = false;
-    EditText pwEt, confirmPwEt, emailEt, selfEt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change);
-        final String id = Session.getInstance("idAcnt");
-        pwEt = (EditText) findViewById(R.id.pwEt);
-        confirmPwEt = (EditText) findViewById(R.id.confirmPwEt);
-        emailEt = (EditText) findViewById(R.id.emailEt);
-        selfEt = (EditText) findViewById(R.id.selfEt);
-        pwEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                TextView notice = (TextView) findViewById(R.id.noticePwStatus);
-                notice.setTextColor(0xFFFF0000);
-                String check = checkPw(id, pwEt, confirmPwEt);
-                notice.setText(check);
-            }
-        });
 
-        confirmPwEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        setContent();
+    }
+    private void setContent() {
+        final EditText emailEt = (EditText) findViewById(R.id.emailEt),
+                selfEt = (EditText) findViewById(R.id.selfEt),
+                nameEt = (EditText) findViewById(R.id.nameEt),
+                nicknameEt = (EditText) findViewById(R.id.nicknameEt),
+                phonenumEt = (EditText) findViewById(R.id.phonenumEt);
+        final CheckBox nameck = (CheckBox) findViewById(R.id.checkname),
+                emailck = (CheckBox) findViewById(R.id.checkemail),
+                numberck = (CheckBox) findViewById(R.id.checknum),
+                selfck = (CheckBox) findViewById(R.id.checkself);
+
+        final Button pwchange = (Button) findViewById(R.id.pwchange);
+
+        final TextView notice1 = (TextView) findViewById(R.id.noticeemailStatus);
+        notice1.setTextColor(0xFFFF0000);
+        final TextView notice2 = (TextView) findViewById(R.id.noticeNameStatus);
+        notice2.setTextColor(0xFFFF0000);
+        final TextView notice3 = (TextView) findViewById(R.id.noticephoneStatus);
+        notice3.setTextColor(0xFFFF0000);
+        emailEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                TextView notice = (TextView) findViewById(R.id.noticePwStatus);
-                notice.setTextColor(0xFFFF0000);
-                String check = checkPw(id, pwEt, confirmPwEt);
-                notice.setText(check);
+
+                if(!checkEmail(emailEt)) {
+                    notice1.setText("이메일 형식이 올바르지 않습니다.");
+                }
+                else {
+                    notice1.setText("");
+                }
             }
         });
-        //TODO 이메일, 이름 유효성 확인하기.(sign에서도)
+        nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!checkName(nameEt)) {
+                    notice2.setText("이름에 특수문자가 들어가 있습니다.");
+                }
+                else{
+                    notice2.setText("");
+                }
+            }
+        });
+        phonenumEt.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(phonenumEt.equals("")||checkphone(phonenumEt)) {
+                    notice3.setText("");
+                }
+                else{
+                    notice3.setText("전화번호가 올바르지 않습니다.");
+                }
+            }
+        });
+        pwchange.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent i = new Intent(getApplicationContext(),ChangePwActivity.class);
+                startActivity(i);
+            }
+        });
         Button toWingList = (Button) findViewById(R.id.finish);
         Log.w("Button",""+ toWingList);
         toWingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean checkok = false;
 
+                if( (emailEt.equals("")||checkEmail(emailEt))&&(emailEt.equals("")||checkEmail(emailEt)) && (phonenumEt.equals("")||checkphone(phonenumEt))) {
+                    checkok = true;
+                }
+                /* before code
+                if(emailEt.equals("")||checkEmail(emailEt)){
+                    if(nameEt.equals("")||checkName(nameEt)){
+                        if(phonenumEt.equals("")||checkphone(phonenumEt)) {
+                            checkok = true;
+                        }
+                    }
+                }
+                */
                 if(checkok) {
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity_1.class);
+                    //TODO 변경시 정보 받아서 서버로 전송하기.
+                    //전달 정보 : emailEt, nameEt, selfEt,nicknameEt.
+                    //null값이 전달될 경우 변경사항 없는걸로.
+                    //체크 사항은 nameck,emailck,numberck,selfck + .ischecked()로 하시면 됨.
+                    Intent intent = new Intent(getApplicationContext(), WingActivity.class);
                     Log.w("intent", "-------------------------------" + intent);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
                 else{//하나라도 틀린게 있을때.
@@ -59,46 +117,52 @@ public class ChangeActivity extends AppCompatActivity {
             }
         });
     }
-    private String checkPw(String id, EditText pwEt, EditText confirmPwEt){
-
-        String pw = pwEt.getText().toString(),
-                confirmPw = confirmPwEt.getText().toString();
-
-        if((pw.length()<6)||(pw.length()>16)){
-            return "비밀번호는 문자, 숫자, 특수문자의 조합으로 6~16자리로 입력해주세요.";
+    private boolean checkEmail(EditText emailEt){
+        String email = emailEt.getText().toString();
+        if(email.equals("")) {
+            return true;
         }
-
-        if(pw.matches("([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])")) {
-            return "비밀번호는 문자, 숫자, 특수문자의 조합으로 6~16자리로 입력해주세요.";
-        }
-        if(id.indexOf(pw)>-1){
-            return "비밀번호에 아이디를 사용할 수 없습니다.";
-        }
-        int same = 0;
-        char chr1,chr2;
-        for(int i=0;i<pw.length()-1;i++){
-            chr1 = pw.charAt(i);
-            chr2 = pw.charAt(i+1);
-            if(chr1==chr2){
-                same++;
-            }
-            else if(same!=0){
-                same--;
-            }
-        }
-        if(same>1){
-            return "동일 문자를 3번 이상 사용할수 없습니다.";
-        }
-        if(!pw.isEmpty() && !confirmPw.isEmpty()){
-            if(pw.equals(confirmPw)){
-                checkok = true;
-                return "비밀번호가 일치합니다.";
-            }
-            else {
-                return "비밀번호가 일치하지 않습니다.";
-            }
-        }
-        return "";
+        /* before code
+        boolean b = Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+",email.trim());
+        return b;
+        */
+        return Pattern.matches("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+",email.trim());
     }
-
+    private boolean checkName(EditText nameEt){
+        String name = nameEt.getText().toString();
+        if(name.equals("")) {
+            return true;
+        }
+        /* before code
+        boolean b = Pattern.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*",name.trim());
+        return b;
+        */
+        return Pattern.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*",name.trim());
+    }
+    private boolean checkphone(EditText phonenumEt){
+        String phonenum = phonenumEt.getText().toString();
+        boolean returnval = false;
+        if(phonenum.equals("")) {
+            return true;
+        }
+        try{
+            String regex = "^\\s*(010|011|016|017|018|019)(-|\\)|\\s)*(\\d{3,4})(-|\\s)*(\\d{4})\\s*$";
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(phonenum);
+            if(m.matches()){
+                returnval = true;
+            }
+            if(returnval&&phonenum.equals("")
+                    &&phonenum.length()>0
+                    &&phonenum.startsWith("010")){
+                phonenum = phonenum.replaceAll("-","");
+                if(phonenum.length()!=11){
+                    returnval = false;
+                }
+            }
+            return returnval;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

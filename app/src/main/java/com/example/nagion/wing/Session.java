@@ -18,6 +18,7 @@ public class Session {
     private static String emailSi = "";
     private static String phoneSi = "";
     private static String token = "";
+    private static String introSi = "";
 
 
     public static void setSession(JSONObject data){
@@ -36,9 +37,13 @@ public class Session {
             nameSi = userInfo.getString("name_si");
             emailSi = userInfo.getString("email_si");
             phoneSi = userInfo.getString("phone_si");
+            introSi = userInfo.getString("intro_si");
         }
         catch(Exception e){
-            e.printStackTrace();
+            /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
         }
     }
 
@@ -51,6 +56,7 @@ public class Session {
             case "nameSi" : return nameSi;
             case "emailSi" : return emailSi;
             case "phoneSi" : return phoneSi;
+            case "introSi" : return introSi;
             default : return "";
         }
     }

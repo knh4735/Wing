@@ -19,10 +19,14 @@ import java.io.IOException;
  */
 public class HttpTask {
 
+
+    private String http = "http";
+
+
     private OkHttpClient client = new OkHttpClient();
     private JSONObject returnObj;
 
-    public static String hostUrl = "192.168.200.172";
+    public static String hostUrl = "192.168.0.26";
 
     public JSONObject getReturnObj(){
         return returnObj;
@@ -36,7 +40,10 @@ public class HttpTask {
     private Callback callbackAfterGettingMessage = new Callback() {
         @Override
         public void onFailure(Request request, IOException e) {
-            e.printStackTrace();
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
             Log.w("fail","---------------------------------------"+request);
         }
 
@@ -44,12 +51,17 @@ public class HttpTask {
         public void onResponse(Response response) throws IOException {
             try {
                 final String strJsonOutput = response.body().string();
-                Log.w("json","---------------------------------------"+strJsonOutput);
+                Log.w("String","---------------------------------------"+strJsonOutput);
                 final JSONObject jsonOutput = new JSONObject(strJsonOutput);
                 setReturnObj(jsonOutput);
-                Log.w("json","---------------------------------------"+jsonOutput);
+                Log.w("JSON","---------------------------------------"+jsonOutput);
             }
-            catch (Exception e){e.printStackTrace();}
+            catch (Exception e){
+                 /* before code
+                e.printStackTrace();
+                */
+                Log.e("e","error occured");
+            }
         }
     };
 
@@ -62,11 +74,15 @@ public class HttpTask {
         try {
             jsonInput.put("id", id);
         } catch (Exception e) {
-            e.printStackTrace();
+            /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
+
         }
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -95,11 +111,14 @@ public class HttpTask {
         try {
             jsonInput.put("target", idFriend);
         } catch (Exception e) {
-            e.printStackTrace();
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
         }
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -127,11 +146,14 @@ public class HttpTask {
         try {
             jsonInput.put("id", id);
         } catch (Exception e) {
-            e.printStackTrace();
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
         }
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -158,7 +180,7 @@ public class HttpTask {
         JSONObject jsonInput = new JSONObject();
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -185,16 +207,20 @@ public class HttpTask {
         try {
             jsonInput.put("id", id);
         } catch (Exception e) {
-            e.printStackTrace();
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
         }
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "wing")// - get방식
-                .addQueryParameter("acnt", id)
+                .addQueryParameter("from", Session.getInstance("noAcnt"))
+                .addQueryParameter("to", id)
                 .build();
 
         RequestBody reqBody = RequestBody.create(
@@ -215,7 +241,7 @@ public class HttpTask {
 
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -241,7 +267,7 @@ public class HttpTask {
     public void requestFriend(String to, String msg){
 
         HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme(http)
                 .host(hostUrl)
                 .port(8888)
                 .addPathSegment("wing.php")
@@ -249,6 +275,129 @@ public class HttpTask {
                 .addQueryParameter("from", Session.getInstance("noAcnt"))
                 .addQueryParameter("to", to)
                 .addQueryParameter("msg", msg)
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+    public void signUp(String... params) {
+
+        String id = params[1],
+                pw = params[2],
+                nick = params[3],
+                name = params[4],
+                //phone = phoneEt.getText().toString(),
+                email = params[5],
+                intro = params[6];
+
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme(http)
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "signUp")// - get방식
+                .addQueryParameter("id", id)
+                .addQueryParameter("pw", pw)
+                .addQueryParameter("nick", nick)
+                .addQueryParameter("name", name)
+               // .addQueryParameter("phone", phone)
+                .addQueryParameter("email", email)
+                .addQueryParameter("intro", intro)
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+    public void duplicatedId(String id) {
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme(http)
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "duplicatedId")// - get방식
+                .addQueryParameter("id", id)
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+
+    public void reqConfirm(String... params) {
+
+        String flag = params[1],
+                from = params[2],
+                to = params[3];
+
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme(http)
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "reqConfirm")// - get방식
+                .addQueryParameter("flag", flag)
+                .addQueryParameter("from", from)
+                .addQueryParameter("to", to)
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+    public void getRequest(String noAcnt) {
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme(http)
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "getRequest")// - get방식
+                .addQueryParameter("acnt", noAcnt)
                 .build();
 /*
         RequestBody reqBody = RequestBody.create(
