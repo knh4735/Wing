@@ -73,13 +73,13 @@ public class ConfirmComponent  extends LinearLayout {
         this.name = name;
         this.msg = msg;
 
-        init(name ,msg);
+        init(name, msg);
     }
 
     private void init(String name, String msg) {
         String infService = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
-        View v = li.inflate(R.layout.ranking_component, this, false);
+        View v = li.inflate(R.layout.confirm_component, this, false);
         addView(v);
 
         TextView nameTv = (TextView) findViewById(R.id.nameTv);
@@ -87,7 +87,7 @@ public class ConfirmComponent  extends LinearLayout {
         Button yesBtn = (Button) findViewById(R.id.yesBtn);
         Button noBtn = (Button) findViewById(R.id.noBtn);
 
-        nameTv.setText(name);
+        nameTv.setText((CharSequence) name);
         msgTv.setText(msg);
 
         yesBtn.setOnClickListener(new OnClickListener() {
