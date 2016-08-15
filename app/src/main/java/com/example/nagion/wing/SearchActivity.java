@@ -30,7 +30,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String tmp = nameEt.getText().toString();
-                if(!tmp.equals(null) && !tmp.equals("")){
+                if(!tmp.equals("")){
 
                     SearchTask st = new SearchTask();
                     st.execute("searchFriend", tmp);

@@ -83,7 +83,10 @@ public class EditConfirmActivity extends AppCompatActivity {
                 }
 
             }catch (Exception e){
+                 /* before code
                 e.printStackTrace();
+                */
+                Log.e("e","error occured");
             }
         }
 

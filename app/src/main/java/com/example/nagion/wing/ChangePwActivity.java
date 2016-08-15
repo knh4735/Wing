@@ -168,7 +168,10 @@ public class ChangePwActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             }catch (Exception e){
+                 /* before code
                 e.printStackTrace();
+                */
+                Log.e("e","error occured");
             }
         }
 
