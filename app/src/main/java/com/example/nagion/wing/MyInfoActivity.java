@@ -2,6 +2,7 @@ package com.example.nagion.wing;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class MyInfoActivity extends AppCompatActivity {
 
@@ -58,37 +65,32 @@ public class MyInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                InfoTask it = new InfoTask();
-                it.execute("unregister");
+                HttpTask httpTask = new HttpTask();
+                httpTask.unregister(Session.getInstance("noAcnt"), callbackGetNotice);
             }
         });
     }
 
-
-    public class InfoTask extends AsyncTask<String, Void, Void> {
-
-        private final HttpTask httpTask;
-
-        InfoTask() {
-            httpTask = new HttpTask();
+    private Callback callbackGetNotice = new Callback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
+            Log.w("fail","---------------------------------------"+request);
         }
 
         @Override
-        protected Void doInBackground(String... params) {
-
-            if(params[0].equals("unregister")){
-                httpTask.unregister(Session.getInstance("noAcnt"));
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
+        public void onResponse(Response response) throws IOException {
+            final String strJsonOutput = response.body().string();
+            Log.w("String","---------------------------------------"+strJsonOutput);
 
             try {
-                JSONObject list = httpTask.getReturnObj();
-                String result = list.getString("result");
+                final JSONObject jsonOutput = new JSONObject(strJsonOutput);
+                Log.w("JSON","---------------------------------------"+jsonOutput);
+
+                String result = jsonOutput.getString("result");
                 Log.w("RETURN", "-------------------------------" + result);
 
                 if(result.equals("Success")){
@@ -99,18 +101,13 @@ public class MyInfoActivity extends AppCompatActivity {
 
                     startActivity(i);
                 }
-
-
-            }catch (Exception e){
-                 /* before code
+            }
+            catch (Exception e){
+                // before code
                 e.printStackTrace();
-                */
+
                 Log.e("e","error occured");
             }
         }
-
-        @Override
-        protected void onCancelled() {
-        }
-    }
+    };
 }

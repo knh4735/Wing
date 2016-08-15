@@ -2,6 +2,8 @@ package com.example.nagion.wing;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,14 +13,37 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ChangePwActivity extends AppCompatActivity {
 
     String bfPw;
+
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            try{
+                if(msg.arg1 == 1) {
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(ChangePwActivity.this, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show();
+                }
+
+            }catch (Exception e){}
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +111,8 @@ public class ChangePwActivity extends AppCompatActivity {
                 if(checkok) {
                     String pw = pwEt.getText().toString();
 
-                    ChangePwTask cpt = new ChangePwTask();
-                    cpt.execute("changePw", bfPw, pw);
+                    HttpTask httpTask = new HttpTask();
+                    httpTask.changePw(Session.getInstance("noAcnt"), bfPw, pw, callbackChangePw);
                 }
                 else{//하나라도 틀린게 있을때.
                     Toast.makeText(ChangePwActivity.this, "형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();
@@ -139,48 +164,45 @@ public class ChangePwActivity extends AppCompatActivity {
     }
 
 
-    public class ChangePwTask extends AsyncTask<String, Void, Void> {
-
-        private final HttpTask httpTask;
-
-        ChangePwTask() {
-            httpTask = new HttpTask();
-        }
-
+    private Callback callbackChangePw = new Callback() {
         @Override
-        protected Void doInBackground(String... params) {
-
-            if(params[0].equals("changePw")){
-                httpTask.changePw(Session.getInstance("noAcnt"), params[1], params[2]);
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-
-            try {
-                JSONObject list = httpTask.getReturnObj();
-                String result = list.getString("result");
-                Log.w("RETURN", "-------------------------------" + result);
-
-                if(result.equals("Success")) {
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    Log.w("intent", "-------------------------------" + intent);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-            }catch (Exception e){
-                 /* before code
+        public void onFailure(Request request, IOException e) {
+             /* before code
                 e.printStackTrace();
                 */
+            Log.e("e","error occured");
+            Log.w("fail","---------------------------------------"+request);
+        }
+
+        @Override
+        public void onResponse(Response response) throws IOException {
+            final String strJsonOutput = response.body().string();
+            Log.w("String","---------------------------------------"+strJsonOutput);
+
+            try {
+                final JSONObject jsonOutput = new JSONObject(strJsonOutput);
+                Log.w("JSON","---------------------------------------"+jsonOutput);
+
+                String result = jsonOutput.getString("result");
+                Log.w("RESULT", "------------------------"+result);
+
+                Message msg = handler.obtainMessage();
+                if(result.equals("Success")) {
+                    msg.arg1 = 1;
+                }
+                else {
+                    msg.arg1 = 0;
+                }
+                handler.sendMessage(msg);
+
+            }
+            catch (Exception e){
+                // before code
+                e.printStackTrace();
+
                 Log.e("e","error occured");
             }
         }
-
-        @Override
-        protected void onCancelled() {
-        }
-    }
+    };
 }
+

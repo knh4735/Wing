@@ -77,8 +77,8 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                MenuTask mt = new MenuTask();
-                mt.execute("logout");
+                HttpTask httpTask = new HttpTask();
+                httpTask.logout(Session.getInstance("noAcnt"), Session.getInstance("token"));
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -88,33 +88,4 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
     }
-
-    public class MenuTask extends AsyncTask<String, Void, Void> {
-
-        private final HttpTask httpTask;
-
-        MenuTask() {
-            httpTask = new HttpTask();
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-
-            if(params[0].equals("logout")){
-                httpTask.logout(Session.getInstance("noAcnt"), Session.getInstance("token"));
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-            Session.destroySession();
-        }
-
-        @Override
-        protected void onCancelled() {
-        }
-    }
-
 }
