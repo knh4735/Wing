@@ -78,7 +78,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 HttpTask httpTask = new HttpTask();
-                httpTask.logout(Session.getInstance("noAcnt"), Session.getInstance("token"));
+                httpTask.logout(Session.getInstance("noAcnt", getApplicationContext()), Session.getInstance("token", getApplicationContext()));
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);

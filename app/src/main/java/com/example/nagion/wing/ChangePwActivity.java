@@ -56,7 +56,7 @@ public class ChangePwActivity extends AppCompatActivity {
         setContent();
     }
     private void setContent() {
-        final String id = Session.getInstance("idAcnt");
+        final String id = Session.getInstance("idAcnt", getApplicationContext());
         final EditText pwEt = (EditText) findViewById(R.id.pwEt),
                 confirmPwEt = (EditText) findViewById(R.id.confirmPwEt),
                 emailEt = (EditText) findViewById(R.id.emailEt),
@@ -112,7 +112,7 @@ public class ChangePwActivity extends AppCompatActivity {
                     String pw = pwEt.getText().toString();
 
                     HttpTask httpTask = new HttpTask();
-                    httpTask.changePw(Session.getInstance("noAcnt"), bfPw, pw, callbackChangePw);
+                    httpTask.changePw(Session.getInstance("noAcnt", getApplicationContext()), bfPw, pw, callbackChangePw);
                 }
                 else{//하나라도 틀린게 있을때.
                     Toast.makeText(ChangePwActivity.this, "형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();

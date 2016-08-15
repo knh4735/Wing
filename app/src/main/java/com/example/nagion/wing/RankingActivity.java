@@ -53,7 +53,7 @@ public class RankingActivity extends AppCompatActivity {
         rl = (LinearLayout) findViewById(R.id.wrapper);
 
         HttpTask httpTask = new HttpTask();
-        httpTask.getRank(Session.getInstance("noAcnt"), callbackGetRank);
+        httpTask.getRank(Session.getInstance("noAcnt", getApplicationContext()), callbackGetRank);
     }
 
 

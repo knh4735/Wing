@@ -95,7 +95,7 @@ public class ConfirmComponent  extends LinearLayout {
             @Override
             public void onClick(View view) {
                 HttpTask httpTask = new HttpTask();
-                httpTask.reqConfirm("YES", noAcnt, Session.getInstance("noAcnt"), callbackConfirm);
+                httpTask.reqConfirm("YES", noAcnt, Session.getInstance("noAcnt", getContext()), callbackConfirm);
             }
         });
 
@@ -103,7 +103,7 @@ public class ConfirmComponent  extends LinearLayout {
             @Override
             public void onClick(View view) {
                 HttpTask httpTask = new HttpTask();
-                httpTask.reqConfirm("NO", noAcnt, Session.getInstance("noAcnt"), callbackConfirm);
+                httpTask.reqConfirm("NO", noAcnt, Session.getInstance("noAcnt", getContext()), callbackConfirm);
             }
         });
 

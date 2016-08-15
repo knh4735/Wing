@@ -50,11 +50,11 @@ public class ChangeActivity extends AppCompatActivity {
 
         final Button pwchange = (Button) findViewById(R.id.pwchange);
 
-        nicknameEt.setText(Session.getInstance("nickAcnt"));
-        nameEt.setText(Session.getInstance("nameSi"));
-        phonenumEt.setText(Session.getInstance("phoneSi"));
-        emailEt.setText(Session.getInstance("emailSi"));
-        selfEt.setText(Session.getInstance("introSi"));
+        nicknameEt.setText(Session.getInstance("nickAcnt", getApplicationContext()));
+        nameEt.setText(Session.getInstance("nameSi", getApplicationContext()));
+        phonenumEt.setText(Session.getInstance("phoneSi", getApplicationContext()));
+        emailEt.setText(Session.getInstance("emailSi", getApplicationContext()));
+        selfEt.setText(Session.getInstance("introSi", getApplicationContext()));
 
 
         final TextView notice1 = (TextView) findViewById(R.id.noticeemailStatus);
@@ -139,7 +139,7 @@ public class ChangeActivity extends AppCompatActivity {
                             introCk = String.valueOf(selfck.isChecked());
 
                     HttpTask httpTask = new HttpTask();
-                    httpTask.changeInfo(pw, nick, name, phone, email, intro, nameCk, phoneCk, emailCk, introCk, callbackChangeInfo);
+                    httpTask.changeInfo(Session.getInstance("noAcnt", getApplicationContext()), pw, nick, name, phone, email, intro, nameCk, phoneCk, emailCk, introCk, callbackChangeInfo);
                 }
                 else{//하나라도 틀린게 있을때.
                     Toast.makeText(ChangeActivity.this, "형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();

@@ -57,7 +57,7 @@ public class RequestActivity extends AppCompatActivity {
                 String msg = msgEt.getText().toString();
 
                 HttpTask httpTask = new HttpTask();
-                httpTask.requestFriend(to, msg, callbackRequest);
+                httpTask.requestFriend(Session.getInstance("noAcnt", getApplicationContext()), to, msg, callbackRequest);
             }
         });
     }

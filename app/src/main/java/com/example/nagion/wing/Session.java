@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.UserHandle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.content.Context;
@@ -40,7 +41,7 @@ import java.io.InputStream;
 /**
  * Created by Nagion on 2016. 8. 13..
  */
-public class Session extends Context {
+public class Session {
 
     private static boolean isSetSession = false;
 
@@ -57,29 +58,34 @@ public class Session extends Context {
 
 
 
-    public void setSession(JSONObject data){
-        isSetSession = true;
-
+    public static void setSession(JSONObject data, Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         try {
+            isSetSession = true;
+            sharedPreferences.edit().putBoolean("isSetSession", true).apply();
 
             JSONObject sessionData = data.getJSONObject("result");
 
             noAcnt = sessionData.getString("no_acnt");
+            sharedPreferences.edit().putString("no_acnt", noAcnt).apply();
             idAcnt = sessionData.getString("id_acnt");
+            sharedPreferences.edit().putString("id_acnt", idAcnt).apply();
             nickAcnt = sessionData.getString("nick_acnt");
+            sharedPreferences.edit().putString("nick_acnt", nickAcnt).apply();
             token = sessionData.getString("token");
+            sharedPreferences.edit().putString("token", token).apply();
 
             JSONObject userInfo = sessionData.getJSONObject("info");
 
             nameSi = userInfo.getString("name_si");
-            SharedPreference.setPreferences(this, "name", nameSi);
+            sharedPreferences.edit().putString("name_si", nameSi).apply();
             emailSi = userInfo.getString("email_si");
-            SharedPreference.setPreferences(this, "email", emailSi);
+            sharedPreferences.edit().putString("email_si", emailSi).apply();
             phoneSi = userInfo.getString("phone_si");
-            SharedPreference.setPreferences(this, "phone", phoneSi);
+            sharedPreferences.edit().putString("phone_si", phoneSi).apply();
             introSi = userInfo.getString("intro_si");
-            SharedPreference.setPreferences(this, "intro", introSi);
+            sharedPreferences.edit().putString("intro_si", introSi).apply();
         }
         catch(Exception e){
             /* before code
@@ -89,25 +95,31 @@ public class Session extends Context {
         }
     }
 
-    public static String getInstance(String target){
+    public static String getInstance(String target, Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         switch(target){
-            case "token" : return token;
-            case "noAcnt" : return noAcnt;
-            case "idAcnt" : return idAcnt;
-            case "nickAcnt" : return nickAcnt;
-            case "nameSi" : return nameSi;
-            case "emailSi" : return emailSi;
-            case "phoneSi" : return phoneSi;
-            case "introSi" : return introSi;
+            case "token" :
+                String token = sharedPreferences.getString("token", ""); return token;
+            case "noAcnt" : String noAcnt = sharedPreferences.getString("noAcnt", ""); return noAcnt;
+            case "idAcnt" : String idAcnt = sharedPreferences.getString("idAcnt", ""); return idAcnt;
+            case "nickAcnt" : String nickAcnt = sharedPreferences.getString("nickAcnt", ""); return nickAcnt;
+            case "nameSi" : String nameSi = sharedPreferences.getString("nameSi", ""); return nameSi;
+            case "emailSi" : String emailSi = sharedPreferences.getString("emailSi", ""); return emailSi;
+            case "phoneSi" : String phoneSi = sharedPreferences.getString("phoneSi", ""); return phoneSi;
+            case "introSi" : String introSi = sharedPreferences.getString("introSi", "");return introSi;
             default : return "";
         }
     }
 
-    public static boolean isSet(){
-        return isSetSession;
+    public static boolean isSet(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        return sharedPreferences.getBoolean("isSetSession", true);
     }
 
-    public static void destroySession(){
+    public static void destroySession(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
         noAcnt = "";
         idAcnt = "";
         nickAcnt = "";
@@ -115,500 +127,18 @@ public class Session extends Context {
         emailSi = "";
         phoneSi = "";
         isSetSession = false;
-    }
 
-    @Override
-    public AssetManager getAssets() {
-        return null;
-    }
 
-    @Override
-    public Resources getResources() {
-        return null;
-    }
+        sharedPreferences.edit().putString("no_acnt", noAcnt).apply();
+        sharedPreferences.edit().putString("id_acnt", idAcnt).apply();
+        sharedPreferences.edit().putString("nick_acnt", nickAcnt).apply();
+        sharedPreferences.edit().putString("token", token).apply();
 
-    @Override
-    public PackageManager getPackageManager() {
-        return null;
-    }
+        sharedPreferences.edit().putString("name_si", nameSi).apply();
+        sharedPreferences.edit().putString("email_si", emailSi).apply();
+        sharedPreferences.edit().putString("phone_si", phoneSi).apply();
+        sharedPreferences.edit().putString("intro_si", introSi).apply();
 
-    @Override
-    public ContentResolver getContentResolver() {
-        return null;
-    }
-
-    @Override
-    public Looper getMainLooper() {
-        return null;
-    }
-
-    @Override
-    public Context getApplicationContext() {
-        return null;
-    }
-
-    @Override
-    public void setTheme(int i) {
-
-    }
-
-    @Override
-    public Resources.Theme getTheme() {
-        return null;
-    }
-
-    @Override
-    public ClassLoader getClassLoader() {
-        return null;
-    }
-
-    @Override
-    public String getPackageName() {
-        return null;
-    }
-
-    @Override
-    public ApplicationInfo getApplicationInfo() {
-        return null;
-    }
-
-    @Override
-    public String getPackageResourcePath() {
-        return null;
-    }
-
-    @Override
-    public String getPackageCodePath() {
-        return null;
-    }
-
-    @Override
-    public SharedPreferences getSharedPreferences(String s, int i) {
-        return null;
-    }
-
-    @Override
-    public boolean moveSharedPreferencesFrom(Context context, String s) {
-        return false;
-    }
-
-    @Override
-    public boolean deleteSharedPreferences(String s) {
-        return false;
-    }
-
-    @Override
-    public FileInputStream openFileInput(String s) throws FileNotFoundException {
-        return null;
-    }
-
-    @Override
-    public FileOutputStream openFileOutput(String s, int i) throws FileNotFoundException {
-        return null;
-    }
-
-    @Override
-    public boolean deleteFile(String s) {
-        return false;
-    }
-
-    @Override
-    public File getFileStreamPath(String s) {
-        return null;
-    }
-
-    @Override
-    public File getDataDir() {
-        return null;
-    }
-
-    @Override
-    public File getFilesDir() {
-        return null;
-    }
-
-    @Override
-    public File getNoBackupFilesDir() {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public File getExternalFilesDir(String s) {
-        return null;
-    }
-
-    @Override
-    public File[] getExternalFilesDirs(String s) {
-        return new File[0];
-    }
-
-    @Override
-    public File getObbDir() {
-        return null;
-    }
-
-    @Override
-    public File[] getObbDirs() {
-        return new File[0];
-    }
-
-    @Override
-    public File getCacheDir() {
-        return null;
-    }
-
-    @Override
-    public File getCodeCacheDir() {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public File getExternalCacheDir() {
-        return null;
-    }
-
-    @Override
-    public File[] getExternalCacheDirs() {
-        return new File[0];
-    }
-
-    @Override
-    public File[] getExternalMediaDirs() {
-        return new File[0];
-    }
-
-    @Override
-    public String[] fileList() {
-        return new String[0];
-    }
-
-    @Override
-    public File getDir(String s, int i) {
-        return null;
-    }
-
-    @Override
-    public SQLiteDatabase openOrCreateDatabase(String s, int i, SQLiteDatabase.CursorFactory cursorFactory) {
-        return null;
-    }
-
-    @Override
-    public SQLiteDatabase openOrCreateDatabase(String s, int i, SQLiteDatabase.CursorFactory cursorFactory, DatabaseErrorHandler databaseErrorHandler) {
-        return null;
-    }
-
-    @Override
-    public boolean moveDatabaseFrom(Context context, String s) {
-        return false;
-    }
-
-    @Override
-    public boolean deleteDatabase(String s) {
-        return false;
-    }
-
-    @Override
-    public File getDatabasePath(String s) {
-        return null;
-    }
-
-    @Override
-    public String[] databaseList() {
-        return new String[0];
-    }
-
-    @Override
-    public Drawable getWallpaper() {
-        return null;
-    }
-
-    @Override
-    public Drawable peekWallpaper() {
-        return null;
-    }
-
-    @Override
-    public int getWallpaperDesiredMinimumWidth() {
-        return 0;
-    }
-
-    @Override
-    public int getWallpaperDesiredMinimumHeight() {
-        return 0;
-    }
-
-    @Override
-    public void setWallpaper(Bitmap bitmap) throws IOException {
-
-    }
-
-    @Override
-    public void setWallpaper(InputStream inputStream) throws IOException {
-
-    }
-
-    @Override
-    public void clearWallpaper() throws IOException {
-
-    }
-
-    @Override
-    public void startActivity(Intent intent) {
-
-    }
-
-    @Override
-    public void startActivity(Intent intent, Bundle bundle) {
-
-    }
-
-    @Override
-    public void startActivities(Intent[] intents) {
-
-    }
-
-    @Override
-    public void startActivities(Intent[] intents, Bundle bundle) {
-
-    }
-
-    @Override
-    public void startIntentSender(IntentSender intentSender, Intent intent, int i, int i1, int i2) throws IntentSender.SendIntentException {
-
-    }
-
-    @Override
-    public void startIntentSender(IntentSender intentSender, Intent intent, int i, int i1, int i2, Bundle bundle) throws IntentSender.SendIntentException {
-
-    }
-
-    @Override
-    public void sendBroadcast(Intent intent) {
-
-    }
-
-    @Override
-    public void sendBroadcast(Intent intent, String s) {
-
-    }
-
-    @Override
-    public void sendOrderedBroadcast(Intent intent, String s) {
-
-    }
-
-    @Override
-    public void sendOrderedBroadcast(Intent intent, String s, BroadcastReceiver broadcastReceiver, Handler handler, int i, String s1, Bundle bundle) {
-
-    }
-
-    @Override
-    public void sendBroadcastAsUser(Intent intent, UserHandle userHandle) {
-
-    }
-
-    @Override
-    public void sendBroadcastAsUser(Intent intent, UserHandle userHandle, String s) {
-
-    }
-
-    @Override
-    public void sendOrderedBroadcastAsUser(Intent intent, UserHandle userHandle, String s, BroadcastReceiver broadcastReceiver, Handler handler, int i, String s1, Bundle bundle) {
-
-    }
-
-    @Override
-    public void sendStickyBroadcast(Intent intent) {
-
-    }
-
-    @Override
-    public void sendStickyOrderedBroadcast(Intent intent, BroadcastReceiver broadcastReceiver, Handler handler, int i, String s, Bundle bundle) {
-
-    }
-
-    @Override
-    public void removeStickyBroadcast(Intent intent) {
-
-    }
-
-    @Override
-    public void sendStickyBroadcastAsUser(Intent intent, UserHandle userHandle) {
-
-    }
-
-    @Override
-    public void sendStickyOrderedBroadcastAsUser(Intent intent, UserHandle userHandle, BroadcastReceiver broadcastReceiver, Handler handler, int i, String s, Bundle bundle) {
-
-    }
-
-    @Override
-    public void removeStickyBroadcastAsUser(Intent intent, UserHandle userHandle) {
-
-    }
-
-    @Nullable
-    @Override
-    public Intent registerReceiver(BroadcastReceiver broadcastReceiver, IntentFilter intentFilter) {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public Intent registerReceiver(BroadcastReceiver broadcastReceiver, IntentFilter intentFilter, String s, Handler handler) {
-        return null;
-    }
-
-    @Override
-    public void unregisterReceiver(BroadcastReceiver broadcastReceiver) {
-
-    }
-
-    @Nullable
-    @Override
-    public ComponentName startService(Intent intent) {
-        return null;
-    }
-
-    @Override
-    public boolean stopService(Intent intent) {
-        return false;
-    }
-
-    @Override
-    public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
-        return false;
-    }
-
-    @Override
-    public void unbindService(ServiceConnection serviceConnection) {
-
-    }
-
-    @Override
-    public boolean startInstrumentation(ComponentName componentName, String s, Bundle bundle) {
-        return false;
-    }
-
-    @Override
-    public Object getSystemService(String s) {
-        return null;
-    }
-
-    @Override
-    public String getSystemServiceName(Class<?> aClass) {
-        return null;
-    }
-
-    @Override
-    public int checkPermission(String s, int i, int i1) {
-        return 0;
-    }
-
-    @Override
-    public int checkCallingPermission(String s) {
-        return 0;
-    }
-
-    @Override
-    public int checkCallingOrSelfPermission(String s) {
-        return 0;
-    }
-
-    @Override
-    public int checkSelfPermission(String s) {
-        return 0;
-    }
-
-    @Override
-    public void enforcePermission(String s, int i, int i1, String s1) {
-
-    }
-
-    @Override
-    public void enforceCallingPermission(String s, String s1) {
-
-    }
-
-    @Override
-    public void enforceCallingOrSelfPermission(String s, String s1) {
-
-    }
-
-    @Override
-    public void grantUriPermission(String s, Uri uri, int i) {
-
-    }
-
-    @Override
-    public void revokeUriPermission(Uri uri, int i) {
-
-    }
-
-    @Override
-    public int checkUriPermission(Uri uri, int i, int i1, int i2) {
-        return 0;
-    }
-
-    @Override
-    public int checkCallingUriPermission(Uri uri, int i) {
-        return 0;
-    }
-
-    @Override
-    public int checkCallingOrSelfUriPermission(Uri uri, int i) {
-        return 0;
-    }
-
-    @Override
-    public int checkUriPermission(Uri uri, String s, String s1, int i, int i1, int i2) {
-        return 0;
-    }
-
-    @Override
-    public void enforceUriPermission(Uri uri, int i, int i1, int i2, String s) {
-
-    }
-
-    @Override
-    public void enforceCallingUriPermission(Uri uri, int i, String s) {
-
-    }
-
-    @Override
-    public void enforceCallingOrSelfUriPermission(Uri uri, int i, String s) {
-
-    }
-
-    @Override
-    public void enforceUriPermission(Uri uri, String s, String s1, int i, int i1, int i2, String s2) {
-
-    }
-
-    @Override
-    public Context createPackageContext(String s, int i) throws PackageManager.NameNotFoundException {
-        return null;
-    }
-
-    @Override
-    public Context createConfigurationContext(Configuration configuration) {
-        return null;
-    }
-
-    @Override
-    public Context createDisplayContext(Display display) {
-        return null;
-    }
-
-    @Override
-    public Context createDeviceProtectedStorageContext() {
-        return null;
-    }
-
-    @Override
-    public boolean isDeviceProtectedStorage() {
-        return false;
+        sharedPreferences.edit().putBoolean("isSetSession", false).apply();
     }
 }

@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                                 PreferenceManager.getDefaultSharedPreferences(context);
                         boolean sentToken = sharedPreferences
                                 .getBoolean("sentTokenToServer", false);
-                        if (sentToken && Session.isSet()) {
+                        if (sentToken && Session.isSet(getApplicationContext())) {
                             Intent i = new Intent(getApplicationContext(), WingActivity.class);
                             startActivity(i);
                             LoginActivity.this.finish();

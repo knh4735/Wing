@@ -72,7 +72,7 @@ public class WingActivity extends AppCompatActivity {
         super.onResume();
 
         HttpTask httpTask = new HttpTask();
-        httpTask.getWing(Session.getInstance("noAcnt"), callbackGetWing);
+        httpTask.getWing(Session.getInstance("noAcnt", getApplicationContext()), callbackGetWing);
 
     }
 
@@ -81,7 +81,7 @@ public class WingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wing);
 
-        if(!Session.isSet()){
+        if(!Session.isSet(getApplicationContext())){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -114,7 +114,7 @@ public class WingActivity extends AppCompatActivity {
 
 
         HttpTask httpTask = new HttpTask();
-        httpTask.getWing(Session.getInstance("noAcnt"), callbackGetWing);
+        httpTask.getWing(Session.getInstance("noAcnt", getApplicationContext()), callbackGetWing);
 
 
     }

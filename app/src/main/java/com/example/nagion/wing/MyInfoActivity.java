@@ -41,11 +41,11 @@ public class MyInfoActivity extends AppCompatActivity {
                 memail = (TextView) findViewById(R.id.memail),
                 phonenum = (TextView) findViewById(R.id.phonenum),
                 intro = (TextView) findViewById(R.id.introduction);
-        final String nameSi = Session.getInstance("nameSi"),
-                nickAcnt = Session.getInstance("nickAcnt"),
-                emailSi = Session.getInstance("emailSi"),
-                phoneSi = Session.getInstance("phoneSi"),
-                introSi = Session.getInstance("introSi");
+        final String nameSi = Session.getInstance("nameSi", getApplicationContext()),
+                nickAcnt = Session.getInstance("nickAcnt", getApplicationContext()),
+                emailSi = Session.getInstance("emailSi", getApplicationContext()),
+                phoneSi = Session.getInstance("phoneSi", getApplicationContext()),
+                introSi = Session.getInstance("introSi", getApplicationContext());
         nameId.setText(nameSi);
         nickname.setText(nickAcnt);
         memail.setText(emailSi);
@@ -66,12 +66,12 @@ public class MyInfoActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 HttpTask httpTask = new HttpTask();
-                httpTask.unregister(Session.getInstance("noAcnt"), callbackGetNotice);
+                httpTask.unregister(Session.getInstance("noAcnt", getApplicationContext()), callbackUnregister);
             }
         });
     }
 
-    private Callback callbackGetNotice = new Callback() {
+    private Callback callbackUnregister = new Callback() {
         @Override
         public void onFailure(Request request, IOException e) {
              /* before code
@@ -94,7 +94,7 @@ public class MyInfoActivity extends AppCompatActivity {
                 Log.w("RETURN", "-------------------------------" + result);
 
                 if(result.equals("Success")){
-                    Session.destroySession();
+                    Session.destroySession(getApplicationContext());
 
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -89,7 +89,7 @@ public class WingComponent extends LinearLayout {
             public void onClick(View view) {
 
                 HttpTask httpTask = new HttpTask();
-                httpTask.wing(noAcnt, callbackWing);
+                httpTask.wing(Session.getInstance("noAcnt", getContext()), noAcnt, callbackWing);
             }
         });
 

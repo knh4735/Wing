@@ -203,7 +203,7 @@ public class HttpTask {
         client.newCall(request).enqueue(callback);
     }
 
-    public void wing(String id, Callback callback) {
+    public void wing(String acnt, String id, Callback callback) {
         JSONObject jsonInput = new JSONObject();
 
         try {
@@ -221,7 +221,7 @@ public class HttpTask {
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "wing")// - get방식
-                .addQueryParameter("from", Session.getInstance("noAcnt"))
+                .addQueryParameter("from", acnt)
                 .addQueryParameter("to", id)
                 .build();
 
@@ -239,7 +239,7 @@ public class HttpTask {
         client.newCall(request).enqueue(callback);
     }
 
-    public void customWing(String id, String pattern, Callback callback) {
+    public void customWing(String acnt, String id, String pattern, Callback callback) {
         JSONObject jsonInput = new JSONObject();
 
         try {
@@ -257,7 +257,7 @@ public class HttpTask {
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "customWing")// - get방식
-                .addQueryParameter("from", Session.getInstance("noAcnt"))
+                .addQueryParameter("from", acnt)
                 .addQueryParameter("to", id)
                 .addQueryParameter("pattern", pattern)
                 .build();
@@ -303,7 +303,7 @@ public class HttpTask {
         client.newCall(request).enqueue(callbackAfterGettingMessage);
     }
 
-    public void requestFriend(String to, String msg, Callback callback){
+    public void requestFriend(String acnt, String to, String msg, Callback callback){
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme(http)
@@ -311,7 +311,7 @@ public class HttpTask {
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "requestFriend")// - get방식
-                .addQueryParameter("from", Session.getInstance("noAcnt"))
+                .addQueryParameter("from", acnt)
                 .addQueryParameter("to", to)
                 .addQueryParameter("msg", msg)
                 .build();
@@ -520,7 +520,7 @@ public class HttpTask {
     }
 
 
-    public void changeInfo(String pw, String nick, String name, String phone, String email, String intro, String nameCk, String phoneCk, String emailCk, String introCk, Callback callback) {
+    public void changeInfo(String acnt, String pw, String nick, String name, String phone, String email, String intro, String nameCk, String phoneCk, String emailCk, String introCk, Callback callback) {
 
         //param : "changeInfo", pw, nick, name, phone, email, intro, nameCk, phoneCk, emailCk, introCk
 
@@ -530,7 +530,7 @@ public class HttpTask {
                 .port(8888)
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "changePw")// - get방식
-                .addQueryParameter("acnt", Session.getInstance("noAcnt"))
+                .addQueryParameter("acnt", acnt)
                 .addQueryParameter("pw", pw)
                 .addQueryParameter("nick", nick)
                 .addQueryParameter("name", name)

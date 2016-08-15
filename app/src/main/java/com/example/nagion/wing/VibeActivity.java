@@ -95,7 +95,7 @@ public class VibeActivity extends AppCompatActivity {
                 ptrn = new ArrayList<Long>();
 
                 HttpTask httpTask = new HttpTask();
-                httpTask.customWing(to, ptrnString, callbackCustomWing);
+                httpTask.customWing(Session.getInstance("noAcnt", getApplicationContext()), to, ptrnString, callbackCustomWing);
             }
         });
     }

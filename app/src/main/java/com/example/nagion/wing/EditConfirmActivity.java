@@ -74,7 +74,7 @@ public class EditConfirmActivity extends AppCompatActivity {
                 String pw = mpwEt.getText().toString();
 
                 HttpTask httpTask = new HttpTask();
-                httpTask.checkPw(Session.getInstance("noAcnt"), pw, callbackCheckPw);
+                httpTask.checkPw(Session.getInstance("noAcnt", getApplicationContext()), pw, callbackCheckPw);
 
             }
         });

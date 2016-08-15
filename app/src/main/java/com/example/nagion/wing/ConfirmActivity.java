@@ -60,7 +60,7 @@ public class ConfirmActivity extends AppCompatActivity {
         wrapper = (LinearLayout) findViewById(R.id.wrapper);
 
         HttpTask httpTask = new HttpTask();
-        httpTask.getRequest(Session.getInstance("noAcnt"), callbackGetRequest);
+        httpTask.getRequest(Session.getInstance("noAcnt", getApplicationContext()), callbackGetRequest);
 
 
     }

@@ -128,7 +128,7 @@ public class RegistrationIntentService extends IntentService {
                     handler.sendMessage(msg);
                 }
                 else {
-                    Session.setSession(jsonOutput);
+                    Session.setSession(jsonOutput, getApplicationContext());
 
                     Intent registrationComplete = new Intent("registrationComplete");
                     LocalBroadcastManager.getInstance(RegistrationIntentService.this).sendBroadcast(registrationComplete);
