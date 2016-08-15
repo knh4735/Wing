@@ -29,12 +29,6 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/vibe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Vibe"
-                android:textSize="50sp"/>
         </LinearLayout>
     </ScrollView>
 

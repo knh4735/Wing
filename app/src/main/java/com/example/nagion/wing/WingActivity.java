@@ -103,15 +103,6 @@ public class WingActivity extends AppCompatActivity {
         });
 
 
-        Button vibe = (Button) findViewById(R.id.vibe);
-        vibe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), VibeActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
         HttpTask httpTask = new HttpTask();
         httpTask.getWing(Session.getInstance("noAcnt", getApplicationContext()), callbackGetWing);
