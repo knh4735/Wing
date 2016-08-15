@@ -2,6 +2,8 @@ package com.example.nagion.wing;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,13 +12,46 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class SearchActivity extends AppCompatActivity {
     EditText nameEt;
     Button makeBtn;
     LinearLayout rl;
+
+
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            try{
+                Bundle data = msg.getData();
+                String jsonString = data.getString("jsonString");
+                JSONArray searchComponentList = new JSONArray(jsonString);
+                Log.w("RETURN", "-------------------------------" + searchComponentList);
+
+
+                for(int i=0;i<searchComponentList.length();i++){
+                    JSONObject searchComponentObj = searchComponentList.getJSONObject(i);
+                    String name = searchComponentObj.getString("nick_acnt");
+                    String no = searchComponentObj.getString("no_acnt");
+
+                    SearchComponent wc = new SearchComponent(getApplicationContext(), name, no);
+                    Log.w("RETURN", "-------------------------------" + wc);
+                    rl.addView(wc);
+                }
+
+            }catch (Exception e){}
+
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +67,8 @@ public class SearchActivity extends AppCompatActivity {
                 String tmp = nameEt.getText().toString();
                 if(!tmp.equals("")){
 
-                    SearchTask st = new SearchTask();
-                    st.execute("searchFriend", tmp);
+                    HttpTask httpTask = new HttpTask();
+                    httpTask.searchFriend(tmp, callbackSearch);
 
                     nameEt.setText("");
                 }
@@ -41,48 +76,42 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    public class SearchTask extends AsyncTask<String, Void, Void> {
 
-        private final HttpTask httpTask;
-
-        SearchTask() {
-            httpTask = new HttpTask();
+    private Callback callbackSearch = new Callback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
+            Log.w("fail","---------------------------------------"+request);
         }
 
         @Override
-        protected Void doInBackground(String... params) {
-
-            if(params[0].equals("searchFriend")){
-                httpTask.searchFriend(params[1]);
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
+        public void onResponse(Response response) throws IOException {
+            final String strJsonOutput = response.body().string();
+            Log.w("String","---------------------------------------"+strJsonOutput);
 
             try {
-                JSONObject list = httpTask.getReturnObj();
-                JSONArray searchComponentList = list.getJSONArray("result");
-                Log.w("RETURN", "-------------------------------" + searchComponentList);
+                final JSONObject jsonOutput = new JSONObject(strJsonOutput);
+                Log.w("JSON","---------------------------------------"+jsonOutput);
 
+                String result = jsonOutput.getString("result");
+                Log.w("RESULT", "------------------------"+result);
 
-                for(int i=0;i<searchComponentList.length();i++){
-                    JSONObject searchComponentObj = searchComponentList.getJSONObject(i);
-                    String name = searchComponentObj.getString("nick_acnt");
-                    String no = searchComponentObj.getString("no_acnt");
+                Message msg = handler.obtainMessage();
+                Bundle data = new Bundle();
+                data.putString("jsonString", result);
+                msg.setData(data);
+                handler.sendMessage(msg);
 
-                    SearchComponent wc = new SearchComponent(getApplicationContext(), name, no);
-                    Log.w("RETURN", "-------------------------------" + wc);
-                    rl.addView(wc);
-                }
+            }
+            catch (Exception e){
+                // before code
+                e.printStackTrace();
 
-            }catch (Exception e){}
+                Log.e("e","error occured");
+            }
         }
-
-        @Override
-        protected void onCancelled() {
-        }
-    }
+    };
 }

@@ -67,7 +67,7 @@ public class HttpTask {
         }
     };
 
-    public void getWing(String id) {
+    public void getWing(String id, Callback callback) {
 
 
 
@@ -103,11 +103,11 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
 
-    public void searchFriend(String idFriend) {
+    public void searchFriend(String idFriend, Callback callback) {
         JSONObject jsonInput = new JSONObject();
 
         try {
@@ -139,10 +139,10 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
-    public void getRank(String id) {
+    public void getRank(String id, Callback callback) {
         JSONObject jsonInput = new JSONObject();
 
         try {
@@ -174,11 +174,11 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
 
-    public void getNotice() {
+    public void getNotice(Callback callback) {
         JSONObject jsonInput = new JSONObject();
 
         HttpUrl httpUrl = new HttpUrl.Builder()
@@ -200,7 +200,7 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
     public void wing(String id) {
@@ -266,7 +266,7 @@ public class HttpTask {
         client.newCall(request).enqueue(callbackAfterGettingMessage);
     }
 
-    public void requestFriend(String to, String msg){
+    public void requestFriend(String to, String msg, Callback callback){
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme(http)
@@ -290,7 +290,7 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
     public void signUp(String id, String pw, String nick, String name, String email, String phone, String intro, Callback callbackSignUp) {
@@ -350,12 +350,7 @@ public class HttpTask {
     }
 
 
-    public void reqConfirm(String... params) {
-
-        String flag = params[1],
-                from = params[2],
-                to = params[3];
-
+    public void reqConfirm(String flag, String from, String to, Callback callback) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme(http)
@@ -379,10 +374,10 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
-    public void getRequest(String noAcnt) {
+    public void getRequest(String noAcnt, Callback callback) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme(http)
@@ -404,10 +399,10 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
-    public void checkPw(String noAcnt, String pw) {
+    public void checkPw(String noAcnt, String pw, Callback callback) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme(http)
@@ -430,11 +425,11 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
 
-    public void unregister(String noAcnt) {
+    public void unregister(String noAcnt, Callback callback) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme(http)
@@ -456,11 +451,11 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
 
-    public void changePw(String noAcnt, String bfPw, String pw) {
+    public void changePw(String noAcnt, String bfPw, String pw, Callback callback) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme(http)
@@ -484,11 +479,11 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
 
-    public void changeInfo(String... params) {
+    public void changeInfo(String pw, String nick, String name, String phone, String email, String intro, String nameCk, String phoneCk, String emailCk, String introCk, Callback callback) {
 
         //param : "changeInfo", pw, nick, name, phone, email, intro, nameCk, phoneCk, emailCk, introCk
 
@@ -499,16 +494,16 @@ public class HttpTask {
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "changePw")// - get방식
                 .addQueryParameter("acnt", Session.getInstance("noAcnt"))
-                .addQueryParameter("pw", params[1])
-                .addQueryParameter("nick", params[2])
-                .addQueryParameter("name", params[3])
-                .addQueryParameter("phone", params[4])
-                .addQueryParameter("email", params[5])
-                .addQueryParameter("intro", params[6])
-                .addQueryParameter("nameCk", params[7])
-                .addQueryParameter("phoneCk", params[8])
-                .addQueryParameter("emailCk", params[9])
-                .addQueryParameter("introCk", params[10])
+                .addQueryParameter("pw", pw)
+                .addQueryParameter("nick", nick)
+                .addQueryParameter("name", name)
+                .addQueryParameter("phone", phone)
+                .addQueryParameter("email", email)
+                .addQueryParameter("intro", intro)
+                .addQueryParameter("nameCk", nameCk)
+                .addQueryParameter("phoneCk", phoneCk)
+                .addQueryParameter("emailCk", emailCk)
+                .addQueryParameter("introCk", introCk)
                 .build();
 /*
         RequestBody reqBody = RequestBody.create(
@@ -522,7 +517,7 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
     public void login(String id, String pw, String token, Callback callback) {

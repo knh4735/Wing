@@ -2,6 +2,8 @@ package com.example.nagion.wing;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -19,10 +21,16 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class WingActivity extends AppCompatActivity {
@@ -32,6 +40,32 @@ public class WingActivity extends AppCompatActivity {
     Button makeBtn;
     LinearLayout rl;
     android.support.design.widget.FloatingActionButton Mn;
+
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            try{
+                Bundle data = msg.getData();
+                String jsonString = data.getString("jsonString");
+                JSONArray wingComponentList = new JSONArray(jsonString);
+                Log.w("RETURN", "-------------------------------" + wingComponentList);
+
+                for(int i=0;i<wingComponentList.length();i++){
+                    JSONObject wingComponentObj = wingComponentList.getJSONObject(i);
+                    String no = wingComponentObj.getString("no_acnt");
+                    String name = wingComponentObj.getString("nick_acnt");
+                    int cnt = wingComponentObj.getInt("cnt_wi");
+
+                    WingComponent wc = new WingComponent(getApplicationContext(), no, name, cnt);
+                    Log.w("RETURN", "-------------------------------" + wc);
+                    rl.addView(wc);
+                }
+            }
+            catch (Exception e){
+                Log.e("E","error");
+            }
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +80,7 @@ public class WingActivity extends AppCompatActivity {
         }
 
 
-        nameEt = (EditText) findViewById(R.id.nameEt);
-        makeBtn = (Button) findViewById(R.id.makeBtn);
+
         rl = (LinearLayout) findViewById(R.id.wrapper);
 
 
@@ -61,9 +94,6 @@ public class WingActivity extends AppCompatActivity {
         });
 
 
-        GetWingTask gwt = new GetWingTask();
-        gwt.execute("getWing");
-
         Button vibe = (Button) findViewById(R.id.vibe);
         vibe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,70 +103,49 @@ public class WingActivity extends AppCompatActivity {
             }
         });
 
-        makeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-               /*String tmp = nameEt.getText().toString();
-                if(tmp != null && tmp != ""){
-
-                    WingComponent wc = new WingComponent(getApplicationContext(), tmp, 0);
-                    rl.addView(wc);
-
-                    nameEt.setText("");
-                }*/
-
-            }
-        });
+        HttpTask httpTask = new HttpTask();
+        httpTask.getWing(Session.getInstance("noAcnt"), callbackGetWing);
 
 
     }
 
-    public class GetWingTask extends AsyncTask<String, Void, Void> {
 
-        private final String noAcnt;
-        private final HttpTask httpTask;
-
-        GetWingTask() {
-            this.noAcnt = Session.getInstance("noAcnt");
-            httpTask = new HttpTask();
+    private Callback callbackGetWing = new Callback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
+            Log.w("fail","---------------------------------------"+request);
         }
 
         @Override
-        protected Void doInBackground(String... params) {
-
-            if(params[0].equals("getWing")){
-                httpTask.getWing(noAcnt);
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
+        public void onResponse(Response response) throws IOException {
+            final String strJsonOutput = response.body().string();
+            Log.w("String","---------------------------------------"+strJsonOutput);
 
             try {
-                JSONObject list = httpTask.getReturnObj();
-                JSONArray wingComponentList = list.getJSONArray("result");
-                Log.w("RETURN", "-------------------------------" + wingComponentList);
+                final JSONObject jsonOutput = new JSONObject(strJsonOutput);
+                Log.w("JSON","---------------------------------------"+jsonOutput);
 
+                String result = jsonOutput.getString("result");
+                Log.w("RESULT", "------------------------"+result);
 
-                for(int i=0;i<wingComponentList.length();i++){
-                    JSONObject wingComponentObj = wingComponentList.getJSONObject(i);
-                    String no = wingComponentObj.getString("no_acnt");
-                    String name = wingComponentObj.getString("nick_acnt");
-                    int cnt = wingComponentObj.getInt("cnt_wi");
+                Message msg = handler.obtainMessage();
+                Bundle data = new Bundle();
+                data.putString("jsonString", result);
+                msg.setData(data);
+                handler.sendMessage(msg);
 
-                    WingComponent wc = new WingComponent(getApplicationContext(), no, name, cnt);
-                    Log.w("RETURN", "-------------------------------" + wc);
-                    rl.addView(wc);
-                }
+            }
+            catch (Exception e){
+                // before code
+                e.printStackTrace();
 
-            }catch (Exception e){}
+                Log.e("e","error occured");
+            }
         }
-
-        @Override
-        protected void onCancelled() {
-        }
-    }
+    };
 }
