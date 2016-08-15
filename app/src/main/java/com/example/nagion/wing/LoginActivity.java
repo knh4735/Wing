@@ -47,8 +47,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String id = idEt.getText().toString();
-                String pw = pwEt.getText().toString();
+                String id = "a";//idEt.getText().toString();
+                String pw = "a";//pwEt.getText().toString();
 
                 if(id.equals("")){
                     Toast.makeText(LoginActivity.this, "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
@@ -70,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
                         boolean sentToken = sharedPreferences
                                 .getBoolean("sentTokenToServer", false);
                         if (sentToken && Session.isSet()) {
-                            Log.w("wjatitasg","---------------------------------asdfsadasdgasdgasdg");
                             Intent i = new Intent(getApplicationContext(), WingActivity.class);
                             startActivity(i);
                             LoginActivity.this.finish();
