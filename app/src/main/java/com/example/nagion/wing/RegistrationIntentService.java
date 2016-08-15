@@ -4,9 +4,12 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -33,6 +36,14 @@ public class RegistrationIntentService extends IntentService {
         super(TAG);
     }
 
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if (msg.arg1 == 0) {
+                Toast.makeText(RegistrationIntentService.this, "잘못된 아이디 혹은 비밀번호입니다", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
     @Override
     protected void onHandleIntent(Intent intent) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -53,9 +64,11 @@ public class RegistrationIntentService extends IntentService {
             // [END get_token]
             Log.i(TAG, "GCM Registration Token: " + token);
 
-           // LoginTask lt = new LoginTask();
-           // lt.execute("login", "1", token);
-            sendRegistrationToServer(id, pw, token);
+            // LoginTask lt = new LoginTask();
+            // lt.execute("login", "1", token);
+            HttpTask httpTask = new HttpTask();
+            httpTask.login(id, pw, token, callbackSignUp);
+            //     sendRegistrationToServer(id, pw, token);
             // Subscribe to topic channels
             subscribeTopics(token);
 
@@ -74,90 +87,6 @@ public class RegistrationIntentService extends IntentService {
     }
 
     /**
-     * Persist registration to third-party servers.
-     *
-     * Modify this method to associate the user's GCM registration token with any server-side account
-     * maintained by your application.
-     *
-     * @param token The new token.
-     */
-    private void sendRegistrationToServer(String id, String pw, String token) {
-        OkHttpClient client = new OkHttpClient();
-
-        JSONObject jsonInput = new JSONObject();
-
-        try {
-            jsonInput.put("id", token);
-        } catch (Exception e) {
-             /* before code
-                e.printStackTrace();
-                */
-            Log.e("e","error occured");
-        }
-
-        HttpUrl httpUrl = new HttpUrl.Builder()
-                .scheme("http")
-                .host(HttpTask.hostUrl)
-                .port(8888)
-                .addPathSegment("wing.php")
-                .addQueryParameter("cmd", "login")// - get방식
-                .addQueryParameter("id", id)
-                .addQueryParameter("pw", pw)
-                .addQueryParameter("token", token)
-                .build();
-
-        RequestBody reqBody = RequestBody.create(
-                MediaType.parse("application/json; charset=utf-8"),
-                jsonInput.toString()
-        );
-
-        Request request = new Request.Builder()
-                .url(httpUrl)
-                //.post(reqBody)
-                .build();
-
-        Log.w("request", "---------------------------------------------"+request);
-
-
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
-    }
-
-    private Callback callbackAfterGettingMessage = new Callback() {
-        @Override
-        public void onFailure(Request request, IOException e) {
-            /* before code
-                e.printStackTrace();
-                */
-            Log.e("e","error occured");
-            Log.w("fail","---------------------------------------"+request);
-        }
-
-        @Override
-        public void onResponse(Response response) throws IOException {
-            try {
-                final String strJsonOutput = response.body().string();
-                Log.w("json","---------------------------------------"+strJsonOutput);
-                Intent registrationComplete = new Intent("registrationComplete");
-                LocalBroadcastManager.getInstance(RegistrationIntentService.this).sendBroadcast(registrationComplete);
-
-                final JSONObject jsonOutput = new JSONObject(strJsonOutput);
-                Log.w("json","---------------------------------------"+jsonOutput);
-
-                Session.setSession(jsonOutput);
-
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                sharedPreferences.edit().putBoolean("sentTokenToServer", true).apply();
-
-            }
-            catch (Exception e){
-                 /* before code
-                e.printStackTrace();
-                */
-                Log.e("e","error occured");
-            }
-        }
-    };
-    /**
      * Subscribe to any GCM topics of interest, as defined by the TOPICS constant.
      *
      * @param token GCM token
@@ -171,5 +100,49 @@ public class RegistrationIntentService extends IntentService {
         }
     }
     // [END subscribe_topics]
+    private Callback callbackSignUp = new Callback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
+            Log.w("fail","---------------------------------------"+request);
+        }
 
+        @Override
+        public void onResponse(Response response) throws IOException {
+            final String strJsonOutput = response.body().string();
+            Log.w("String","---------------------------------------"+strJsonOutput);
+
+            try {
+                final JSONObject jsonOutput = new JSONObject(strJsonOutput);
+                Log.w("JSON","---------------------------------------"+jsonOutput);
+
+                String result = jsonOutput.getString("result");
+                Log.w("RESULT", "------------------------"+result);
+
+                if(result.equals("Wrong")) {
+                    Message msg = handler.obtainMessage();
+                    msg.arg1 = 0;
+                    handler.sendMessage(msg);
+                }
+                else {
+                    Session.setSession(jsonOutput);
+
+                    Intent registrationComplete = new Intent("registrationComplete");
+                    LocalBroadcastManager.getInstance(RegistrationIntentService.this).sendBroadcast(registrationComplete);
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    sharedPreferences.edit().putBoolean("sentTokenToServer", true).apply();
+                }
+            }
+            catch (Exception e){
+                // before code
+                e.printStackTrace();
+
+                Log.e("e","error occured");
+            }
+        }
+    };
 }

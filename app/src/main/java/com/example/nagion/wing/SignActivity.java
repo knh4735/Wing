@@ -3,6 +3,9 @@ package com.example.nagion.wing;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,13 +14,47 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.logging.LogRecord;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignActivity extends AppCompatActivity {
     boolean checkok = false, duplechecked = false;
+
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if (msg.arg1 == 1) {
+                duplechecked = true;
+                Toast.makeText(SignActivity.this, "사용 가능한 아이디입니다.", Toast.LENGTH_SHORT).show();
+            }
+            else if(msg.arg1 == 2) {
+                duplechecked = false;
+                Toast.makeText(SignActivity.this, "같은 아이디가 존재합니다.", Toast.LENGTH_SHORT).show();
+            }
+            else if(msg.arg1 == 3){
+                duplechecked = false;
+                Toast.makeText(SignActivity.this, "알 수 없는 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+            }
+            else if(msg.arg1 == 0){
+                if(msg.arg2 == 1){
+                    Toast.makeText(SignActivity.this, "정상적으로 가입되었습니다.", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(SignActivity.this, "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,9 +216,8 @@ public class SignActivity extends AppCompatActivity {
                             phone = phonenumEt.getText().toString(),
                             intro = selfEt.getText().toString();
 
-                    SignTask st = new SignTask();
-                    st.execute("signUp", id, pw, nick, name, email, phone, intro);
-
+                    HttpTask httpTask = new HttpTask();
+                    httpTask.signUp(id, pw, nick, name, email, phone, intro, callbackSignUp);
                 }
                 else{//하나라도 틀린게 있을때.
                     Toast.makeText(SignActivity.this, "형식이 맞지 않거나, 중복확인에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
@@ -198,12 +234,14 @@ public class SignActivity extends AppCompatActivity {
                 }
                 else {
                     String id = idEt.getText().toString();
-                        duplechecked = true;
-                        SignTask st = new SignTask();
-                        st.execute("duplicatedId", id);
+                        duplechecked = false;
+                        HttpTask httpTask = new HttpTask();
+                        httpTask.duplicatedId(id, callbackDuplicatedId);
                     }
                 }
         });
+
+
     }
     private boolean checkEmail(EditText emailEt){
         String email = emailEt.getText().toString();
@@ -316,74 +354,85 @@ public class SignActivity extends AppCompatActivity {
         return 5;
     }
 
-    public class SignTask extends AsyncTask<String, Void, Void> {
 
-        String flag;
-
-        private final HttpTask httpTask;
-
-        SignTask() {
-            httpTask = new HttpTask();
-        }
-
+    private Callback callbackDuplicatedId = new Callback() {
         @Override
-        protected Void doInBackground(String... params) {
-
-            if(params[0].equals("signUp")){
-                httpTask.signUp(params);
-                flag = "signUp";
-            }
-            else if(params[1].equals("duplicatedId")){
-                httpTask.duplicatedId(params[1]);
-                flag = "duplicatedId";
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-            try {
-                if(flag.equals("signUp")) {
-                    JSONObject list = httpTask.getReturnObj();
-                    String result = list.getString("result");
-
-                    if (result.equals("Success")) {
-                        Toast.makeText(SignActivity.this, "정상적으로 가입되었습니다.", Toast.LENGTH_SHORT).show();
-
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(SignActivity.this, "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else if(flag.equals("duplicatedId")){
-                    JSONObject list = httpTask.getReturnObj();
-                    String result = list.getString("result");
-
-                    if (result.equals("SAFE")) {
-                        duplechecked = true;
-                        Toast.makeText(SignActivity.this, "사용 가능한 아이디입니다.", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(result.equals("DUPLICATED")) {
-                        Toast.makeText(SignActivity.this, "같은 아이디가 존재합니다.", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(result.equals("FAIL")){
-                        Toast.makeText(SignActivity.this, "알 수 없는 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-            catch (Exception e){
-                 /* before code
+        public void onFailure(Request request, IOException e) {
+             /* before code
                 e.printStackTrace();
                 */
+            Log.e("e","error occured");
+            Log.w("fail","---------------------------------------"+request);
+        }
+
+        @Override
+        public void onResponse(Response response) throws IOException {
+            final String strJsonOutput = response.body().string();
+            Log.w("String","---------------------------------------"+strJsonOutput);
+
+            try {
+                final JSONObject jsonOutput = new JSONObject(strJsonOutput);
+                Log.w("JSON","---------------------------------------"+jsonOutput);
+
+                String result = jsonOutput.getString("result");
+                Log.w("RESULT", "------------------------"+result);
+
+                Message msg = handler.obtainMessage();
+                switch (result){
+                    case "SAFE" : msg.arg1 = 1; break;
+                    case "DUPLICATED" : msg.arg1 = 2; break;
+                    case "FAIL" : msg.arg1 = 3; break;
+                    default : msg.arg1 = 3; break;
+                }
+                handler.sendMessage(msg);
+
+            }
+            catch (Exception e){
+                 // before code
+                e.printStackTrace();
+
                 Log.e("e","error occured");
             }
         }
+    };
+
+    private Callback callbackSignUp = new Callback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
+            Log.w("fail","---------------------------------------"+request);
+        }
 
         @Override
-        protected void onCancelled() {
-        }
-    }
+        public void onResponse(Response response) throws IOException {
+            final String strJsonOutput = response.body().string();
+            Log.w("String","---------------------------------------"+strJsonOutput);
 
+            try {
+                final JSONObject jsonOutput = new JSONObject(strJsonOutput);
+                Log.w("JSON","---------------------------------------"+jsonOutput);
+
+                String result = jsonOutput.getString("result");
+                Log.w("RESULT", "------------------------"+result);
+
+               Message msg = handler.obtainMessage();
+                msg.arg1 = 0;
+                switch (result){
+                    case "Success" : msg.arg2 = 1; break;
+                    default : msg.arg2 = 2; break;
+                }
+                handler.sendMessage(msg);
+
+            }
+            catch (Exception e){
+                // before code
+                e.printStackTrace();
+
+                Log.e("e","error occured");
+            }
+        }
+    };
 }
