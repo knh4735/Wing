@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,11 +38,11 @@ public class ConfirmComponent  extends LinearLayout {
             try{
                 if(msg.arg1 == 1) {
                     Toast.makeText(getContext(), "친구가 되었습니다!", Toast.LENGTH_SHORT).show();
-                    //TODO ConfirmActivity.removeComponent(ConfirmComponent.this);
+                    ((ViewGroup)getParent()).removeView(ConfirmComponent.this);
                 }
                 else if(msg.arg1 == 2){
                     Toast.makeText(getContext(), "거절하였습니다.", Toast.LENGTH_SHORT).show();
-                    //TODO ConfirmActivity.removeComponent(ConfirmComponent.this);
+                    ((ViewGroup)getParent()).removeView(ConfirmComponent.this);
                 }
                 else {
                     Toast.makeText(getContext(), "잘못된 요청입니다.", Toast.LENGTH_SHORT).show();

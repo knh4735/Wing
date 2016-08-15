@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,7 +39,7 @@ public class WingComponent extends LinearLayout {
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             if(msg.arg1 == 1){
-                //TODO 이 뷰 삭제, wing gcm 수신시 뷰 생성 ㅠㅠ
+                ((ViewGroup)getParent()).removeView(WingComponent.this);
             }
             else {
                 Toast.makeText(getContext(), "잘못된 접근입니다.", Toast.LENGTH_SHORT).show();
@@ -72,6 +73,7 @@ public class WingComponent extends LinearLayout {
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
         View v = li.inflate(R.layout.wing_component, this, false);
         addView(v);
+        //TODO 커스텀윙
 
         TextView nameTv = (TextView) findViewById(R.id.nameTv);
         TextView cntTv = (TextView) findViewById(R.id.cntTv);

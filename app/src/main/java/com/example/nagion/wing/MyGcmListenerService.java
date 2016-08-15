@@ -75,7 +75,7 @@ public class MyGcmListenerService extends GcmListenerService {
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
-        //TODO 앱 실행중일땐(아니면 WingActivity 보고있을때) 화면 갱신 아닐땐 푸시알림 - 푸시알림 누르면 Wing화면으로 이동
+        //TODO 앱 실행중일땐(아니면 WingActivity 보고있을때) 화면 갱신(윙컴포넌트 생성) 아닐땐 푸시알림 - 푸시알림 누르면 Wing화면으로 이동
         sendNotification(message);
         // [END_EXCLUDE]
     }
