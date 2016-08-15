@@ -47,12 +47,23 @@ public class MyGcmListenerService extends GcmListenerService {
             if (cmd.equals("WING")) {
                 //윙
                 Log.w("FROM", "-----------------------------------------" + msgToken[1]);
-                Log.w("TIME", "-----------------------------------------" + msgToken[2]);
+                Log.w("NAME", "-----------------------------------------" + msgToken[2]);
+                Log.w("CNT", "-----------------------------------------" + msgToken[3]);
+                Log.w("TIME", "-----------------------------------------" + msgToken[4]);
+                sendWingNotification(msgToken[1], msgToken[2], msgToken[3]);
+            } else if (cmd.equals("CUSTOMWING")) {
+                //커스텀윙
+                Log.w("FROM", "-----------------------------------------" + msgToken[1]);
+                Log.w("NAME", "-----------------------------------------" + msgToken[2]);
+                Log.w("PATTERN", "-----------------------------------------" + msgToken[3]);
+                Log.w("TIME", "-----------------------------------------" + msgToken[4]);
+                sendCustomWingNotification(msgToken[1], msgToken[2], msgToken[3]);
             } else if (cmd.equals("FR")) {
                 //친구요청
                 Log.w("FROM", "-----------------------------------------" + msgToken[1]);
                 Log.w("MESSAGE", "-----------------------------------------" + msgToken[2]);
                 Log.w("TIME", "-----------------------------------------" + msgToken[3]);
+                sendRequestNotification(msgToken[1], msgToken[2]);
             }
         }
         catch (Exception e){
@@ -75,7 +86,6 @@ public class MyGcmListenerService extends GcmListenerService {
          * that a message was received.
          */
         //TODO 앱 실행중일땐(아니면 WingActivity 보고있을때) 화면 갱신(윙컴포넌트 생성) 아닐땐 푸시알림 - 푸시알림 누르면 Wing화면으로 이동
-        sendNotification(message);
         // [END_EXCLUDE]
     }
     // [END receive_message]
@@ -83,22 +93,88 @@ public class MyGcmListenerService extends GcmListenerService {
     /**
      * Create and show a simple notification containing the received GCM message.
      *
-     * @param message GCM message received.
+     *
      */
-    private void sendNotification(String message) {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void sendWingNotification(String from, String name, String cnt) {
+        Intent intent = new Intent(this, WingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        long[] ptrn = {0, 1000};
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                .setContentTitle("GCM Message")
-                .setContentText(message)
+                .setContentTitle("Wing")
+                .setContentText(name+"으로부터 위-ㅇ")
+                .setVibrate(ptrn)
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
+/*
+        Vibrator vibe;
+        vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibe.vibrate(pattern, -1);*/
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void sendCustomWingNotification(String from, String name, String pattern) {
+        Intent intent = new Intent(this, WingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+
+
+        String[] ptrnToken = pattern.split("^");
+        long ptrn[] = new long[ptrnToken.length];
+
+        for(int i=0;i<ptrnToken.length;i++){
+            ptrn[i] = Long.parseLong(ptrnToken[i]);
+        }
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_stat_ic_notification)
+                .setContentTitle("Wing")
+                .setContentText(name+"으로부터 커스텀 위-ㅇ")
+                .setVibrate(ptrn)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent);
+/*
+        Vibrator vibe;
+        vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibe.vibrate(pattern, -1);*/
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void sendRequestNotification(String from, String name) {
+        Intent intent = new Intent(this, ConfirmActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        long[] ptrn = {0, 1000};
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_stat_ic_notification)
+                .setContentTitle("Wing")
+                .setContentText(name+"으로부터 친구 요청")
+                .setAutoCancel(true)
+                .setVibrate(ptrn)
+                .setContentIntent(pendingIntent);
+
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

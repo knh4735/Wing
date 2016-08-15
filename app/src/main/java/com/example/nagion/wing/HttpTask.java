@@ -239,6 +239,43 @@ public class HttpTask {
         client.newCall(request).enqueue(callback);
     }
 
+    public void customWing(String id, String pattern, Callback callback) {
+        JSONObject jsonInput = new JSONObject();
+
+        try {
+            jsonInput.put("id", id);
+        } catch (Exception e) {
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
+        }
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme(http)
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "customWing")// - get방식
+                .addQueryParameter("from", Session.getInstance("noAcnt"))
+                .addQueryParameter("to", id)
+                .addQueryParameter("pattern", pattern)
+                .build();
+
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callback);
+    }
+
     public void logout(String acnt, String token) {
 
 

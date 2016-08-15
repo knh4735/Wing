@@ -1,14 +1,26 @@
 package com.example.nagion.wing;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -17,14 +29,27 @@ public class VibeActivity extends AppCompatActivity {
 
     Button vibeBtn, finishBtn;
 
+    String to;
     List<Long> ptrn = new ArrayList<Long>();
 
-    long pattern[];
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if(msg.arg1 == 1){
+                VibeActivity.this.finish();
+            }
+            else {
+                Toast.makeText(getApplicationContext(), "잘못된 접근입니다.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vibe);
+
+        Intent intent = getIntent();
+        to = intent.getStringExtra("to");
 
         vibeBtn = (Button) findViewById(R.id.vibe);
         finishBtn = (Button) findViewById(R.id.complete);
@@ -61,20 +86,60 @@ public class VibeActivity extends AppCompatActivity {
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pattern = new long[ptrn.size()+1];
-                pattern[0] = 0;
+                String ptrnString = "0";
                 int i = 1;
                 for (Long l : ptrn) {
-                    pattern[i++] = l;
+                    ptrnString += "^"+String.valueOf(l);
                 }
 
                 ptrn = new ArrayList<Long>();
 
-                Vibrator vibe;
-                vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                vibe.vibrate(pattern, -1);
+                HttpTask httpTask = new HttpTask();
+                httpTask.customWing(to, ptrnString, callbackCustomWing);
             }
         });
-
     }
+
+
+
+    private Callback callbackCustomWing = new Callback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
+            Log.w("fail","---------------------------------------"+request);
+        }
+
+        @Override
+        public void onResponse(Response response) throws IOException {
+            final String strJsonOutput = response.body().string();
+            Log.w("String","---------------------------------------"+strJsonOutput);
+
+            try {
+                final JSONObject jsonOutput = new JSONObject(strJsonOutput);
+                Log.w("JSON","---------------------------------------"+jsonOutput);
+
+                String result = jsonOutput.getString("result");
+                Log.w("RESULT", "------------------------"+result);
+
+                Message msg = handler.obtainMessage();
+                if(result.equals("Success")){
+                    msg.arg1 = 1;
+                }
+                else{
+                    msg.arg1 = 0;
+                }
+                handler.sendMessage(msg);
+
+            }
+            catch (Exception e){
+                // before code
+                //e.printStackTrace();
+
+                Log.e("e","error occured");
+            }
+        }
+    };
 }

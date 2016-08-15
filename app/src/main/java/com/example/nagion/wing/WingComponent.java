@@ -98,6 +98,7 @@ public class WingComponent extends LinearLayout {
             public void onClick(View view) {
                 Context context = getContext();
                 Intent intent = new Intent(context, VibeActivity.class);
+                intent.putExtra("to", noAcnt);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
