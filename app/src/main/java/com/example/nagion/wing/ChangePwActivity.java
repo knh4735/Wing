@@ -31,6 +31,7 @@ public class ChangePwActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             try{
                 if(msg.arg1 == 1) {
+                    Session.destroySession(getApplicationContext());
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
