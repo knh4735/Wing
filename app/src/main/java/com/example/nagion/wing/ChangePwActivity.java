@@ -48,7 +48,8 @@ public class ChangePwActivity extends AppCompatActivity {
                     case 2: notice.setText("비밀번호에 아이디를 사용할 수 없습니다.");break;
                     case 3: notice.setText("동일 문자를 3번 이상 사용할수 없습니다.");break;
                     case 4: notice.setText("비밀번호가 일치하지 않습니다.");break;
-                    case 5: notice.setText("비밀번호 또는 비밀번호 확인을 입력해주세요.");break;
+                    case 5: notice.setText("비밀번호 또는 비밀번호 확인을 입력해주세요.");
+                    case 6: notice.setText("영문자, 숫자, 특수문자('-' 제외)의 조합으로 입력해주세요");break;
                     default: break;
                 }
             }
@@ -59,7 +60,7 @@ public class ChangePwActivity extends AppCompatActivity {
             public void onFocusChange(View view, boolean b) {
                 TextView notice = (TextView) findViewById(R.id.noticePwStatus);
                 notice.setTextColor(0xFFFF0000);
-                int tmp = checkPw(id, pwEt, confirmPwEt);
+                int tmp = checkPw(id, confirmPwEt, pwEt);
                 switch (tmp){
                     case 0: notice.setText("비밀번호가 일치합니다.");break;
                     case 1: notice.setText("비밀번호는 문자, 숫자, 특수문자의 조합으로 6~16자리로 입력해주세요.");break;
@@ -67,6 +68,7 @@ public class ChangePwActivity extends AppCompatActivity {
                     case 3: notice.setText("동일 문자를 3번 이상 사용할수 없습니다.");break;
                     case 4: notice.setText("비밀번호가 일치하지 않습니다.");break;
                     case 5: notice.setText("비밀번호 또는 비밀번호 확인을 입력해주세요");break;
+                    case 6: notice.setText("영문자, 숫자, 특수문자('-' 제외)의 조합으로 입력해주세요");break;
                     default: break;
                 }
             }
@@ -102,9 +104,6 @@ public class ChangePwActivity extends AppCompatActivity {
             return 1;
         }
 
-        if(pw.matches("([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])")) {
-            return 1;
-        }
         if(id.indexOf(pw)>-1){
             return 2;
         }
@@ -122,6 +121,11 @@ public class ChangePwActivity extends AppCompatActivity {
         }
         if(same>1){
             return 3;
+        }
+        Pattern p = Pattern.compile("^(?=.*[a-zA-Z]+)(?=.*[!@#$%^*+=-_]+)(?=.*[0-9]+).{6,16}$");
+        Matcher m = p.matcher(pw);
+        if(!m.matches()) {
+            return 6;
         }
         if(!pw.isEmpty() && !confirmPw.isEmpty()){
             if(pw.equals(confirmPw)){

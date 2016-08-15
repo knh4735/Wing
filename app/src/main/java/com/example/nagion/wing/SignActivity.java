@@ -66,6 +66,7 @@ public class SignActivity extends AppCompatActivity {
                     case 3: notice1.setText("동일 문자를 3번 이상 사용할수 없습니다.");break;
                     case 4: notice1.setText("비밀번호가 일치하지 않습니다.");break;
                     case 5: notice1.setText("비밀번호를 입력해주세요");break;
+                    case 6: notice1.setText("영문자, 숫자, 특수문자('-' 제외)의 조합으로 입력해주세요");break;
                     default: break;
                 }
             }
@@ -73,7 +74,7 @@ public class SignActivity extends AppCompatActivity {
         confirmPwEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                int tmp = checkPw(idEt, pwEt, confirmPwEt);
+                int tmp = checkPw(idEt, confirmPwEt, pwEt);
                 switch (tmp){
                     case 0: notice1.setText("비밀번호가 일치합니다.");break;
                     case 1: notice1.setText("비밀번호는 문자, 숫자, 특수문자의 조합으로 6~16자리로 입력해주세요.");break;
@@ -81,6 +82,7 @@ public class SignActivity extends AppCompatActivity {
                     case 3: notice1.setText("동일 문자를 3번 이상 사용할수 없습니다.");break;
                     case 4: notice1.setText("비밀번호가 일치하지 않습니다.");break;
                     case 5: notice1.setText("비밀번호를 입력해주세요");break;
+                    case 6: notice1.setText("영문자, 숫자, 특수문자('-' 제외)의 조합로 입력해주세요");break;
                     default: break;
                 }
             }
@@ -278,9 +280,6 @@ public class SignActivity extends AppCompatActivity {
             return 1;
         }
 
-        if(pw.matches("([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])")) {
-            return 1;
-        }
         if(id.indexOf(pw)>-1){
             return 2;
         }
@@ -299,6 +298,12 @@ public class SignActivity extends AppCompatActivity {
         if(same>1){
             return 3;
         }
+        Pattern p = Pattern.compile("^(?=.*[a-zA-Z]+)(?=.*[!@#$%^*+=-_]+)(?=.*[0-9]+).{6,16}$");
+        Matcher m = p.matcher(pw);
+        if(!m.matches()) {
+            return 6;
+        }
+
         if(!pw.isEmpty() && !confirmPw.isEmpty()){
             if(pw.equals(confirmPw)){
                 return 0;
@@ -307,6 +312,7 @@ public class SignActivity extends AppCompatActivity {
                 return 4;
             }
         }
+
         return 5;
     }
 

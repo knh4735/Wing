@@ -31,10 +31,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        EditText idEt;
-        EditText pwEt;
-        Button loginBtn;
-        Button signBtn;
+        final EditText idEt;
+        final EditText pwEt;
+        final Button loginBtn;
+        final Button signBtn;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
