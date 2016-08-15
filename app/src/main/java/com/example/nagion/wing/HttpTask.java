@@ -3,6 +3,7 @@ package com.example.nagion.wing;
 
 import android.util.Log;
 
+import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.MediaType;
@@ -292,16 +293,7 @@ public class HttpTask {
         client.newCall(request).enqueue(callbackAfterGettingMessage);
     }
 
-    public void signUp(String... params) {
-
-        String id = params[1],
-                pw = params[2],
-                nick = params[3],
-                name = params[4],
-                phone = params[5],
-                email = params[6],
-                intro = params[7];
-
+    public void signUp(String id, String pw, String nick, String name, String email, String phone, String intro, Callback callbackSignUp) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme(http)
@@ -329,10 +321,10 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callbackSignUp);
     }
 
-    public void duplicatedId(String id) {
+    public void duplicatedId(String id, Callback callback) {
 
         HttpUrl httpUrl = new HttpUrl.Builder()
                 .scheme(http)
@@ -354,7 +346,7 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
 
@@ -531,5 +523,47 @@ public class HttpTask {
         Log.w("request","-----------------------------------"+request);
 
         client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+    public void login(String id, String pw, String token, Callback callback) {
+
+        OkHttpClient client = new OkHttpClient();
+
+        JSONObject jsonInput = new JSONObject();
+
+        try {
+            jsonInput.put("id", token);
+        } catch (Exception e) {
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
+        }
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(HttpTask.hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "login")// - get방식
+                .addQueryParameter("id", id)
+                .addQueryParameter("pw", pw)
+                .addQueryParameter("token", token)
+                .build();
+
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+
+        Log.w("request", "---------------------------------------------"+request);
+
+
+        client.newCall(request).enqueue(callback);
     }
 }

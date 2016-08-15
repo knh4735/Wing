@@ -31,8 +31,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        EditText idEt;
-        EditText pwEt;
+        final EditText idEt;
+        final EditText pwEt;
         Button loginBtn;
         Button signBtn;
         super.onCreate(savedInstanceState);
@@ -69,7 +69,8 @@ public class LoginActivity extends AppCompatActivity {
                                 PreferenceManager.getDefaultSharedPreferences(context);
                         boolean sentToken = sharedPreferences
                                 .getBoolean("sentTokenToServer", false);
-                        if (sentToken) {
+                        if (sentToken && Session.isSet()) {
+                            Log.w("wjatitasg","---------------------------------asdfsadasdgasdgasdg");
                             Intent i = new Intent(getApplicationContext(), WingActivity.class);
                             startActivity(i);
                             LoginActivity.this.finish();

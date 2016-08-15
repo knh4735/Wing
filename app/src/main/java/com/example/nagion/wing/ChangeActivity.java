@@ -2,6 +2,7 @@ package com.example.nagion.wing;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,8 +13,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -236,4 +242,43 @@ public class ChangeActivity extends AppCompatActivity {
         protected void onCancelled() {
         }
     }
+
+    private Callback callbackChangeInfo = new Callback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+             /* before code
+                e.printStackTrace();
+                */
+            Log.e("e","error occured");
+            Log.w("fail","---------------------------------------"+request);
+        }
+
+        @Override
+        public void onResponse(Response response) throws IOException {
+            final String strJsonOutput = response.body().string();
+            Log.w("String","---------------------------------------"+strJsonOutput);
+
+            try {
+                final JSONObject jsonOutput = new JSONObject(strJsonOutput);
+                Log.w("JSON","---------------------------------------"+jsonOutput);
+
+                String result = jsonOutput.getString("result");
+                Log.w("RESULT", "------------------------"+result);
+
+                if(result.equals("Success")){
+                    Intent intent = new Intent(getApplicationContext(), WingActivity.class);
+                    Log.w("intent", "-------------------------------" + intent);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+
+            }
+            catch (Exception e){
+                // before code
+                //e.printStackTrace();
+
+                Log.e("e","error occured");
+            }
+        }
+    };
 }
