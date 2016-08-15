@@ -114,7 +114,7 @@ public class Session {
     public static boolean isSet(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        return sharedPreferences.getBoolean("isSetSession", true);
+        return sharedPreferences.getBoolean("isSetSession", false);
     }
 
     public static void destroySession(Context context){
