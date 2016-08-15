@@ -1,6 +1,7 @@
 package com.example.nagion.wing;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,15 +11,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ChangePwActivity extends AppCompatActivity {
 
+    String bfPw;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_pw);
+
+        Intent intent = getIntent();
+        bfPw = intent.getStringExtra("bfPw");
 
         setContent();
     }
@@ -73,11 +81,10 @@ public class ChangePwActivity extends AppCompatActivity {
                 if(checkPw(id, pwEt, confirmPwEt)==0)
                     checkok = true;
                 if(checkok) {
-                    //todo 비밀번호 서버로 전송하기.
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity_1.class);
-                    Log.w("intent", "-------------------------------" + intent);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                    String pw = pwEt.getText().toString();
+
+                    ChangePwTask cpt = new ChangePwTask();
+                    cpt.execute("changePw", bfPw, pw);
                 }
                 else{//하나라도 틀린게 있을때.
                     Toast.makeText(ChangePwActivity.this, "형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();
@@ -126,4 +133,46 @@ public class ChangePwActivity extends AppCompatActivity {
         return 5;
     }
 
+
+    public class ChangePwTask extends AsyncTask<String, Void, Void> {
+
+        private final HttpTask httpTask;
+
+        ChangePwTask() {
+            httpTask = new HttpTask();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            if(params[0].equals("changePw")){
+                httpTask.changePw(Session.getInstance("noAcnt"), params[1], params[2]);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+
+            try {
+                JSONObject list = httpTask.getReturnObj();
+                String result = list.getString("result");
+                Log.w("RETURN", "-------------------------------" + result);
+
+                if(result.equals("Success")) {
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    Log.w("intent", "-------------------------------" + intent);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
+    }
 }

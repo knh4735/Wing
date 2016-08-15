@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         DBUtil db = new DBUtil(MainActivity.this, "Wing", null, 1);
-        final boolean isLogined = false;// db.isLogined();
+        final boolean isLogined = Session.isSet();
 //aa
         new Handler().postDelayed(new Runnable() {
             @Override

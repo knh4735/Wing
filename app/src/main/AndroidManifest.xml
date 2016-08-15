@@ -30,9 +30,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity_1"
-            android:label="@string/title_activity_login" />
-        <activity
             android:name=".MenuActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity android:name=".SearchActivity" />

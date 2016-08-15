@@ -34,30 +34,6 @@ public class MyGcmListenerService extends GcmListenerService {
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 
-        if (from.startsWith("/topics/")) {
-            // message received from some topic.
-        } else {
-
-            try {
-                msgToken = message.split("||");
-                String cmd = msgToken[0];
-                if (cmd.equals("WING")) {
-                    //윙
-                    Log.w("FROM", "-----------------------------------------" + msgToken[1]);
-                    Log.w("TIME", "-----------------------------------------" + msgToken[2]);
-                } else if (cmd.equals("FR")) {
-                    //친구요청
-                    Log.w("FROM", "-----------------------------------------" + msgToken[1]);
-                    Log.w("MESSAGE", "-----------------------------------------" + msgToken[2]);
-                    Log.w("TIME", "-----------------------------------------" + msgToken[3]);
-                }
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-
-        }
-
         // [START_EXCLUDE]
         /**
          * Production applications would usually process the message here.
@@ -66,10 +42,30 @@ public class MyGcmListenerService extends GcmListenerService {
          *     - Update UI.
          */
 
+        try {
+            msgToken = message.split("||");
+            String cmd = msgToken[0];
+            if (cmd.equals("WING")) {
+                //윙
+                Log.w("FROM", "-----------------------------------------" + msgToken[1]);
+                Log.w("TIME", "-----------------------------------------" + msgToken[2]);
+            } else if (cmd.equals("FR")) {
+                //친구요청
+                Log.w("FROM", "-----------------------------------------" + msgToken[1]);
+                Log.w("MESSAGE", "-----------------------------------------" + msgToken[2]);
+                Log.w("TIME", "-----------------------------------------" + msgToken[3]);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+
         /**
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
+        //TODO 앱 실행중일땐(아니면 WingActivity 보고있을때) 화면 갱신 아닐땐 푸시알림 - 푸시알림 누르면 Wing화면으로 이동
         sendNotification(message);
         // [END_EXCLUDE]
     }

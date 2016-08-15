@@ -38,6 +38,14 @@ public class WingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wing);
 
+        if(!Session.isSet()){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            startActivity(intent);
+        }
+
+
         nameEt = (EditText) findViewById(R.id.nameEt);
         makeBtn = (Button) findViewById(R.id.makeBtn);
         rl = (LinearLayout) findViewById(R.id.wrapper);
@@ -53,8 +61,8 @@ public class WingActivity extends AppCompatActivity {
         });
 
 
-        WingTask wt = new WingTask();
-        wt.execute("getWing");
+        GetWingTask gwt = new GetWingTask();
+        gwt.execute("getWing");
 
         Button vibe = (Button) findViewById(R.id.vibe);
         vibe.setOnClickListener(new View.OnClickListener() {
@@ -68,8 +76,7 @@ public class WingActivity extends AppCompatActivity {
         makeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                WingTask wt = new WingTask();
-                wt.execute("wing");
+
                /*String tmp = nameEt.getText().toString();
                 if(tmp != null && tmp != ""){
 
@@ -85,12 +92,12 @@ public class WingActivity extends AppCompatActivity {
 
     }
 
-    public class WingTask extends AsyncTask<String, Void, Void> {
+    public class GetWingTask extends AsyncTask<String, Void, Void> {
 
         private final String noAcnt;
         private final HttpTask httpTask;
 
-        WingTask() {
+        GetWingTask() {
             this.noAcnt = Session.getInstance("noAcnt");
             httpTask = new HttpTask();
         }
@@ -100,9 +107,6 @@ public class WingActivity extends AppCompatActivity {
 
             if(params[0].equals("getWing")){
                 httpTask.getWing(noAcnt);
-            }
-            else if(params[0].equals("wing")){
-                httpTask.wing(noAcnt);
             }
 
             return null;
@@ -119,10 +123,11 @@ public class WingActivity extends AppCompatActivity {
 
                 for(int i=0;i<wingComponentList.length();i++){
                     JSONObject wingComponentObj = wingComponentList.getJSONObject(i);
+                    String no = wingComponentObj.getString("no_acnt");
                     String name = wingComponentObj.getString("nick_acnt");
                     int cnt = wingComponentObj.getInt("cnt_wi");
 
-                    WingComponent wc = new WingComponent(getApplicationContext(), name, cnt);
+                    WingComponent wc = new WingComponent(getApplicationContext(), no, name, cnt);
                     Log.w("RETURN", "-------------------------------" + wc);
                     rl.addView(wc);
                 }

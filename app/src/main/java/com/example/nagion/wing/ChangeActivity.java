@@ -1,6 +1,7 @@
 package com.example.nagion.wing;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,15 +12,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ChangeActivity extends AppCompatActivity {
 
+    String pw;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change);
+
+        Intent intent = getIntent();
+        pw = intent.getStringExtra("pw");
 
         setContent();
     }
@@ -35,6 +43,13 @@ public class ChangeActivity extends AppCompatActivity {
                 selfck = (CheckBox) findViewById(R.id.checkself);
 
         final Button pwchange = (Button) findViewById(R.id.pwchange);
+
+        nicknameEt.setText(Session.getInstance("nickAcnt"));
+        nameEt.setText(Session.getInstance("nameSi"));
+        phonenumEt.setText(Session.getInstance("phoneSi"));
+        emailEt.setText(Session.getInstance("emailSi"));
+        selfEt.setText(Session.getInstance("introSi"));
+
 
         final TextView notice1 = (TextView) findViewById(R.id.noticeemailStatus);
         notice1.setTextColor(0xFFFF0000);
@@ -76,6 +91,7 @@ public class ChangeActivity extends AppCompatActivity {
         pwchange.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
                 Intent i = new Intent(getApplicationContext(),ChangePwActivity.class);
+                i.putExtra("bfPw", pw);
                 startActivity(i);
             }
         });
@@ -93,14 +109,22 @@ public class ChangeActivity extends AppCompatActivity {
                     }
                 }
                 if(checkok) {
-                    //TODO 변경시 정보 받아서 서버로 전송하기.
                     //전달 정보 : emailEt, nameEt, selfEt,nicknameEt.
                     //null값이 전달될 경우 변경사항 없는걸로.
                     //체크 사항은 nameck,emailck,numberck,selfck + .ischecked()로 하시면 됨.
-                    Intent intent = new Intent(getApplicationContext(), WingActivity.class);
-                    Log.w("intent", "-------------------------------" + intent);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+
+                    String nick = nicknameEt.getText().toString(),
+                            name = nameEt.getText().toString(),
+                            phone = phonenumEt.getText().toString(),
+                            email = emailEt.getText().toString(),
+                            intro = selfEt.getText().toString(),
+                            nameCk = String.valueOf(nameck.isChecked()),
+                            phoneCk = String.valueOf(numberck.isChecked()),
+                            emailCk = String.valueOf(emailck.isChecked()),
+                            introCk = String.valueOf(selfck.isChecked());
+
+                    ChangeTask ct = new ChangeTask();
+                    ct.execute("changeInfo", pw, nick, name, phone, email, intro, nameCk, phoneCk, emailCk, introCk);
                 }
                 else{//하나라도 틀린게 있을때.
                     Toast.makeText(ChangeActivity.this, "형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();
@@ -145,6 +169,50 @@ public class ChangeActivity extends AppCompatActivity {
             return returnval;
         }catch (Exception e){
             return false;
+        }
+    }
+
+    public class ChangeTask extends AsyncTask<String, Void, String> {
+
+        private final HttpTask httpTask;
+
+        ChangeTask() {
+            httpTask = new HttpTask();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            if(params[0].equals("changeInfo")){
+                httpTask.changeInfo(params);
+            }
+
+            return params[1];
+        }
+
+        @Override
+        protected void onPostExecute(String pw) {
+
+            try {
+                JSONObject list = httpTask.getReturnObj();
+                String result = list.getString("result");
+                Log.w("RETURN", "-------------------------------" + result);
+
+                if(result.equals("Success")){
+                    Intent intent = new Intent(getApplicationContext(), WingActivity.class);
+                    Log.w("intent", "-------------------------------" + intent);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
         }
     }
 }

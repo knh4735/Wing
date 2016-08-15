@@ -46,9 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), WingActivity.class);
-                startActivity(i);
-                LoginActivity.this.finish();
 
                 String id = "a";//idEt.getText().toString();
                 String pw = "a";//pwEt.getText().toString();
@@ -64,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     return;
                 }
-//TODO 세션처리시 로컬디비 접근  / 친구요청-수락 gcm / 회원가입 /
+
                 mRegistrationBroadcastReceiver = new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
@@ -73,7 +70,8 @@ public class LoginActivity extends AppCompatActivity {
                         boolean sentToken = sharedPreferences
                                 .getBoolean("sentTokenToServer", false);
                         if (sentToken) {
-
+                            Intent i = new Intent(getApplicationContext(), WingActivity.class);
+                            startActivity(i);
                             LoginActivity.this.finish();
                         } else {
                             Log.w("error","---------------------------------"+R.string.token_error_message);

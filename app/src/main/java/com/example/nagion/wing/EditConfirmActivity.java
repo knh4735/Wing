@@ -1,11 +1,17 @@
 package com.example.nagion.wing;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class EditConfirmActivity extends AppCompatActivity {
     private Button mcfbtn;
@@ -23,12 +29,60 @@ public class EditConfirmActivity extends AppCompatActivity {
         mcfbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO 비밀번호를 보내서 확인해야함.
-                Intent intent = new Intent(getApplicationContext(), ChangeActivity.class);
-                startActivity(intent);
-                EditConfirmActivity.this.finish();
+                String pw = mpwEt.getText().toString();
+
+                PwCheckTask pct = new PwCheckTask();
+                pct.execute("checkPw", pw);
+
             }
         });
 
+    }
+
+    public class PwCheckTask extends AsyncTask<String, Void, String> {
+
+        private final HttpTask httpTask;
+
+        PwCheckTask() {
+            httpTask = new HttpTask();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            if(params[0].equals("checkPw")){
+                httpTask.checkPw(Session.getInstance("noAcnt"), params[1]);
+            }
+
+            return params[1];
+        }
+
+        @Override
+        protected void onPostExecute(String pw) {
+
+            try {
+                JSONObject list = httpTask.getReturnObj();
+                String result = list.getString("result");
+                Log.w("RETURN", "-------------------------------" + result);
+
+                if(result.equals("SAME")) {
+                    Intent intent = new Intent(getApplicationContext(), ChangeActivity.class);
+                    intent.putExtra("pw", pw);
+
+                    startActivity(intent);
+                    EditConfirmActivity.this.finish();
+                }
+                else if(result.equals("WRONG")){
+                    Toast.makeText(EditConfirmActivity.this, "비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
     }
 }

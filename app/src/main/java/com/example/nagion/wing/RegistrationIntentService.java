@@ -53,7 +53,6 @@ public class RegistrationIntentService extends IntentService {
             // [END get_token]
             Log.i(TAG, "GCM Registration Token: " + token);
 
-            // TODO: Implement this method to send any registration to your app's servers.
            // LoginTask lt = new LoginTask();
            // lt.execute("login", "1", token);
             sendRegistrationToServer(id, pw, token);
@@ -140,11 +139,6 @@ public class RegistrationIntentService extends IntentService {
                 Log.w("json","---------------------------------------"+jsonOutput);
 
                 Session.setSession(jsonOutput);
-
-
-                Intent i = new Intent(getApplicationContext(), WingActivity.class);
-                startActivity(i);
-
 
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 sharedPreferences.edit().putBoolean("sentTokenToServer", true).apply();

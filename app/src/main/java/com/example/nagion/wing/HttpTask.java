@@ -22,7 +22,7 @@ public class HttpTask {
     private OkHttpClient client = new OkHttpClient();
     private JSONObject returnObj;
 
-    public static String hostUrl = "192.168.0.26";
+    public static String hostUrl = "192.168.25.7";
 
     public JSONObject getReturnObj(){
         return returnObj;
@@ -42,14 +42,17 @@ public class HttpTask {
 
         @Override
         public void onResponse(Response response) throws IOException {
+            final String strJsonOutput = response.body().string();
+            Log.w("String","---------------------------------------"+strJsonOutput);
+
             try {
-                final String strJsonOutput = response.body().string();
-                Log.w("String","---------------------------------------"+strJsonOutput);
                 final JSONObject jsonOutput = new JSONObject(strJsonOutput);
                 setReturnObj(jsonOutput);
                 Log.w("JSON","---------------------------------------"+jsonOutput);
             }
-            catch (Exception e){e.printStackTrace();}
+            catch (Exception e){
+                e.printStackTrace();
+            }
         }
     };
 
@@ -373,6 +376,124 @@ public class HttpTask {
                 .addPathSegment("wing.php")
                 .addQueryParameter("cmd", "getRequest")// - get방식
                 .addQueryParameter("acnt", noAcnt)
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+    public void checkPw(String noAcnt, String pw) {
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "checkPw")// - get방식
+                .addQueryParameter("acnt", noAcnt)
+                .addQueryParameter("pw", pw)
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+
+    public void unregister(String noAcnt) {
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "unregister")// - get방식
+                .addQueryParameter("acnt", noAcnt)
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+
+    public void changePw(String noAcnt, String bfPw, String pw) {
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "changePw")// - get방식
+                .addQueryParameter("acnt", noAcnt)
+                .addQueryParameter("bfPw", bfPw)
+                .addQueryParameter("pw", pw)
+                .build();
+/*
+        RequestBody reqBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                jsonInput.toString()
+        );*/
+
+        Request request = new Request.Builder()
+                .url(httpUrl)
+                //.post(reqBody)
+                .build();
+        Log.w("request","-----------------------------------"+request);
+
+        client.newCall(request).enqueue(callbackAfterGettingMessage);
+    }
+
+
+    public void changeInfo(String... params) {
+
+        //param : "changeInfo", pw, nick, name, phone, email, intro, nameCk, phoneCk, emailCk, introCk
+
+        HttpUrl httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(hostUrl)
+                .port(8888)
+                .addPathSegment("wing.php")
+                .addQueryParameter("cmd", "changePw")// - get방식
+                .addQueryParameter("acnt", Session.getInstance("noAcnt"))
+                .addQueryParameter("pw", params[1])
+                .addQueryParameter("nick", params[2])
+                .addQueryParameter("name", params[3])
+                .addQueryParameter("phone", params[4])
+                .addQueryParameter("email", params[5])
+                .addQueryParameter("intro", params[6])
+                .addQueryParameter("nameCk", params[7])
+                .addQueryParameter("phoneCk", params[8])
+                .addQueryParameter("emailCk", params[9])
+                .addQueryParameter("introCk", params[10])
                 .build();
 /*
         RequestBody reqBody = RequestBody.create(
