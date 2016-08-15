@@ -203,7 +203,7 @@ public class HttpTask {
         client.newCall(request).enqueue(callback);
     }
 
-    public void wing(String id) {
+    public void wing(String id, Callback callback) {
         JSONObject jsonInput = new JSONObject();
 
         try {
@@ -236,7 +236,7 @@ public class HttpTask {
                 .build();
         Log.w("request","-----------------------------------"+request);
 
-        client.newCall(request).enqueue(callbackAfterGettingMessage);
+        client.newCall(request).enqueue(callback);
     }
 
     public void logout(String acnt, String token) {
