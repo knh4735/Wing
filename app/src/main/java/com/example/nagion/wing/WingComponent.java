@@ -1,6 +1,7 @@
 package com.example.nagion.wing;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -78,6 +79,7 @@ public class WingComponent extends LinearLayout {
         TextView nameTv = (TextView) findViewById(R.id.nameTv);
         TextView cntTv = (TextView) findViewById(R.id.cntTv);
         Button wingBtn = (Button) findViewById(R.id.wingBtn);
+        Button customBtn = (Button) findViewById(R.id.customBtn);
 
         nameTv.setText(name);
         cntTv.setText(String.valueOf(cnt));
@@ -88,6 +90,16 @@ public class WingComponent extends LinearLayout {
 
                 HttpTask httpTask = new HttpTask();
                 httpTask.wing(noAcnt, callbackWing);
+            }
+        });
+
+        customBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = getContext();
+                Intent intent = new Intent(context, VibeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         });
 
