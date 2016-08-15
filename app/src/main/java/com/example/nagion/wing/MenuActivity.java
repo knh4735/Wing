@@ -80,6 +80,7 @@ public class MenuActivity extends AppCompatActivity {
                 HttpTask httpTask = new HttpTask();
                 httpTask.logout(Session.getInstance("noAcnt", getApplicationContext()), Session.getInstance("token", getApplicationContext()));
 
+                Session.destroySession(getApplicationContext());
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 

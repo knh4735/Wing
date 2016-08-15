@@ -36,7 +36,9 @@ public class NoticeComponent extends LinearLayout {
         addView(v);
 
         TextView titleTv = (TextView) findViewById(R.id.title_textView);
+        TextView contentTv = (TextView) findViewById(R.id.contentTv);
 
         titleTv.setText(title);
+        contentTv.setText(content);
     }
 }
