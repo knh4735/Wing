@@ -108,7 +108,7 @@ public class SearchActivity extends AppCompatActivity {
             }
             catch (Exception e){
                 // before code
-                e.printStackTrace();
+                //e.printStackTrace();
 
                 Log.e("e","error occured");
             }

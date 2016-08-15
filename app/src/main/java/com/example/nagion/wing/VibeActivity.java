@@ -73,7 +73,6 @@ public class VibeActivity extends AppCompatActivity {
                 Vibrator vibe;
                 vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 vibe.vibrate(pattern, -1);
-
             }
         });
 

@@ -7,18 +7,22 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.example.nagion.wing.VibeActivity">
 
     <Button
         android:id="@+id/vibe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Wing"
-        android:textSize="50sp"/>
+        android:layout_gravity="center"
+        android:text="눌러서 진동 생성"
+        android:textSize="25sp"/>
+
     <Button
         android:id="@+id/complete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Complete"
-        android:textSize="50sp"/>
+        android:layout_gravity="center"
+        android:text="보내기"
+        android:textSize="25sp"/>
 </LinearLayout>
