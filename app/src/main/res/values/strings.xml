@@ -22,7 +22,7 @@
             sending the fetched token to the server or subscribing to the PubSub topic. Please try
             running the sample again.</string>
     <!--string name="gcm_defaultSenderId" translatable="false">937672303553</string>
-    <string name="google_api_key" translatable="false">AIzaSyCi1keI0cbwrSA4Jpfhfsmbi_cifACc4s0</string>
-    <string name="google_app_id" translatable="false">1:937672303553:android:66df14e9c35fc9d8</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCi1keI0cbwrSA4Jpfhfsmbi_cifACc4s0</string-->
+    <string name="google_api_key" translatable="false">----------------------------</string>
+    <string name="google_app_id" translatable="false">----------------------------</string>
+    <string name="google_crash_reporting_api_key" translatable="false">----------------------------</string-->
 </resources>
